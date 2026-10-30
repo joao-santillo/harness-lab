@@ -257,6 +257,17 @@ export class SqliteRunRepository implements RunRepository {
   }
 
   private upsertRound(round: z.infer<typeof roundSchema>): void {
+    const existing = this.database
+      .prepare("SELECT agent_id, domain_id, created_at FROM rounds WHERE id = ?")
+      .get(round.id);
+    if (
+      existing !== undefined &&
+      (existing.agent_id !== round.agentId ||
+        existing.domain_id !== round.domainId ||
+        existing.created_at !== round.createdAt)
+    ) {
+      throw new Error("Round identity and scope are immutable");
+    }
     this.database
       .prepare(`
         INSERT INTO rounds

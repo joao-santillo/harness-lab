@@ -1,4 +1,4 @@
-import { access, mkdtemp, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import type {
@@ -13,7 +13,7 @@ import type {
   RoundProgressEvent,
 } from "@lynn-harness/domain";
 import { afterEach, describe, expect, it } from "vitest";
-import { openSqliteDatabase, type SqliteFileOperations } from "./client.js";
+import { openSqliteDatabase } from "./client.js";
 import { SqliteRunRepository } from "./run-repository.js";
 
 const agentId = "agent-1" as AgentId;
@@ -66,92 +66,33 @@ describe("SqliteRunRepository", () => {
     );
   });
 
-  it("preserves a failed snapshot and retries persistence on the next flush", async () => {
+  it("shares committed writes across independent handles", async () => {
     const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
-    let failNextRename = false;
-    const fileOperations: SqliteFileOperations = {
-      access,
-      readFile,
-      writeFile,
-      rename: async (source, destination) => {
-        if (failNextRename) {
-          failNextRename = false;
-          throw new Error("injected rename failure");
-        }
-        await rename(source, destination);
-      },
-    };
+    const first = await openSqliteDatabase(path);
+    const second = await openSqliteDatabase(path);
+    const firstRepository = new SqliteRunRepository(first);
+    const secondRepository = new SqliteRunRepository(second);
 
-    const database = await openSqliteDatabase(path, fileOperations);
-    const repository = new SqliteRunRepository(database);
-    failNextRename = true;
+    await firstRepository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+    await secondRepository.saveHarnessSnapshot(harness);
+    await firstRepository.saveRound(round);
 
-    await expect(
-      repository.saveAgent({
-        id: agentId,
-        domainId,
-        name: "Research agent",
-        createdAt: round.createdAt,
-      }),
-    ).rejects.toThrow("injected rename failure");
-
-    await database.flush();
-    const reopened = await openSqliteDatabase(path);
-    expect(reopened.prepare("SELECT name FROM agents WHERE id = ?").get(agentId)).toEqual({
-      name: "Research agent",
-    });
-    await reopened.close();
-    await database.close();
+    expect(second.prepare("SELECT name FROM agents WHERE id = ?").get(agentId)).toEqual({ name: "Research agent" });
+    expect(firstRepository.getHarnessSnapshot(harnessId)).toEqual(harness);
+    expect(await secondRepository.getRound(roundId)).toEqual(round);
+    await Promise.all([first.close(), second.close()]);
   });
 
-  it("rejects writes after closing starts and shares concurrent close calls", async () => {
-    let releaseRename: (() => void) | undefined;
-    const allowRename = new Promise<void>((resolve) => {
-      releaseRename = resolve;
-    });
-    let signalRenameStarted: (() => void) | undefined;
-    const renameStarted = new Promise<void>((resolve) => {
-      signalRenameStarted = resolve;
-    });
-    let renameCalls = 0;
-    let blockRename = false;
-    const fileOperations: SqliteFileOperations = {
-      access,
-      readFile,
-      writeFile,
-      rename: async (source, destination) => {
-        renameCalls += 1;
-        if (blockRename) {
-          signalRenameStarted?.();
-          await allowRename;
-        }
-        await rename(source, destination);
-      },
-    };
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
-    temporaryDirectories.push(directory);
-    const database = await openSqliteDatabase(join(directory, "harness.sqlite"), fileOperations);
+  it("shares one close promise and rejects writes after close", async () => {
+    const database = await openSqliteDatabase(":memory:");
     const repository = new SqliteRunRepository(database);
-    const renameCallsAfterOpen = renameCalls;
-    blockRename = true;
-    const save = repository.saveAgent({
-      id: agentId,
-      domainId,
-      name: "Research agent",
-      createdAt: round.createdAt,
-    });
-    await renameStarted;
-
     const firstClose = database.close();
-    const secondClose = database.close();
-    expect(secondClose).toBe(firstClose);
-    await expect(repository.saveHarnessSnapshot(harness)).rejects.toThrow("SQLite database is closing");
-
-    releaseRename?.();
-    await Promise.all([save, firstClose, secondClose]);
-    expect(renameCalls).toBe(renameCallsAfterOpen + 1);
+    expect(database.close()).toBe(firstClose);
+    await firstClose;
+    await expect(repository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt }))
+      .rejects.toThrow("SQLite database is closed");
   });
 
   it("migrates, persists a round and returns events in sequence after reopen", async () => {
@@ -165,7 +106,7 @@ describe("SqliteRunRepository", () => {
         .prepare("INSERT INTO rounds (id, agent_id, domain_id, state, objective, created_at, updated_at, payload_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .run("orphan", "missing-agent", domainId, "setup", "invalid", round.createdAt, round.updatedAt, "{}"),
     ).toThrow();
-    expect(first.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({ count: 2 });
+    expect(first.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({ count: 3 });
     const firstRepository = new SqliteRunRepository(first);
     await firstRepository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
     await firstRepository.saveHarnessSnapshot(harness);
@@ -186,7 +127,7 @@ describe("SqliteRunRepository", () => {
 
     const reopened = await openSqliteDatabase(path);
     expect(reopened.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({
-      count: 2,
+      count: 3,
     });
     const reopenedRepository = new SqliteRunRepository(reopened);
     expect(await reopenedRepository.getRound(roundId)).toEqual(collectingRound);
@@ -239,12 +180,13 @@ describe("SqliteRunRepository", () => {
     expect(upgraded.prepare("SELECT name FROM schema_migrations ORDER BY name").all()).toEqual([
       { name: "0001_foundation" },
       { name: "0002_immutable_harness" },
+      { name: "0003_scope_integrity" },
     ]);
     await upgraded.close();
 
     const reopened = await openSqliteDatabase(path);
     expect(reopened.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({
-      count: 2,
+      count: 3,
     });
     await reopened.close();
   });
@@ -366,50 +308,77 @@ describe("SqliteRunRepository", () => {
     await writer.close();
   });
 
-  it("persists a write queued while another snapshot is in flight", async () => {
+  it("enforces event sequence uniqueness across independent handles", async () => {
     const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
-    let blockRename = false;
-    let releaseRename: (() => void) | undefined;
-    const allowRename = new Promise<void>((resolve) => {
-      releaseRename = resolve;
-    });
-    let signalRenameStarted: (() => void) | undefined;
-    const renameStarted = new Promise<void>((resolve) => {
-      signalRenameStarted = resolve;
-    });
-    const fileOperations: SqliteFileOperations = {
-      access,
-      readFile,
-      writeFile,
-      rename: async (source, destination) => {
-        if (blockRename) {
-          blockRename = false;
-          signalRenameStarted?.();
-          await allowRename;
-        }
-        await rename(source, destination);
-      },
-    };
-    const writer = await openSqliteDatabase(path, fileOperations);
-    const repository = new SqliteRunRepository(writer);
-    blockRename = true;
+    const first = await openSqliteDatabase(path);
+    const second = await openSqliteDatabase(path);
+    const firstRepository = new SqliteRunRepository(first);
+    const secondRepository = new SqliteRunRepository(second);
+    await firstRepository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+    await firstRepository.saveRound(round);
+    await firstRepository.saveEvent(event(1, "event-1"));
 
-    const saveAgent = repository.saveAgent({
-      id: agentId,
-      domainId,
-      name: "Research agent",
-      createdAt: round.createdAt,
-    });
-    await renameStarted;
-    const saveHarness = repository.saveHarnessSnapshot(harness);
-    releaseRename?.();
-    await Promise.all([saveAgent, saveHarness]);
+    await expect(secondRepository.saveEvent(event(1, "event-2"))).rejects.toThrow();
+    expect(await secondRepository.listEvents(roundId, 0)).toEqual([event(1, "event-1")]);
+    await Promise.all([first.close(), second.close()]);
+  });
 
-    const reader = await openSqliteDatabase(path);
-    expect(new SqliteRunRepository(reader).getHarnessSnapshot(harnessId)).toEqual(harness);
-    await reader.close();
-    await writer.close();
+  it("rejects changing an existing round identity or scope", async () => {
+    const database = await openSqliteDatabase(":memory:");
+    const repository = new SqliteRunRepository(database);
+    await repository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+    await repository.saveRound(round);
+
+    await expect(repository.saveRound({ ...round, domainId: "other-domain" as DomainId }))
+      .rejects.toThrow("Round identity and scope are immutable");
+    expect(await repository.getRound(roundId)).toEqual(round);
+    await database.close();
+  });
+
+  it("rejects a round whose domain differs from its agent", async () => {
+    const database = await openSqliteDatabase(":memory:");
+    const repository = new SqliteRunRepository(database);
+    await repository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+
+    await expect(repository.saveRound({ ...round, domainId: "other-domain" as DomainId }))
+      .rejects.toThrow("round scope must match agent scope");
+    await database.close();
+  });
+
+  it("detects an altered checksum for an applied migration", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    temporaryDirectories.push(directory);
+    const path = join(directory, "harness.sqlite");
+    const database = await openSqliteDatabase(path);
+    database.prepare("UPDATE schema_migrations SET checksum = ? WHERE name = ?")
+      .run("tampered", "0001_foundation");
+    await database.close();
+
+    await expect(openSqliteDatabase(path)).rejects.toThrow("Migration checksum mismatch: 0001_foundation");
+  });
+
+  it("enforces execution idempotency across independent handles", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    temporaryDirectories.push(directory);
+    const path = join(directory, "harness.sqlite");
+    const first = await openSqliteDatabase(path);
+    const second = await openSqliteDatabase(path);
+    const firstRepository = new SqliteRunRepository(first);
+    await firstRepository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+    await firstRepository.saveRound(round);
+    first.prepare("INSERT INTO cases (id, agent_id, domain_id, created_at, payload_json) VALUES (?, ?, ?, ?, ?)")
+      .run("case-1", agentId, domainId, round.createdAt, "{}");
+    const insertExecution = (database: typeof first, id: string) => database.prepare(`
+      INSERT INTO executions
+        (id, round_id, case_id, agent_id, domain_id, idempotency_key, created_at, payload_json)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, roundId, "case-1", agentId, domainId, "same-key", round.createdAt, "{}");
+    insertExecution(first, "execution-1");
+
+    expect(() => insertExecution(second, "execution-2")).toThrow();
+    expect(second.prepare("SELECT id FROM executions").all()).toEqual([{ id: "execution-1" }]);
+    await Promise.all([first.close(), second.close()]);
   });
 });
