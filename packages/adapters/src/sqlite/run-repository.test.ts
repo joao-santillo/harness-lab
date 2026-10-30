@@ -77,7 +77,7 @@ describe("SqliteRunRepository", () => {
         .prepare("INSERT INTO rounds (id, agent_id, domain_id, state, objective, created_at, updated_at, payload_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .run("orphan", "missing-agent", domainId, "setup", "invalid", round.createdAt, round.updatedAt, "{}"),
     ).toThrow();
-    expect(first.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({ count: 1 });
+    expect(first.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({ count: 2 });
     const firstRepository = new SqliteRunRepository(first);
     firstRepository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
     firstRepository.saveHarnessSnapshot(harness);
@@ -98,7 +98,7 @@ describe("SqliteRunRepository", () => {
 
     const reopened = await openSqliteDatabase(path);
     expect(reopened.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({
-      count: 1,
+      count: 2,
     });
     const reopenedRepository = new SqliteRunRepository(reopened);
     expect(await reopenedRepository.getRound(roundId)).toEqual(collectingRound);
@@ -135,6 +135,58 @@ describe("SqliteRunRepository", () => {
     expect(await new SqliteRunRepository(second).getRound(roundId)).toEqual(collectingRound);
     await second.close();
     await first.close();
+  });
+
+  it("applies the immutable harness migration to an existing foundation database once", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    temporaryDirectories.push(directory);
+    const path = join(directory, "harness.sqlite");
+    const legacy = await openSqliteDatabase(path);
+    legacy.exec("DROP TRIGGER harness_versions_reject_update");
+    legacy.exec("DROP TRIGGER harness_versions_reject_delete");
+    legacy.prepare("DELETE FROM schema_migrations WHERE name = ?").run("0002_immutable_harness");
+    await legacy.close();
+
+    const upgraded = await openSqliteDatabase(path);
+    expect(upgraded.prepare("SELECT name FROM schema_migrations ORDER BY name").all()).toEqual([
+      { name: "0001_foundation" },
+      { name: "0002_immutable_harness" },
+    ]);
+    await upgraded.close();
+
+    const reopened = await openSqliteDatabase(path);
+    expect(reopened.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({
+      count: 2,
+    });
+    await reopened.close();
+  });
+
+  it("rejects direct SQL updates to harness snapshots and preserves the original", async () => {
+    const database = await openSqliteDatabase(":memory:");
+    const repository = new SqliteRunRepository(database);
+    repository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+    repository.saveHarnessSnapshot(harness);
+
+    expect(() =>
+      database
+        .prepare("UPDATE harness_versions SET payload_json = ? WHERE id = ?")
+        .run('{"components":{"systemPrompt":"Mutated"}}', harnessId),
+    ).toThrow("harness_versions rows are immutable: UPDATE is not allowed");
+    expect(repository.getHarnessSnapshot(harnessId)).toEqual(harness);
+    await database.close();
+  });
+
+  it("rejects direct SQL deletes of harness snapshots and preserves the original", async () => {
+    const database = await openSqliteDatabase(":memory:");
+    const repository = new SqliteRunRepository(database);
+    repository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
+    repository.saveHarnessSnapshot(harness);
+
+    expect(() => database.prepare("DELETE FROM harness_versions WHERE id = ?").run(harnessId)).toThrow(
+      "harness_versions rows are immutable: DELETE is not allowed",
+    );
+    expect(repository.getHarnessSnapshot(harnessId)).toEqual(harness);
+    await database.close();
   });
 
   it("rolls back round and checkpoint when the event sequence collides", async () => {
