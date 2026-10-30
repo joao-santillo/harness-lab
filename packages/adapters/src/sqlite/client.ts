@@ -10,6 +10,7 @@ const migrations = [
   { name: "0002_immutable_harness", path: fileURLToPath(new URL("./migrations/0002_immutable_harness.sql", import.meta.url)) },
   { name: "0003_scope_integrity", path: fileURLToPath(new URL("./migrations/0003_scope_integrity.sql", import.meta.url)) },
   { name: "0004_encrypted_secrets", path: fileURLToPath(new URL("./migrations/0004_encrypted_secrets.sql", import.meta.url)) },
+  { name: "0005_connection_registrations", path: fileURLToPath(new URL("./migrations/0005_connection_registrations.sql", import.meta.url)) },
 ] as const;
 
 export interface SqliteStatement {

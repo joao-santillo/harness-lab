@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@lynn-harness/application": "workspace:*",
     "@lynn-harness/domain": "workspace:*",
     "drizzle-orm": "0.44.7",
     "libsodium-wrappers": "0.7.15",
