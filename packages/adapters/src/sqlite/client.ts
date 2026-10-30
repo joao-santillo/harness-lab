@@ -106,6 +106,38 @@ function migrationChecksum(sql: string): string {
   return createHash("sha256").update(sql).digest("hex");
 }
 
+function verifyLegacyMigration(database: SqliteDatabase, name: string): void {
+  if (name === "0001_foundation") {
+    const requiredTables = [
+      "agents", "connections", "capabilities", "harness_versions", "rounds",
+      "round_events", "checkpoints", "cases", "case_partitions", "executions",
+      "findings", "proposals", "evaluations", "learnings", "exports",
+    ];
+    const tables = new Set(
+      database.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all()
+        .map((row) => row.name),
+    );
+    if (requiredTables.some((table) => !tables.has(table))) {
+      throw new Error("Legacy migration verification failed: 0001_foundation");
+    }
+    return;
+  }
+  if (name === "0002_immutable_harness") {
+    const triggers = new Set(
+      database.prepare("SELECT name FROM sqlite_master WHERE type = 'trigger'").all()
+        .map((row) => row.name),
+    );
+    if (
+      !triggers.has("harness_versions_reject_update") ||
+      !triggers.has("harness_versions_reject_delete")
+    ) {
+      throw new Error("Legacy migration verification failed: 0002_immutable_harness");
+    }
+    return;
+  }
+  throw new Error(`Legacy migration has no verifier: ${name}`);
+}
+
 async function migrate(database: SqliteDatabase): Promise<void> {
   database.exec(`CREATE TABLE IF NOT EXISTS schema_migrations (
     name TEXT PRIMARY KEY,
@@ -131,6 +163,7 @@ async function migrate(database: SqliteDatabase): Promise<void> {
         database.prepare("INSERT INTO schema_migrations (name, checksum, applied_at) VALUES (?, ?, ?)")
           .run(migration.name, checksum, new Date().toISOString());
       } else if (existing.checksum === null) {
+        verifyLegacyMigration(database, migration.name);
         database.prepare("UPDATE schema_migrations SET checksum = ? WHERE name = ?").run(checksum, migration.name);
       } else if (existing.checksum !== checksum) {
         throw new Error(`Migration checksum mismatch: ${migration.name}`);

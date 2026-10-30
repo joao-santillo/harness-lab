@@ -174,6 +174,7 @@ describe("SqliteRunRepository", () => {
     legacy.exec("DROP TRIGGER harness_versions_reject_update");
     legacy.exec("DROP TRIGGER harness_versions_reject_delete");
     legacy.prepare("DELETE FROM schema_migrations WHERE name = ?").run("0002_immutable_harness");
+    legacy.prepare("UPDATE schema_migrations SET checksum = NULL WHERE name = ?").run("0001_foundation");
     await legacy.close();
 
     const upgraded = await openSqliteDatabase(path);
@@ -357,6 +358,20 @@ describe("SqliteRunRepository", () => {
     await database.close();
 
     await expect(openSqliteDatabase(path)).rejects.toThrow("Migration checksum mismatch: 0001_foundation");
+  });
+
+  it("rejects checksum backfill when a legacy schema is incomplete", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    temporaryDirectories.push(directory);
+    const path = join(directory, "harness.sqlite");
+    const database = await openSqliteDatabase(path);
+    database.prepare("UPDATE schema_migrations SET checksum = NULL WHERE name = ?").run("0001_foundation");
+    database.exec("DROP TABLE connections");
+    await database.close();
+
+    await expect(openSqliteDatabase(path)).rejects.toThrow(
+      "Legacy migration verification failed: 0001_foundation",
+    );
   });
 
   it("enforces execution idempotency across independent handles", async () => {
