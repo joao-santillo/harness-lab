@@ -5,6 +5,15 @@ import initSqlJs, { type BindParams, type Database, type SqlJsStatic } from "sql
 
 type BindValue = string | number | null | Uint8Array;
 
+export interface SqliteFileOperations {
+  access(path: string): Promise<void>;
+  readFile(path: string): Promise<Buffer>;
+  writeFile(path: string, data: Uint8Array): Promise<void>;
+  rename(oldPath: string, newPath: string): Promise<void>;
+}
+
+const defaultFileOperations: SqliteFileOperations = { access, readFile, rename, writeFile };
+
 const migrations = [
   {
     name: "0001_foundation",
@@ -23,6 +32,7 @@ export interface SqliteStatement {
 }
 
 export interface SqliteDatabase {
+  assertOpen(): void;
   prepare(sql: string): SqliteStatement;
   exec(sql: string): void;
   transaction<T>(operation: () => T): () => T;
@@ -33,13 +43,18 @@ export interface SqliteDatabase {
 class SqlJsDatabase implements SqliteDatabase {
   private transactionDepth = 0;
   private dirty = false;
-  private closed = false;
+  private state: "open" | "closing" | "closed" = "open";
   private persistenceSequence = 0;
+  private mutationGeneration = 0;
+  private persistedGeneration = 0;
   private persistence = Promise.resolve();
+  private persistencePending = false;
+  private closePromise: Promise<void> | undefined;
 
   public constructor(
     private readonly database: Database,
     private readonly path: string,
+    private readonly fileOperations: SqliteFileOperations,
   ) {}
 
   public prepare(sql: string): SqliteStatement {
@@ -66,8 +81,7 @@ class SqlJsDatabase implements SqliteDatabase {
         return rows;
       } catch (error) {
         if (isWrite && this.transactionDepth === 0) {
-          this.database.run("ROLLBACK TO sqlite_database_write");
-          this.database.run("RELEASE sqlite_database_write");
+          this.cleanupSavepoint(error);
         }
         throw error;
       } finally {
@@ -99,63 +113,122 @@ class SqlJsDatabase implements SqliteDatabase {
         return operation();
       }
 
-      this.transactionDepth += 1;
       this.database.run("BEGIN");
+      this.transactionDepth += 1;
       try {
         const result = operation();
         this.assertForeignKeys();
         this.database.run("COMMIT");
-        this.transactionDepth -= 1;
-        this.queuePersistence();
+        this.transactionDepth = 0;
+        this.markDirty();
         return result;
       } catch (error) {
-        this.database.run("ROLLBACK");
-        this.transactionDepth -= 1;
+        this.transactionDepth = 0;
+        try {
+          this.database.run("ROLLBACK");
+        } catch (rollbackError) {
+          throw new AggregateError([error, rollbackError], "Transaction and rollback failed", {
+            cause: error,
+          });
+        }
         throw error;
       }
     };
   }
 
-  public async close(): Promise<void> {
+  public close(): Promise<void> {
+    if (this.closePromise !== undefined) {
+      return this.closePromise;
+    }
     this.assertOpen();
-    this.queuePersistence();
-    await this.persistence;
-    this.database.close();
-    this.closed = true;
+    this.state = "closing";
+    this.closePromise = this.drainPersistence().then(() => {
+      this.database.close();
+      this.state = "closed";
+    });
+    return this.closePromise;
   }
 
   public async flush(): Promise<void> {
-    this.queuePersistence();
-    await this.persistence;
+    this.assertOpen();
+    await this.drainPersistence();
   }
 
   private markDirty(): void {
     this.dirty = true;
+    this.mutationGeneration += 1;
     if (this.transactionDepth === 0) {
       this.queuePersistence();
     }
   }
 
   private queuePersistence(): void {
-    if (!this.dirty || this.path === ":memory:") {
+    if (!this.dirty || this.persistencePending) {
+      return;
+    }
+    if (this.path === ":memory:") {
+      this.dirty = false;
+      this.persistedGeneration = this.mutationGeneration;
       return;
     }
     const bytes = this.database.export();
+    const snapshotGeneration = this.mutationGeneration;
     this.dirty = false;
-    this.persistence = this.persistence.then(async () => {
+    this.persistencePending = true;
+    this.persistence = this.persistence.catch(() => undefined).then(async () => {
       const temporaryPath = join(
         dirname(this.path),
         `.${this.path.split("/").at(-1)}.${process.pid}.${this.persistenceSequence++}.tmp`,
       );
-      await writeFile(temporaryPath, bytes);
-      await rename(temporaryPath, this.path);
+      try {
+        await this.fileOperations.writeFile(temporaryPath, bytes);
+        await this.fileOperations.rename(temporaryPath, this.path);
+        this.persistedGeneration = snapshotGeneration;
+      } catch (error) {
+        this.dirty = true;
+        throw error;
+      } finally {
+        this.persistencePending = false;
+      }
     });
   }
 
-  private assertOpen(): void {
-    if (this.closed) {
+  private async drainPersistence(): Promise<void> {
+    const targetGeneration = this.mutationGeneration;
+    while (this.persistedGeneration < targetGeneration) {
+      if (this.dirty && !this.persistencePending) {
+        this.queuePersistence();
+      }
+      await this.persistence;
+    }
+  }
+
+  public assertOpen(): void {
+    if (this.state === "closing") {
+      throw new Error("SQLite database is closing");
+    }
+    if (this.state === "closed") {
       throw new Error("SQLite database is closed");
     }
+  }
+
+  private cleanupSavepoint(originalError: unknown): never {
+    const cleanupErrors: unknown[] = [];
+    for (const sql of ["ROLLBACK TO sqlite_database_write", "RELEASE sqlite_database_write"]) {
+      try {
+        this.database.run(sql);
+      } catch (cleanupError) {
+        cleanupErrors.push(cleanupError);
+      }
+    }
+    if (cleanupErrors.length > 0) {
+      throw new AggregateError(
+        [originalError, ...cleanupErrors],
+        "Statement and savepoint cleanup failed",
+        { cause: originalError },
+      );
+    }
+    throw originalError;
   }
 
   private assertForeignKeys(): void {
@@ -203,13 +276,16 @@ function loadSqlJs(): Promise<SqlJsStatic> {
   return sqlJsPromise;
 }
 
-export async function openSqliteDatabase(path: string): Promise<SqliteDatabase> {
+export async function openSqliteDatabase(
+  path: string,
+  fileOperations: SqliteFileOperations = defaultFileOperations,
+): Promise<SqliteDatabase> {
   const SQL = await loadSqlJs();
   let bytes: Uint8Array | undefined;
   if (path !== ":memory:") {
     try {
-      await access(path);
-      bytes = await readFile(path);
+      await fileOperations.access(path);
+      bytes = await fileOperations.readFile(path);
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
         throw error;
@@ -218,7 +294,7 @@ export async function openSqliteDatabase(path: string): Promise<SqliteDatabase> 
   }
   const sqlJsDatabase = new SQL.Database(bytes);
   sqlJsDatabase.exec("PRAGMA foreign_keys = ON");
-  const database = new SqlJsDatabase(sqlJsDatabase, path);
+  const database = new SqlJsDatabase(sqlJsDatabase, path, fileOperations);
   await migrate(database);
   await database.flush();
   return database;

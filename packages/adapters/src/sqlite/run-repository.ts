@@ -81,6 +81,12 @@ const harnessSchema = z.object({
   immutableConstraints: z.array(z.string()).readonly(),
   createdAt: isoDate,
 });
+const agentSchema = z.object({
+  id: z.string().min(1),
+  domainId: z.string().min(1),
+  name: z.string().min(1),
+  createdAt: isoDate,
+});
 
 function toRound(value: z.infer<typeof roundSchema>): Round {
   return {
@@ -146,15 +152,19 @@ function parseJson(value: string): unknown {
 export class SqliteRunRepository implements RunRepository {
   public constructor(private readonly database: SqliteDatabase) {}
 
-  public saveAgent(agent: PersistedAgent): void {
+  public async saveAgent(agent: PersistedAgent): Promise<void> {
+    this.database.assertOpen();
+    const validAgent = agentSchema.parse(agent);
     this.database
       .prepare(
         "INSERT INTO agents (id, domain_id, name, created_at) VALUES (?, ?, ?, ?)",
       )
-      .run(agent.id, agent.domainId, agent.name, agent.createdAt);
+      .run(validAgent.id, validAgent.domainId, validAgent.name, validAgent.createdAt);
+    await this.database.flush();
   }
 
-  public saveHarnessSnapshot(snapshot: HarnessSnapshot): void {
+  public async saveHarnessSnapshot(snapshot: HarnessSnapshot): Promise<void> {
+    this.database.assertOpen();
     const validSnapshot = harnessSchema.parse(snapshot);
     this.database
       .prepare(`
@@ -170,6 +180,7 @@ export class SqliteRunRepository implements RunRepository {
         validSnapshot.createdAt,
         JSON.stringify(validSnapshot),
       );
+    await this.database.flush();
   }
 
   public getHarnessSnapshot(id: HarnessSnapshotId): HarnessSnapshot | null {
@@ -189,11 +200,13 @@ export class SqliteRunRepository implements RunRepository {
   }
 
   public async saveRound(round: Round): Promise<void> {
+    this.database.assertOpen();
     this.upsertRound(roundSchema.parse(round));
     await this.database.flush();
   }
 
   public async commitProgress(input: RoundProgressCommit): Promise<void> {
+    this.database.assertOpen();
     const validRound = roundSchema.parse(input.round);
     const validCheckpoint = checkpointSchema.parse(input.checkpoint);
     const validEvent = eventSchema.parse(input.event);
@@ -228,8 +241,10 @@ export class SqliteRunRepository implements RunRepository {
     return rows.map((row) => toEvent(eventSchema.parse(parseJson(row.payload_json))));
   }
 
-  public saveEvent(event: RoundProgressEvent): void {
+  public async saveEvent(event: RoundProgressEvent): Promise<void> {
+    this.database.assertOpen();
     this.insertEvent(eventSchema.parse(event));
+    await this.database.flush();
   }
 
   public getCheckpoint(roundId: RoundId, sequence: number): RoundCheckpoint | null {
