@@ -106,7 +106,7 @@ describe("SqliteRunRepository", () => {
         .prepare("INSERT INTO rounds (id, agent_id, domain_id, state, objective, created_at, updated_at, payload_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .run("orphan", "missing-agent", domainId, "setup", "invalid", round.createdAt, round.updatedAt, "{}"),
     ).toThrow();
-    expect(first.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({ count: 3 });
+    expect(first.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({ count: 4 });
     const firstRepository = new SqliteRunRepository(first);
     await firstRepository.saveAgent({ id: agentId, domainId, name: "Research agent", createdAt: round.createdAt });
     await firstRepository.saveHarnessSnapshot(harness);
@@ -127,7 +127,7 @@ describe("SqliteRunRepository", () => {
 
     const reopened = await openSqliteDatabase(path);
     expect(reopened.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({
-      count: 3,
+      count: 4,
     });
     const reopenedRepository = new SqliteRunRepository(reopened);
     expect(await reopenedRepository.getRound(roundId)).toEqual(collectingRound);
@@ -182,12 +182,13 @@ describe("SqliteRunRepository", () => {
       { name: "0001_foundation" },
       { name: "0002_immutable_harness" },
       { name: "0003_scope_integrity" },
+      { name: "0004_encrypted_secrets" },
     ]);
     await upgraded.close();
 
     const reopened = await openSqliteDatabase(path);
     expect(reopened.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get()).toEqual({
-      count: 3,
+      count: 4,
     });
     await reopened.close();
   });

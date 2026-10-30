@@ -63,6 +63,9 @@ importers:
       drizzle-orm:
         specifier: 0.44.7
         version: 0.44.7(@types/sql.js@1.4.9)(sql.js@1.13.0)
+      libsodium-wrappers:
+        specifier: 0.7.15
+        version: 0.7.15
       zod:
         specifier: 4.1.12
         version: 4.1.12
