@@ -1,0 +1,22 @@
+{
+  "name": "@lynn-harness/adapters",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@lynn-harness/domain": "workspace:*",
+    "drizzle-orm": "0.44.7",
+    "sql.js": "1.13.0",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@types/sql.js": "1.4.9"
+  }
+}
