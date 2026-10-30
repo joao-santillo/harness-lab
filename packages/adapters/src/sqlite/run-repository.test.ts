@@ -374,6 +374,50 @@ describe("SqliteRunRepository", () => {
     );
   });
 
+  it("rejects checksum backfill when a legacy table definition differs", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    temporaryDirectories.push(directory);
+    const path = join(directory, "harness.sqlite");
+    const database = await openSqliteDatabase(path);
+    database.prepare("UPDATE schema_migrations SET checksum = NULL WHERE name = ?").run("0001_foundation");
+    database.exec("DROP TRIGGER connections_validate_scope_insert");
+    database.exec("DROP TABLE connections");
+    database.exec(`CREATE TABLE connections (
+      id TEXT PRIMARY KEY,
+      agent_id TEXT NOT NULL REFERENCES agents(id),
+      domain_id TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      payload_version INTEGER NOT NULL,
+      payload_json TEXT NOT NULL DEFAULT '{}'
+    )`);
+    await database.close();
+
+    await expect(openSqliteDatabase(path)).rejects.toThrow(
+      "Legacy migration verification failed: 0001_foundation",
+    );
+  });
+
+  it("rejects migration when legacy rows violate scope integrity", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    temporaryDirectories.push(directory);
+    const path = join(directory, "harness.sqlite");
+    const database = await openSqliteDatabase(path);
+    const scopeTriggers = database.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'trigger' AND name LIKE '%_validate_scope_insert'",
+    ).all();
+    for (const trigger of scopeTriggers) database.exec(`DROP TRIGGER ${String(trigger.name)}`);
+    database.prepare("DELETE FROM schema_migrations WHERE name = ?").run("0003_scope_integrity");
+    database.prepare("INSERT INTO agents (id, domain_id, name, created_at) VALUES (?, ?, ?, ?)")
+      .run(agentId, domainId, "Research agent", round.createdAt);
+    database.prepare(`INSERT INTO rounds
+      (id, agent_id, domain_id, state, objective, created_at, updated_at, payload_json)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(roundId, agentId, "other-domain", "setup", round.objective, round.createdAt, round.updatedAt, "{}");
+    await database.close();
+
+    await expect(openSqliteDatabase(path)).rejects.toThrow("Legacy scope integrity violation");
+  });
+
   it("enforces execution idempotency across independent handles", async () => {
     const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
     temporaryDirectories.push(directory);

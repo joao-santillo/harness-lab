@@ -106,18 +106,25 @@ function migrationChecksum(sql: string): string {
   return createHash("sha256").update(sql).digest("hex");
 }
 
-function verifyLegacyMigration(database: SqliteDatabase, name: string): void {
+function normalizeSchemaSql(sql: unknown): string {
+  return String(sql).replace(/\s+/gu, " ").replace(/\s*([(),])\s*/gu, "$1").trim().toLowerCase();
+}
+
+function schemaObjects(database: SqliteDatabase, type: "table" | "trigger"): Map<string, string> {
+  return new Map(
+    database.prepare("SELECT name, sql FROM sqlite_master WHERE type = ? AND name NOT LIKE 'sqlite_%'").all(type)
+      .map((row) => [String(row.name), normalizeSchemaSql(row.sql)]),
+  );
+}
+
+function verifyLegacyMigration(database: SqliteDatabase, name: string, sql: string): void {
   if (name === "0001_foundation") {
-    const requiredTables = [
-      "agents", "connections", "capabilities", "harness_versions", "rounds",
-      "round_events", "checkpoints", "cases", "case_partitions", "executions",
-      "findings", "proposals", "evaluations", "learnings", "exports",
-    ];
-    const tables = new Set(
-      database.prepare("SELECT name FROM sqlite_master WHERE type = 'table'").all()
-        .map((row) => row.name),
-    );
-    if (requiredTables.some((table) => !tables.has(table))) {
+    const expected = new NodeSqliteDatabase(new DatabaseSync(":memory:"));
+    expected.exec(sql);
+    const expectedTables = schemaObjects(expected, "table");
+    const actualTables = schemaObjects(database, "table");
+    void expected.close();
+    if ([...expectedTables].some(([table, definition]) => actualTables.get(table) !== definition)) {
       throw new Error("Legacy migration verification failed: 0001_foundation");
     }
     return;
@@ -136,6 +143,24 @@ function verifyLegacyMigration(database: SqliteDatabase, name: string): void {
     return;
   }
   throw new Error(`Legacy migration has no verifier: ${name}`);
+}
+
+function verifyExistingScope(database: SqliteDatabase): void {
+  const invalid = database.prepare(`SELECT 1 FROM (
+    SELECT 1 FROM rounds r LEFT JOIN agents a ON a.id = r.agent_id AND a.domain_id = r.domain_id WHERE a.id IS NULL
+    UNION ALL SELECT 1 FROM harness_versions h LEFT JOIN agents a ON a.id = h.agent_id AND a.domain_id = h.domain_id WHERE a.id IS NULL
+    UNION ALL SELECT 1 FROM connections c LEFT JOIN agents a ON a.id = c.agent_id AND a.domain_id = c.domain_id WHERE a.id IS NULL
+    UNION ALL SELECT 1 FROM capabilities c LEFT JOIN agents a ON a.id = c.agent_id AND a.domain_id = c.domain_id WHERE a.id IS NULL
+    UNION ALL SELECT 1 FROM cases c LEFT JOIN agents a ON a.id = c.agent_id AND a.domain_id = c.domain_id WHERE a.id IS NULL
+    UNION ALL SELECT 1 FROM case_partitions p LEFT JOIN cases c ON c.id = p.case_id AND c.domain_id = p.domain_id WHERE c.id IS NULL
+    UNION ALL SELECT 1 FROM executions e LEFT JOIN rounds r ON r.id = e.round_id AND r.agent_id = e.agent_id AND r.domain_id = e.domain_id LEFT JOIN cases c ON c.id = e.case_id AND c.agent_id = e.agent_id AND c.domain_id = e.domain_id WHERE r.id IS NULL OR c.id IS NULL
+    UNION ALL SELECT 1 FROM findings x LEFT JOIN rounds r ON r.id = x.round_id AND r.agent_id = x.agent_id AND r.domain_id = x.domain_id WHERE r.id IS NULL
+    UNION ALL SELECT 1 FROM proposals x LEFT JOIN rounds r ON r.id = x.round_id AND r.agent_id = x.agent_id AND r.domain_id = x.domain_id WHERE r.id IS NULL
+    UNION ALL SELECT 1 FROM evaluations x LEFT JOIN rounds r ON r.id = x.round_id AND r.agent_id = x.agent_id AND r.domain_id = x.domain_id WHERE r.id IS NULL
+    UNION ALL SELECT 1 FROM learnings x LEFT JOIN rounds r ON r.id = x.round_id AND r.agent_id = x.agent_id AND r.domain_id = x.domain_id WHERE r.id IS NULL
+    UNION ALL SELECT 1 FROM exports x LEFT JOIN rounds r ON r.id = x.round_id AND r.agent_id = x.agent_id AND r.domain_id = x.domain_id WHERE r.id IS NULL
+  ) LIMIT 1`).get();
+  if (invalid !== undefined) throw new Error("Legacy scope integrity violation");
 }
 
 async function migrate(database: SqliteDatabase): Promise<void> {
@@ -159,11 +184,12 @@ async function migrate(database: SqliteDatabase): Promise<void> {
       const checksum = migrationChecksum(sql);
       const existing = database.prepare("SELECT checksum FROM schema_migrations WHERE name = ?").get(migration.name);
       if (existing === undefined) {
+        if (migration.name === "0003_scope_integrity") verifyExistingScope(database);
         database.exec(sql);
         database.prepare("INSERT INTO schema_migrations (name, checksum, applied_at) VALUES (?, ?, ?)")
           .run(migration.name, checksum, new Date().toISOString());
       } else if (existing.checksum === null) {
-        verifyLegacyMigration(database, migration.name);
+        verifyLegacyMigration(database, migration.name, sql);
         database.prepare("UPDATE schema_migrations SET checksum = ? WHERE name = ?").run(checksum, migration.name);
       } else if (existing.checksum !== checksum) {
         throw new Error(`Migration checksum mismatch: ${migration.name}`);
