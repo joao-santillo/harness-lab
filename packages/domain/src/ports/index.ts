@@ -2,6 +2,7 @@ import type { EvaluationResult } from "../model/evaluation.js";
 import type { Evidence, Finding, Hypothesis } from "../model/evidence.js";
 import type {
   Candidate,
+  CandidateId,
   ExecutionResult,
   HarnessSnapshot,
   HarnessSnapshotId,
@@ -15,6 +16,7 @@ import type {
   RoundId,
   RoundProgressEvent,
   SecretId,
+  TerminalDecision,
 } from "../model/round.js";
 
 export interface TraceQuery {
@@ -47,12 +49,27 @@ export interface AgentHarnessRepository {
   saveSnapshot(snapshot: HarnessSnapshot): Promise<void>;
 }
 
-export interface CandidateExecutionRequest {
+interface ExecutionRequestContext {
   readonly roundId: RoundId;
   readonly caseId: CaseId;
-  readonly snapshot: HarnessSnapshot;
+  readonly harnessVersionId: HarnessSnapshotId;
+  /** Positive integer. */
+  readonly attempt: number;
   readonly idempotencyKey: string;
 }
+
+export interface BaselineExecutionRequest extends ExecutionRequestContext {
+  readonly kind: "baseline";
+}
+
+export interface CandidateVersionExecutionRequest extends ExecutionRequestContext {
+  readonly kind: "candidate";
+  readonly candidateId: CandidateId;
+}
+
+export type CandidateExecutionRequest =
+  | BaselineExecutionRequest
+  | CandidateVersionExecutionRequest;
 
 export interface CandidateExecutor {
   execute(request: CandidateExecutionRequest): Promise<ExecutionResult>;
@@ -81,11 +98,16 @@ export interface EvaluationEngine {
   evaluate(request: EvaluationRequest): Promise<EvaluationResult>;
 }
 
+export interface RoundProgressCommit {
+  readonly round: Round;
+  readonly checkpoint: RoundCheckpoint;
+  readonly event: RoundProgressEvent;
+}
+
 export interface RunRepository {
   getRound(id: RoundId): Promise<Round | null>;
   saveRound(round: Round): Promise<void>;
-  saveCheckpoint(checkpoint: RoundCheckpoint): Promise<void>;
-  appendEvent(event: RoundProgressEvent): Promise<void>;
+  commitProgress(input: RoundProgressCommit): Promise<void>;
   listEvents(roundId: RoundId, afterSequence: number): Promise<readonly RoundProgressEvent[]>;
 }
 
@@ -109,12 +131,25 @@ export interface ExportedArtifact {
   readonly hash: string;
 }
 
-export interface ArtifactExportRequest {
+interface ArtifactExportContext {
   readonly round: Round;
-  readonly candidate: Candidate;
-  readonly evaluation: EvaluationResult;
   readonly evidence: readonly Evidence[];
 }
+
+export interface CandidateArtifactExportRequest extends ArtifactExportContext {
+  readonly kind: "candidate";
+  readonly candidate: Candidate;
+  readonly evaluation: EvaluationResult;
+}
+
+export interface ReportArtifactExportRequest extends ArtifactExportContext {
+  readonly kind: "report";
+  readonly decision: TerminalDecision;
+}
+
+export type ArtifactExportRequest =
+  | CandidateArtifactExportRequest
+  | ReportArtifactExportRequest;
 
 export interface ArtifactExporter {
   export(request: ArtifactExportRequest): Promise<readonly ExportedArtifact[]>;

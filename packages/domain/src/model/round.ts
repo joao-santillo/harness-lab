@@ -52,7 +52,7 @@ type TransitionTable = {
   readonly [State in RoundState]: Readonly<Partial<Record<RoundEvent, RoundState>>>;
 };
 
-export const ROUND_TRANSITIONS: TransitionTable = {
+export const ROUND_TRANSITIONS = {
   setup: {
     collection_started: "collecting",
     cancel_requested: "cancelled",
@@ -113,10 +113,11 @@ export const ROUND_TRANSITIONS: TransitionTable = {
   stopped_by_limit: {},
   cancelled: {},
   integration_failed: {},
-};
+} satisfies TransitionTable;
 
 export function transitionRound(state: RoundState, event: RoundEvent): RoundState {
-  const nextState = ROUND_TRANSITIONS[state][event];
+  const transitions: TransitionTable = ROUND_TRANSITIONS;
+  const nextState = transitions[state][event];
 
   if (nextState === undefined) {
     throw new Error(`Invalid round transition: ${state} -> ${event}`);
