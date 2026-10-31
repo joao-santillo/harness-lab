@@ -110,7 +110,9 @@ describe("connection routes", () => {
 
     expect((await server.inject({ method: "GET", url: "/api/v1/agents" })).json()).toEqual({ items: [] });
     expect((await server.inject({ method: "GET", url: "/api/v1/rounds" })).json()).toEqual({ items: [] });
-    expect((await server.inject({ method: "GET", url: "/api/v1/rounds/round-1/events" })).json()).toEqual({ items: [] });
+    const missingEvents = await server.inject({ method: "GET", url: "/api/v1/rounds/round-1/events" });
+    expect(missingEvents.statusCode).toBe(404);
+    expect(missingEvents.json()).toEqual({ code: "ROUND_NOT_FOUND" });
     await server.close();
   });
 
