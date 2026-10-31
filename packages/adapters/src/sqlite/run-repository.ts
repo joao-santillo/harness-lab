@@ -9,7 +9,7 @@ import type {
   RoundProgressCommit,
   RoundProgressEvent,
   RunRepository,
-} from "@lynn-harness/domain";
+} from "@harness-lab/domain";
 import { z } from "zod";
 import type { SqliteDatabase } from "./client.js";
 

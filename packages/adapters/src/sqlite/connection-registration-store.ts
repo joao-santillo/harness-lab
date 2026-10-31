@@ -4,7 +4,7 @@ import type {
   ConnectionView,
   RegisterConnectionRequest,
   RegistrationResult,
-} from "@lynn-harness/application";
+} from "@harness-lab/application";
 import sodium from "libsodium-wrappers";
 import type { SqliteDatabase } from "./client.js";
 

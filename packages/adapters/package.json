@@ -1,5 +1,5 @@
 {
-  "name": "@lynn-harness/adapters",
+  "name": "@harness-lab/adapters",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@lynn-harness/application": "workspace:*",
-    "@lynn-harness/domain": "workspace:*",
+    "@harness-lab/application": "workspace:*",
+    "@harness-lab/domain": "workspace:*",
     "drizzle-orm": "0.44.7",
     "libsodium-wrappers": "0.7.15",
     "zod": "4.1.12"

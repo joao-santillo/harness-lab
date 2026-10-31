@@ -2,7 +2,7 @@ import { randomBytes } from "node:crypto";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import type { SecretId } from "@lynn-harness/domain";
+import type { SecretId } from "@harness-lab/domain";
 import { afterEach, describe, expect, it } from "vitest";
 import { openSqliteDatabase } from "../sqlite/client.js";
 import { EncryptedSqliteSecretStore } from "./encrypted-secret-store.js";
@@ -16,7 +16,7 @@ describe("EncryptedSqliteSecretStore", () => {
   });
 
   async function fixture() {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-secrets-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-secrets-"));
     directories.push(directory);
     const path = join(directory, "harness.sqlite");
     const key = randomBytes(32).toString("base64");

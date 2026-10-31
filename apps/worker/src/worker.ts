@@ -1,5 +1,5 @@
-import type { ProcessRound } from "@lynn-harness/application";
-import type { RoundId } from "@lynn-harness/domain";
+import type { ProcessRound } from "@harness-lab/application";
+import type { RoundId } from "@harness-lab/domain";
 
 export interface ClaimedRoundJob {
   readonly roundId: RoundId;

@@ -57,13 +57,13 @@ importers:
 
   apps/api:
     dependencies:
-      '@lynn-harness/adapters':
+      '@harness-lab/adapters':
         specifier: workspace:*
         version: link:../../packages/adapters
-      '@lynn-harness/application':
+      '@harness-lab/application':
         specifier: workspace:*
         version: link:../../packages/application
-      '@lynn-harness/domain':
+      '@harness-lab/domain':
         specifier: workspace:*
         version: link:../../packages/domain
       fastify:
@@ -125,13 +125,13 @@ importers:
 
   apps/worker:
     dependencies:
-      '@lynn-harness/adapters':
+      '@harness-lab/adapters':
         specifier: workspace:*
         version: link:../../packages/adapters
-      '@lynn-harness/application':
+      '@harness-lab/application':
         specifier: workspace:*
         version: link:../../packages/application
-      '@lynn-harness/domain':
+      '@harness-lab/domain':
         specifier: workspace:*
         version: link:../../packages/domain
     devDependencies:
@@ -147,10 +147,10 @@ importers:
 
   packages/adapters:
     dependencies:
-      '@lynn-harness/application':
+      '@harness-lab/application':
         specifier: workspace:*
         version: link:../application
-      '@lynn-harness/domain':
+      '@harness-lab/domain':
         specifier: workspace:*
         version: link:../domain
       drizzle-orm:
@@ -165,7 +165,7 @@ importers:
 
   packages/application:
     dependencies:
-      '@lynn-harness/domain':
+      '@harness-lab/domain':
         specifier: workspace:*
         version: link:../domain
     devDependencies:

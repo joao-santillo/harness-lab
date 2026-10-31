@@ -1,5 +1,5 @@
-import type { SqliteDatabase, SqliteRoundJobStore, SqliteRunRepository } from "@lynn-harness/adapters";
-import type { AgentId, DomainId, Round, RoundId } from "@lynn-harness/domain";
+import type { SqliteDatabase, SqliteRoundJobStore, SqliteRunRepository } from "@harness-lab/adapters";
+import type { AgentId, DomainId, Round, RoundId } from "@harness-lab/domain";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 

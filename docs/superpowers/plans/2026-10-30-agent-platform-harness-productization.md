@@ -1,4 +1,4 @@
-# LYNN Harness Productization Implementation Plan
+# Agent Platform Harness Productization Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -47,7 +47,7 @@
 
 - [ ] Test all decision states, confidence, critical failures, regressions, sample, cost, latency, uncertainty, and limitations.
 - [ ] Test drill-down from problem to evidence, hypothesis, change, and result.
-- [ ] Implement plain-language and technical LYNN diffs, report/candidate downloads, technical-review request, reject-with-reason, and new-round actions.
+- [ ] Implement plain-language and technical Agent Platform diffs, report/candidate downloads, technical-review request, reject-with-reason, and new-round actions.
 - [ ] Assert there is no publish-to-production action.
 - [ ] Commit with `git commit -m "feat: present auditable round results"`.
 
@@ -105,7 +105,7 @@
 - Create: `docs/limitations.md`
 
 - [ ] Document local prerequisites, install, encryption key generation, processes, safe credential entry, test environments, data directory, backups, migrations, cancellation/recovery, retention, and troubleshooting.
-- [ ] Document ports/adapters, source links, pinned Harness2 version, Langfuse fallback, LYNN capability boundaries, security model, and future PostgreSQL/object-storage/vault migration.
+- [ ] Document ports/adapters, source links, pinned Harness2 version, Langfuse fallback, Agent Platform capability boundaries, security model, and future PostgreSQL/object-storage/vault migration.
 - [ ] Document the exact bounded demonstration and expected evidence or explicit blocker.
 - [ ] Validate every command in a clean checkout.
 - [ ] Commit with `git commit -m "docs: add deployment and demonstration guides"`.

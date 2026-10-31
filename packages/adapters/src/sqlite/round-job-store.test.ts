@@ -1,7 +1,7 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { AgentId, DomainId, Round, RoundId } from "@lynn-harness/domain";
+import type { AgentId, DomainId, Round, RoundId } from "@harness-lab/domain";
 import { afterEach, describe, expect, it } from "vitest";
 import { openSqliteDatabase } from "./client.js";
 import { SqliteRoundJobStore } from "./round-job-store.js";

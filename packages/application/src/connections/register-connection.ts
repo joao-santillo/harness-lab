@@ -1,4 +1,4 @@
-export type ConnectionKind = "langfuse" | "lynn";
+export type ConnectionKind = "langfuse" | "agent-platform";
 
 export interface ConnectionView {
   readonly id: string;

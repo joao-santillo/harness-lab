@@ -1,8 +1,8 @@
-# LYNN Harness Improvement Platform - Design Specification
+# Harness Lab - Design Specification
 
 ## 1. Purpose
 
-Build an MVP that continuously and verifiably improves the execution harness of AI agents hosted on LYNN. The application uses Langfuse traces to diagnose behavior, proposes small harness changes through an adapted Harness2 Propose-Probe-Compose cycle, executes baseline and candidate versions on LYNN, evaluates them independently, and exports a justified candidate without publishing it automatically.
+Build an MVP that continuously and verifiably improves the execution harness of AI agents hosted on Agent Platform. The application uses Langfuse traces to diagnose behavior, proposes small harness changes through an adapted Harness2 Propose-Probe-Compose cycle, executes baseline and candidate versions on Agent Platform, evaluates them independently, and exports a justified candidate without publishing it automatically.
 
 The primary user is a non-technical or moderately technical agent owner. A successful MVP lets this user follow one complete round from trace collection to candidate export, or clearly explains why validation could not be completed.
 
@@ -11,12 +11,12 @@ The primary user is a non-technical or moderately technical agent owner. A succe
 ### 2.1 In scope
 
 - Register and select multiple agents without changing the application core.
-- Register LYNN and Langfuse connections through the frontend.
+- Register Agent Platform and Langfuse connections through the frontend.
 - Detect integration capabilities instead of assuming endpoint availability.
 - Collect, paginate, resume, deduplicate, and reconstruct Langfuse executions.
 - Generate baseline traces by executing reviewed cases when historical traces are insufficient.
 - Diagnose successful and failed executions with traceable evidence.
-- Adapt Harness2 Propose-Probe-Compose and reflection concepts to LYNN.
+- Adapt Harness2 Propose-Probe-Compose and reflection concepts to Agent Platform.
 - Execute baseline and candidate harness versions under comparable conditions.
 - Evaluate candidates independently from the refinement engine.
 - Persist rounds, versions, evidence, results, decisions, and scoped learnings.
@@ -25,8 +25,8 @@ The primary user is a non-technical or moderately technical agent owner. A succe
 
 ### 2.2 Out of scope for the MVP
 
-- Automatic publication or promotion to LYNN production.
-- Editing LYNN capabilities not proven by its API contract.
+- Automatic publication or promotion to Agent Platform production.
+- Editing Agent Platform capabilities not proven by its API contract.
 - Treating historical outputs as ground truth.
 - Executing instructions found inside trace content.
 - A distributed multi-service deployment.
@@ -56,7 +56,7 @@ Relevant sources:
 - [Executor abstraction](https://github.com/google-research/harness2/blob/main/harness2/substrate/base.py)
 - [Experiment and resume guidance](https://github.com/google-research/harness2/blob/main/docs/EXPERIMENTS.md)
 
-### 3.2 LYNN
+### 3.2 Agent Platform
 
 The environment-provided Swagger contract was inspected without exposing its server URL or service key. It proves support for:
 
@@ -69,7 +69,7 @@ The environment-provided Swagger contract was inspected without exposing its ser
 - managing namespaced memories;
 - declaring workflow tools inside a workflow manifest.
 
-LYNN artifact types include `dta-flow`, `dta-kb`, `dta-memory`, and `dta-records`. A workflow manifest contains flow, tools, info, schema, and secrets. The MVP may modify only the supported, validated representation of:
+Agent Platform artifact types include `dta-flow`, `dta-kb`, `dta-memory`, and `dta-records`. A workflow manifest contains flow, tools, info, schema, and secrets. The MVP may modify only the supported, validated representation of:
 
 - `dta-flow` workflow content and orchestration;
 - tools declared in the workflow;
@@ -77,7 +77,7 @@ LYNN artifact types include `dta-flow`, `dta-kb`, `dta-memory`, and `dta-records
 - knowledge-base references/configuration;
 - memory and records declarations.
 
-Skills, plugins, guardrails, and subagents are not exposed as independent LYNN components in the inspected contract. The MVP must not claim to edit them independently. If instructions or rules are represented inside a validated workflow node, they may be edited as part of the flow while immutable rules remain protected.
+Skills, plugins, guardrails, and subagents are not exposed as independent Agent Platform components in the inspected contract. The MVP must not claim to edit them independently. If instructions or rules are represented inside a validated workflow node, they may be edited as part of the flow while immutable rules remain protected.
 
 ### 3.3 Langfuse
 
@@ -114,9 +114,9 @@ Reuse or adapt directly where coupling permits:
 
 Replace or adapt:
 
-- OpenCode/Codex substrates with a LYNN executor;
+- OpenCode/Codex substrates with a Agent Platform executor;
 - benchmark-specific task loaders with trace-derived and user-provided cases;
-- filesystem harness assumptions with versioned LYNN artifacts;
+- filesystem harness assumptions with versioned Agent Platform artifacts;
 - benchmark judging with a separate evaluation subsystem;
 - upstream run storage with the application's transactional persistence.
 
@@ -131,7 +131,7 @@ The MVP is a modular monolith with four deployable processes from one codebase:
 - Background worker.
 - SQLite database and local export storage.
 
-The code follows ports and adapters. Core use cases do not import LYNN, Langfuse, web framework, database, or LLM provider clients.
+The code follows ports and adapters. Core use cases do not import Agent Platform, Langfuse, web framework, database, or LLM provider clients.
 
 ### 5.1 Core ports
 
@@ -142,10 +142,10 @@ The code follows ports and adapters. Core use cases do not import LYNN, Langfuse
 - `EvaluationEngine`: run independent evaluators and recommendation policy.
 - `RunRepository`: persist aggregate state, checkpoints, and events.
 - `SecretStore`: encrypt, retrieve internally, rotate, and delete integration credentials.
-- `ArtifactExporter`: create complete LYNN-ready candidates, diffs, and reports.
+- `ArtifactExporter`: create complete Agent Platform-ready candidates, diffs, and reports.
 - `EventPublisher`: publish durable progress events to the frontend.
 
-Initial adapters are `LangfuseTraceRepository`, `LynnAgentAdapter`, `SqliteRunRepository`, `EncryptedSqliteSecretStore`, and filesystem exporters.
+Initial adapters are `LangfuseTraceRepository`, `AgentPlatformAgentAdapter`, `SqliteRunRepository`, `EncryptedSqliteSecretStore`, and filesystem exporters.
 
 ### 5.2 Cohesion and coupling rules
 
@@ -163,10 +163,10 @@ Initial adapters are `LangfuseTraceRepository`, `LynnAgentAdapter`, `SqliteRunRe
 3. Collect observations with bounded filters, pagination, checkpoints, retry, and deduplication.
 4. Reconstruct executions and record absent fields explicitly.
 5. Determine whether the sample is sufficient.
-6. When insufficient, collect a baseline by running reviewed cases on LYNN and waiting a bounded time for matching Langfuse traces.
+6. When insufficient, collect a baseline by running reviewed cases on Agent Platform and waiting a bounded time for matching Langfuse traces.
 7. Partition cases into diagnosis/refinement and reserved validation sets, grouping by session and semantic similarity to avoid leakage.
 8. Diagnose observed facts, formulate separate causal hypotheses, and attach traceable evidence.
-9. Propose small, independent changes only to editable LYNN components.
+9. Propose small, independent changes only to editable Agent Platform components.
 10. Probe baseline and candidates under equivalent model, parameter, tool, and limit conditions.
 11. Compose a consolidated candidate from compatible evidence-supported changes.
 12. Evaluate the candidate on reserved cases using the external evaluation subsystem.
@@ -187,9 +187,9 @@ When no usable traces exist, the UI offers a baseline collection flow. Cases may
 - documentation and rules, after human review;
 - LLM-generated synthetic cases, clearly labelled as synthetic.
 
-Collection occurs only in a configured test environment with safe, mocked, or explicitly allowlisted tools. Every execution has an idempotency key and round/case correlation identifier. The LYNN trace identifier is used to retrieve the corresponding Langfuse data.
+Collection occurs only in a configured test environment with safe, mocked, or explicitly allowlisted tools. Every execution has an idempotency key and round/case correlation identifier. The Agent Platform trace identifier is used to retrieve the corresponding Langfuse data.
 
-If the LYNN execution finishes but the trace does not appear within the configured wait budget, the system records collection as incomplete. It does not fabricate a trace or treat the LYNN response as complete observability.
+If the Agent Platform execution finishes but the trace does not appear within the configured wait budget, the system records collection as incomplete. It does not fabricate a trace or treat the Agent Platform response as complete observability.
 
 Baseline collection does not by itself prove improvement. If there are too few independent reserved cases, the final status is `validation_insufficient`.
 
@@ -241,7 +241,7 @@ Infrastructure, authentication, and external tool failures must not automaticall
 
 ### 10.1 Propose
 
-Generate small and independently testable edits. Each proposal identifies the supported LYNN component, the evidence and hypothesis, expected behavioral effect, immutable constraints, and rollback representation.
+Generate small and independently testable edits. Each proposal identifies the supported Agent Platform component, the evidence and hypothesis, expected behavioral effect, immutable constraints, and rollback representation.
 
 ### 10.2 Probe
 
@@ -275,7 +275,7 @@ A candidate is recommended only when:
 - configured minimum gains are achieved;
 - cost and latency limits are respected;
 - the reserved sample meets its minimum size;
-- candidate executions actually occurred on LYNN;
+- candidate executions actually occurred on Agent Platform;
 - no blocking regression criterion is met.
 
 The result includes sample size, per-case regressions, aggregate changes, run variability when repeated, and uncertainty. Valid terminal decisions are:
@@ -313,7 +313,7 @@ Large source data is retained only when needed for reproducible evidence. The ap
 
 ## 13. Credentials and Security
 
-Users enter LYNN and Langfuse connection credentials through the frontend during initial setup or integration registration. The browser sends secrets only to the backend over a protected connection and never stores them in local storage.
+Users enter Agent Platform and Langfuse connection credentials through the frontend during initial setup or integration registration. The browser sends secrets only to the backend over a protected connection and never stores them in local storage.
 
 For the local MVP:
 
@@ -357,7 +357,7 @@ Frontend labels, validations, operational progress, errors, backend and worker l
 
 Structured events store a stable language-neutral code and typed parameters. Human-readable messages are rendered in the requested locale. Persisted business facts do not depend on translated prose.
 
-Technical names such as LYNN, Langfuse, HTTP, `trace_id`, and harness remain unchanged. Original trace, prompt, and response content is not translated automatically because translation would alter evidence. Any optional translation must be labelled and preserve the original.
+Technical names such as Agent Platform, Langfuse, HTTP, `trace_id`, and harness remain unchanged. Original trace, prompt, and response content is not translated automatically because translation would alter evidence. Any optional translation must be labelled and preserve the original.
 
 Logs use structured fields with stable event codes. Human-readable messages are localized. External exception messages are sanitized and mapped to localized application messages; a sanitized technical detail may be retained separately. Tests prevent untranslated message keys and verify fallback to `pt-BR`.
 
@@ -372,7 +372,7 @@ The interface has three primary areas:
 Agent registration is a guided flow:
 
 1. Register and test a Langfuse connection.
-2. Register and test a LYNN connection.
+2. Register and test a Agent Platform connection.
 3. Select project, agent, and baseline version.
 4. Detect capabilities.
 5. Define domain, immutable rules, and evaluation criteria.
@@ -382,7 +382,7 @@ Round setup collects objective, period, filters, cases, budgets, and recommendat
 
 Round progress uses real stages and counters, for example collecting executions, identifying problems, preparing improvements, testing versions, and comparing results. Users can cancel, leave, return, inspect sanitized errors, and review consumed limits.
 
-The result screen leads with recommendation, confidence, critical violations, regressions, sample size, cost, and latency. Every proposed change exposes the complete evidence chain. The diff has a plain-language view and a technical LYNN artifact view.
+The result screen leads with recommendation, confidence, critical violations, regressions, sample size, cost, and latency. Every proposed change exposes the complete evidence chain. The diff has a plain-language view and a technical Agent Platform artifact view.
 
 Available final actions are export candidate, export report, request technical review, reject with reason, and start another round. There is no production publication action.
 
@@ -413,13 +413,13 @@ Cover domain invariants, limits, recommendation policy, partition isolation, ded
 
 Version contracts for:
 
-- LYNN OpenAPI operations and used schemas;
+- Agent Platform OpenAPI operations and used schemas;
 - Langfuse capability negotiation, modern and legacy reads, scores, and pagination;
 - Harness2 adapter inputs, outputs, and stop behavior;
 - LLM provider adapters;
 - `SecretStore` and persistence ports;
 - backend REST and progress event schemas;
-- LYNN candidate export and report formats.
+- Agent Platform candidate export and report formats.
 
 Sanitized fixtures exercise required and optional fields, new unknown fields, missing fields, enum changes, pagination, rate limits, and error shapes. CI compares sanitized OpenAPI snapshots from test instances. Compatible additions produce reviewable changes; removed used operations or incompatible type changes fail the gate.
 
@@ -427,7 +427,7 @@ Harness2 characterization tests run a deterministic corpus and compare proposal 
 
 ### 18.3 Integration tests
 
-Use local fake servers implementing contract schemas for required CI coverage. Real LYNN and Langfuse smoke tests are opt-in, bounded, use test environments, and avoid external side effects.
+Use local fake servers implementing contract schemas for required CI coverage. Real Agent Platform and Langfuse smoke tests are opt-in, bounded, use test environments, and avoid external side effects.
 
 ### 18.4 End-to-end tests
 
@@ -470,12 +470,12 @@ Compilation alone never approves an update.
 
 The delivered demonstration performs one small real round:
 
-1. Register LYNN and Langfuse connections through the UI.
+1. Register Agent Platform and Langfuse connections through the UI.
 2. Register an agent and inspect editable capabilities.
 3. Collect existing traces or generate a baseline.
 4. Diagnose a bounded sample.
 5. Propose at least one justified change.
-6. Execute baseline and candidate on LYNN.
+6. Execute baseline and candidate on Agent Platform.
 7. Evaluate reserved cases.
 8. Display an evidence-based decision or explicit validation blocker.
 9. Export the complete candidate and report.
@@ -496,10 +496,10 @@ The MVP is accepted when:
 - every change preserves the evidence-to-result chain;
 - no improvement is claimed without real candidate execution and sufficient reserved validation;
 - critical rules remain independent of aggregate scores;
-- the complete LYNN candidate and a clear diff are exportable;
+- the complete Agent Platform candidate and a clear diff are exportable;
 - logs and user-facing content work in `pt-BR`, `en`, and `es` with fallback;
 - contract, characterization, hermetic E2E, interface, visual, and accessibility tests pass;
-- a real opt-in integration smoke test verifies LYNN and Langfuse connectivity;
+- a real opt-in integration smoke test verifies Agent Platform and Langfuse connectivity;
 - installation, `.env.example`, example agent configuration, decisions, limitations, and source references are documented.
 
 ## 21. Known Limitations and Evolution
@@ -508,4 +508,4 @@ The MVP is accepted when:
 - SQLite and local encrypted secrets are appropriate for a local MVP, not a shared production deployment. Ports permit PostgreSQL, object storage, and managed secret stores later.
 - LLM judges remain probabilistic and require calibration; deterministic and human signals retain independent authority.
 - Harness2 upstream changes are not adopted automatically. The adapter, characterization tests, pinned versions, and recorded engine metadata protect reproducibility.
-- LYNN components not represented by its verified contract remain read-only or unsupported until a new contract proves otherwise.
+- Agent Platform components not represented by its verified contract remain read-only or unsupported until a new contract proves otherwise.

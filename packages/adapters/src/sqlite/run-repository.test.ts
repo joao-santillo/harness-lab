@@ -11,7 +11,7 @@ import type {
   Round,
   RoundId,
   RoundProgressEvent,
-} from "@lynn-harness/domain";
+} from "@harness-lab/domain";
 import { afterEach, describe, expect, it } from "vitest";
 import { openSqliteDatabase } from "./client.js";
 import { SqliteRunRepository } from "./run-repository.js";
@@ -67,7 +67,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("shares committed writes across independent handles", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const first = await openSqliteDatabase(path);
@@ -96,7 +96,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("migrates, persists a round and returns events in sequence after reopen", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
 
@@ -141,7 +141,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("persists a committed progress transaction before close", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const first = await openSqliteDatabase(path);
@@ -167,7 +167,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("applies the immutable harness migration to an existing foundation database once", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const legacy = await openSqliteDatabase(path);
@@ -224,7 +224,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("rolls back round and checkpoint when the event sequence collides", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const database = await openSqliteDatabase(join(directory, "harness.sqlite"));
     const repository = new SqliteRunRepository(database);
@@ -290,7 +290,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("makes every public write durable before its promise resolves", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const writer = await openSqliteDatabase(path);
@@ -313,7 +313,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("enforces event sequence uniqueness across independent handles", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const first = await openSqliteDatabase(path);
@@ -352,7 +352,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("detects an altered checksum for an applied migration", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const database = await openSqliteDatabase(path);
@@ -364,7 +364,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("rejects checksum backfill when a legacy schema is incomplete", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const database = await openSqliteDatabase(path);
@@ -378,7 +378,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("rejects checksum backfill when a legacy table definition differs", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const database = await openSqliteDatabase(path);
@@ -401,7 +401,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("rejects migration when legacy rows violate scope integrity", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const database = await openSqliteDatabase(path);
@@ -422,7 +422,7 @@ describe("SqliteRunRepository", () => {
   });
 
   it("enforces execution idempotency across independent handles", async () => {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-adapters-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-adapters-"));
     temporaryDirectories.push(directory);
     const path = join(directory, "harness.sqlite");
     const first = await openSqliteDatabase(path);

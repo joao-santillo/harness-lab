@@ -1,5 +1,5 @@
 import Fastify, { type FastifyInstance } from "fastify";
-import { ConnectionTestError, RegisterConnection, type ConnectionTester } from "@lynn-harness/application";
+import { ConnectionTestError, RegisterConnection, type ConnectionTester } from "@harness-lab/application";
 import {
   EncryptedSqliteSecretStore,
   openSqliteDatabase,
@@ -7,7 +7,7 @@ import {
   SqliteRoundJobStore,
   SqliteRunRepository,
   type SqliteDatabase,
-} from "@lynn-harness/adapters";
+} from "@harness-lab/adapters";
 import { registerAgentRoutes } from "./routes/agents.js";
 import { registerConnectionRoutes } from "./routes/connections.js";
 import { registerEventRoutes } from "./routes/events.js";

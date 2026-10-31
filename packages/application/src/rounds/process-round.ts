@@ -8,7 +8,7 @@ import {
   type RoundId,
   type RoundProgressEvent,
   type RunRepository,
-} from "@lynn-harness/domain";
+} from "@harness-lab/domain";
 
 export interface RoundStageRunner {
   run(round: Round): Promise<void>;

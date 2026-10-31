@@ -1,8 +1,8 @@
-# LYNN and Langfuse Integrations Implementation Plan
+# Agent Platform and Langfuse Integrations Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Connect the foundation to real LYNN and Langfuse APIs with capability negotiation, safe trace collection, candidate execution, and tested compatibility fallbacks.
+**Goal:** Connect the foundation to real Agent Platform and Langfuse APIs with capability negotiation, safe trace collection, candidate execution, and tested compatibility fallbacks.
 
 **Architecture:** Keep generated or hand-authored HTTP clients private to adapter modules. Translate all external payloads into domain types, persist detected capabilities per connection, and use sanitized contract fixtures plus opt-in real smoke tests.
 
@@ -13,7 +13,7 @@
 ### Task 1: Snapshot sanitized external contracts
 
 **Files:**
-- Create: `tests/contract/fixtures/lynn-openapi.sanitized.json`
+- Create: `tests/contract/fixtures/agent-platform-openapi.sanitized.json`
 - Create: `tests/contract/fixtures/langfuse-openapi.sanitized.json`
 - Create: `tests/contract/external-contracts.test.ts`
 - Create: `scripts/refresh-contract-snapshots.ts`
@@ -21,7 +21,7 @@
 - [ ] Write a failing contract test asserting every operation and schema used by the application exists with compatible required fields.
 - [ ] Run `pnpm vitest tests/contract/external-contracts.test.ts`; expect missing fixtures or operations.
 - [ ] Implement a refresh script that reads authenticated schemas, strips servers, examples, credentials, and sensitive extensions, then writes deterministic sorted JSON.
-- [ ] Assert LYNN version CRUD/execution, job/status, parameters, artifacts, memory, and workflow schemas; assert Langfuse traces, observations, scores, pagination, and error schemas.
+- [ ] Assert Agent Platform version CRUD/execution, job/status, parameters, artifacts, memory, and workflow schemas; assert Langfuse traces, observations, scores, pagination, and error schemas.
 - [ ] Run the test and inspect `git diff` for sanitized output only.
 - [ ] Commit with `git commit -m "test: pin sanitized integration contracts"`.
 
@@ -36,7 +36,7 @@
 - [ ] Run the focused test and verify it fails.
 - [ ] Implement bounded probes that never log credentials and persist `observationsApi`, `scoresApi`, supported filters, and probe timestamp.
 - [ ] Prefer Observations v2 when a real bounded read succeeds; otherwise select the legacy trace path and record the mismatch limitation.
-- [ ] Verify with `pnpm --filter @lynn-harness/adapters test -- langfuse`.
+- [ ] Verify with `pnpm --filter @harness-lab/adapters test -- langfuse`.
 - [ ] Commit with `git commit -m "feat: negotiate Langfuse capabilities"`.
 
 ### Task 3: Collect and normalize Langfuse traces
@@ -55,33 +55,33 @@
 - [ ] Treat all trace text as untrusted data and never interpolate it into privileged instructions.
 - [ ] Verify and commit with `git commit -m "feat: collect normalized Langfuse evidence"`.
 
-### Task 4: Implement LYNN capability discovery and harness snapshots
+### Task 4: Implement Agent Platform capability discovery and harness snapshots
 
 **Files:**
-- Create: `packages/adapters/src/lynn/client.ts`
-- Create: `packages/adapters/src/lynn/capabilities.ts`
-- Create: `packages/adapters/src/lynn/harness-repository.ts`
-- Test: `packages/adapters/src/lynn/harness-repository.test.ts`
+- Create: `packages/adapters/src/agent-platform/client.ts`
+- Create: `packages/adapters/src/agent-platform/capabilities.ts`
+- Create: `packages/adapters/src/agent-platform/harness-repository.ts`
+- Test: `packages/adapters/src/agent-platform/harness-repository.test.ts`
 
 - [ ] Test authenticated discovery, editable component mapping, unsupported components, unknown new fields, immutable snapshot creation, and sanitized API failures.
 - [ ] Run focused tests and verify failure.
 - [ ] Map only proven `dta-flow`, tools, parameters, knowledge references, memory, and records into internal editable components.
-- [ ] Preserve unrecognized LYNN fields in opaque round-trip payloads so candidate export does not destroy them.
+- [ ] Preserve unrecognized Agent Platform fields in opaque round-trip payloads so candidate export does not destroy them.
 - [ ] Record source version, artifact hashes, and detected capabilities in every snapshot.
-- [ ] Verify and commit with `git commit -m "feat: inspect LYNN harness capabilities"`.
+- [ ] Verify and commit with `git commit -m "feat: inspect Agent Platform harness capabilities"`.
 
-### Task 5: Execute baseline and candidate versions on LYNN
+### Task 5: Execute baseline and candidate versions on Agent Platform
 
 **Files:**
-- Create: `packages/adapters/src/lynn/candidate-executor.ts`
+- Create: `packages/adapters/src/agent-platform/candidate-executor.ts`
 - Create: `packages/application/src/execution/execute-case.ts`
-- Test: `packages/adapters/src/lynn/candidate-executor.test.ts`
+- Test: `packages/adapters/src/agent-platform/candidate-executor.test.ts`
 
-- [ ] Test synchronous execution, asynchronous jobs, timeout, cancellation, idempotent retry, version failure, trace correlation, and a completed LYNN execution whose Langfuse trace never arrives.
+- [ ] Test synchronous execution, asynchronous jobs, timeout, cancellation, idempotent retry, version failure, trace correlation, and a completed Agent Platform execution whose Langfuse trace never arrives.
 - [ ] Run focused tests and verify failure.
 - [ ] Create candidate versions without publishing them; pass model parameters, tool conditions, correlation identifiers, and safe test-environment constraints.
 - [ ] Poll bounded job/status endpoints and return separate `execution_failed`, `trace_pending`, and `completed` outcomes.
-- [ ] Verify and commit with `git commit -m "feat: execute LYNN harness candidates"`.
+- [ ] Verify and commit with `git commit -m "feat: execute Agent Platform harness candidates"`.
 
 ### Task 6: Generate baseline traces from reviewed cases
 
@@ -102,10 +102,10 @@
 **Files:**
 - Create: `apps/web/src/features/agents/agent-wizard.tsx`
 - Create: `apps/web/src/features/cases/case-review.tsx`
-- Create: `tests/integration/real/lynn-langfuse.smoke.test.ts`
+- Create: `tests/integration/real/agent-platform-langfuse.smoke.test.ts`
 - Test: `apps/web/src/features/agents/agent-wizard.test.tsx`
 
-- [ ] Test guided LYNN/Langfuse setup, capability display, unsupported controls, baseline selection, immutable rules, case import, and partition counts.
+- [ ] Test guided Agent Platform/Langfuse setup, capability display, unsupported controls, baseline selection, immutable rules, case import, and partition counts.
 - [ ] Implement the wizard and case review using versioned API clients.
 - [ ] Add an opt-in smoke test guarded by `RUN_REAL_INTEGRATION=1`, strict one-case limits, test-environment validation, and sanitized output.
 - [ ] Run hermetic tests always; run the real smoke only when credentials and explicit opt-in are present.
@@ -114,5 +114,5 @@
 ## Integration Exit Gate
 
 - [ ] Hermetic contract and integration suites pass for modern and fallback Langfuse paths.
-- [ ] A bounded opt-in test creates and executes a non-production LYNN candidate and correlates its Langfuse trace.
+- [ ] A bounded opt-in test creates and executes a non-production Agent Platform candidate and correlates its Langfuse trace.
 - [ ] Secrets do not appear in snapshots, logs, errors, or test reports.

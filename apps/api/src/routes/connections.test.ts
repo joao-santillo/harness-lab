@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { ConnectionTestError } from "@lynn-harness/application";
+import { ConnectionTestError } from "@harness-lab/application";
 import { describe, expect, it } from "vitest";
 import { buildServer } from "../server.js";
 
@@ -65,9 +65,9 @@ describe("connection routes", () => {
       url: "/api/v1/connections",
       headers: { "idempotency-key": "request-1" },
       payload: {
-        id: "lynn-main",
-        kind: "lynn",
-        name: "LYNN principal",
+        id: "agent-platform-main",
+        kind: "agent-platform",
+        name: "Agent Platform principal",
         credentials: { token: "first-token" },
       },
     };
@@ -92,15 +92,15 @@ describe("connection routes", () => {
       method: "POST",
       url: "/api/v1/connections",
       payload: {
-        id: "lynn-status",
-        kind: "lynn",
-        name: "LYNN status",
+        id: "agent-platform-status",
+        kind: "agent-platform",
+        name: "Agent Platform status",
         credentials: { token: "hidden-token" },
       },
     });
 
-    const response = await server.inject({ method: "GET", url: "/api/v1/connections/lynn-status/credentials" });
-    expect(response.json()).toEqual({ connectionId: "lynn-status", configured: true });
+    const response = await server.inject({ method: "GET", url: "/api/v1/connections/agent-platform-status/credentials" });
+    expect(response.json()).toEqual({ connectionId: "agent-platform-status", configured: true });
     expect(response.body).not.toContain("hidden-token");
     await server.close();
   });
@@ -125,7 +125,7 @@ describe("connection routes", () => {
       method: "POST",
       url: "/api/v1/connections",
       headers: { "accept-language": "en;q=0.4, es;q=0.9" },
-      payload: { id: "rejected", kind: "lynn", name: "Rejected", credentials: { token: "hidden" } },
+      payload: { id: "rejected", kind: "agent-platform", name: "Rejected", credentials: { token: "hidden" } },
     });
     expect(response.statusCode).toBe(503);
     expect(response.json()).toEqual({ code: "CONNECTION_UNAVAILABLE", message: "El servicio de conexión no está disponible." });

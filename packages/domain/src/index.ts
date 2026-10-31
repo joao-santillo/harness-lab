@@ -1,4 +1,4 @@
-export const APP_NAME = "LYNN Harness Improvement";
+export const APP_NAME = "Harness Lab";
 
 export * from "./model/evaluation.js";
 export * from "./model/evidence.js";

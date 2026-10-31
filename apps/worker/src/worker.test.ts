@@ -1,9 +1,9 @@
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { openSqliteDatabase, SqliteRoundJobStore, SqliteRunRepository } from "@lynn-harness/adapters";
-import { ProcessRound, type RoundStageRunners } from "@lynn-harness/application";
-import type { AgentId, DomainId, Round, RoundId } from "@lynn-harness/domain";
+import { openSqliteDatabase, SqliteRoundJobStore, SqliteRunRepository } from "@harness-lab/adapters";
+import { ProcessRound, type RoundStageRunners } from "@harness-lab/application";
+import type { AgentId, DomainId, Round, RoundId } from "@harness-lab/domain";
 import { describe, expect, it, vi } from "vitest";
 import { DurableRoundWorker } from "./worker.js";
 

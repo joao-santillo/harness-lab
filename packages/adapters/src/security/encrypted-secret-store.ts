@@ -1,4 +1,4 @@
-import type { SecretId, SecretStore, SecretValue } from "@lynn-harness/domain";
+import type { SecretId, SecretStore, SecretValue } from "@harness-lab/domain";
 import sodium from "libsodium-wrappers";
 import { z } from "zod";
 import type { SqliteDatabase } from "../sqlite/client.js";

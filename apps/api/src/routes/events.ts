@@ -1,4 +1,4 @@
-import type { RoundId, RoundProgressEvent, RunRepository } from "@lynn-harness/domain";
+import type { RoundId, RoundProgressEvent, RunRepository } from "@harness-lab/domain";
 import type { FastifyInstance } from "fastify";
 
 export interface EventStreamOptions {

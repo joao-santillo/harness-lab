@@ -1,4 +1,4 @@
-# LYNN Harness Foundation Implementation Plan
+# Agent Platform Harness Foundation Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -40,7 +40,7 @@ import { APP_NAME } from "./index.js";
 
 describe("domain package", () => {
   it("exports the product identity", () => {
-    expect(APP_NAME).toBe("LYNN Harness Improvement");
+    expect(APP_NAME).toBe("Agent Platform Harness Improvement");
   });
 });
 ```
@@ -51,19 +51,19 @@ Use `package.json` scripts `build`, `typecheck`, `test`, `lint`, `dev`, and `tes
 
 - [ ] **Step 3: Run the test and verify the missing export**
 
-Run: `pnpm install --frozen-lockfile=false && pnpm --filter @lynn-harness/domain test`
+Run: `pnpm install --frozen-lockfile=false && pnpm --filter @harness-lab/domain test`
 
 Expected: FAIL because `APP_NAME` is not exported.
 
 - [ ] **Step 4: Add the minimal export**
 
 ```ts
-export const APP_NAME = "LYNN Harness Improvement";
+export const APP_NAME = "Agent Platform Harness Improvement";
 ```
 
 - [ ] **Step 5: Verify the workspace**
 
-Run: `pnpm --filter @lynn-harness/domain test && pnpm typecheck`
+Run: `pnpm --filter @harness-lab/domain test && pnpm typecheck`
 
 Expected: all tests and type checking pass.
 
@@ -71,7 +71,7 @@ Expected: all tests and type checking pass.
 
 ```bash
 git add package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json .env.example packages/domain
-git commit -m "build: bootstrap LYNN harness workspace"
+git commit -m "build: bootstrap Agent Platform harness workspace"
 ```
 
 ### Task 2: Define domain contracts and states
@@ -103,7 +103,7 @@ describe("transitionRound", () => {
 
 - [ ] **Step 2: Run the focused test**
 
-Run: `pnpm --filter @lynn-harness/domain test -- round.test.ts`
+Run: `pnpm --filter @harness-lab/domain test -- round.test.ts`
 
 Expected: FAIL because the model does not exist.
 
@@ -113,7 +113,7 @@ Define branded identifiers, `RoundState`, terminal decisions, `Evidence`, `Findi
 
 - [ ] **Step 4: Export the contracts and verify**
 
-Run: `pnpm --filter @lynn-harness/domain test && pnpm typecheck`
+Run: `pnpm --filter @harness-lab/domain test && pnpm typecheck`
 
 Expected: PASS with invalid transitions rejected.
 
@@ -140,7 +140,7 @@ Create a temporary database, migrate it, save one agent, one immutable harness s
 
 - [ ] **Step 2: Run the test**
 
-Run: `pnpm --filter @lynn-harness/adapters test -- run-repository.test.ts`
+Run: `pnpm --filter @harness-lab/adapters test -- run-repository.test.ts`
 
 Expected: FAIL because the adapter does not exist.
 
@@ -150,7 +150,7 @@ Create normalized tables for agents, connections, capabilities, harness versions
 
 - [ ] **Step 4: Verify migration and persistence**
 
-Run: `pnpm --filter @lynn-harness/adapters test && pnpm typecheck`
+Run: `pnpm --filter @harness-lab/adapters test && pnpm typecheck`
 
 Expected: PASS against a fresh and reopened SQLite database.
 
@@ -175,7 +175,7 @@ Assert that saved ciphertext contains neither public nor secret keys, decrypts o
 
 - [ ] **Step 2: Run focused tests**
 
-Run: `pnpm --filter @lynn-harness/adapters test -- security`
+Run: `pnpm --filter @harness-lab/adapters test -- security`
 
 Expected: FAIL because security adapters do not exist.
 
@@ -189,7 +189,7 @@ Recursively redact keys matching `authorization`, `token`, `secret`, `password`,
 
 - [ ] **Step 5: Verify and commit**
 
-Run: `pnpm --filter @lynn-harness/adapters test && pnpm typecheck`
+Run: `pnpm --filter @harness-lab/adapters test && pnpm typecheck`
 
 ```bash
 git add packages/adapters/src/security
@@ -214,7 +214,7 @@ Test `POST /api/v1/connections`, `GET /api/v1/connections/:id`, and `DELETE /api
 
 - [ ] **Step 2: Run the route test**
 
-Run: `pnpm --filter @lynn-harness/api test -- connections.test.ts`
+Run: `pnpm --filter @harness-lab/api test -- connections.test.ts`
 
 Expected: FAIL because the API is absent.
 
@@ -228,7 +228,7 @@ Expose versioned JSON contracts for agents, rounds, credentials status, and even
 
 - [ ] **Step 5: Verify and commit**
 
-Run: `pnpm --filter @lynn-harness/api test && pnpm typecheck`
+Run: `pnpm --filter @harness-lab/api test && pnpm typecheck`
 
 ```bash
 git add apps/api packages/application
@@ -252,7 +252,7 @@ Assert that a queued round is claimed once, every stage persists a checkpoint an
 
 - [ ] **Step 2: Run focused tests**
 
-Run: `pnpm --filter @lynn-harness/worker test && pnpm --filter @lynn-harness/api test -- events.test.ts`
+Run: `pnpm --filter @harness-lab/worker test && pnpm --filter @harness-lab/api test -- events.test.ts`
 
 Expected: FAIL because worker and event stream are absent.
 
@@ -290,7 +290,7 @@ Test keyboard navigation among Agents, Rounds, and Results; locale switching; ma
 
 - [ ] **Step 2: Run the web test**
 
-Run: `pnpm --filter @lynn-harness/web test`
+Run: `pnpm --filter @harness-lab/web test`
 
 Expected: FAIL because the web app is absent.
 

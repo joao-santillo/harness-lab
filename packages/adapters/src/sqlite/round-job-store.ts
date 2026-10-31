@@ -1,4 +1,4 @@
-import type { RoundId } from "@lynn-harness/domain";
+import type { RoundId } from "@harness-lab/domain";
 import type { SqliteDatabase } from "./client.js";
 
 export interface RoundJob {

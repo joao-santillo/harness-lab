@@ -1,4 +1,4 @@
-import type { AgentId, DomainId, Round, RoundId, RunRepository } from "@lynn-harness/domain";
+import type { AgentId, DomainId, Round, RoundId, RunRepository } from "@harness-lab/domain";
 import { describe, expect, it, vi } from "vitest";
 import { ProcessRound, type RoundJobControl, type RoundStageRunners } from "./process-round.js";
 

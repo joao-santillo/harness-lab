@@ -25,7 +25,7 @@ export function ConnectionForm({ t }: ConnectionFormProps) {
         {t("connectionKind")}
         <select name="kind" defaultValue="langfuse">
           <option value="langfuse">Langfuse</option>
-          <option value="lynn">LYNN</option>
+          <option value="agent-platform">Agent Platform</option>
         </select>
       </label>
       <label>

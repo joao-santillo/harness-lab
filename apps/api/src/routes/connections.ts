@@ -1,13 +1,13 @@
-import type { ConnectionView, RegisterConnection } from "@lynn-harness/application";
+import type { ConnectionView, RegisterConnection } from "@harness-lab/application";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import type { SecretId, SecretStore } from "@lynn-harness/domain";
-import type { SqliteDatabase } from "@lynn-harness/adapters";
+import type { SecretId, SecretStore } from "@harness-lab/domain";
+import type { SqliteDatabase } from "@harness-lab/adapters";
 import { localize } from "../i18n.js";
 
 const connectionSchema = z.object({
   id: z.string().min(3).max(100).regex(/^[a-z0-9][a-z0-9-]*$/),
-  kind: z.enum(["langfuse", "lynn"]),
+  kind: z.enum(["langfuse", "agent-platform"]),
   name: z.string().min(1).max(120),
   credentials: z.record(z.string(), z.string().min(1)).refine((value) => Object.keys(value).length > 0),
 });

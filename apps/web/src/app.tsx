@@ -74,7 +74,7 @@ export function App({ activeRoundId, eventSourceFactory = browserEventSourceFact
         {view === "agents" && (
           <section aria-labelledby="agents-tab" id="agents-panel" role="tabpanel">
             <div className="section-heading">
-              <p className="eyebrow">LYNN + Langfuse</p>
+              <p className="eyebrow">Agent Platform + Langfuse</p>
               <h1 id="agents-title">{t("agentsTitle")}</h1>
               <p>{t("agentsDescription")}</p>
             </div>

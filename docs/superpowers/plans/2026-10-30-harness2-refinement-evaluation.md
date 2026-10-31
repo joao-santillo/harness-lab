@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Adapt pinned Harness2 behavior to LYNN, produce evidence-linked candidates, evaluate them independently on reserved cases, and export auditable decisions.
+**Goal:** Adapt pinned Harness2 behavior to Agent Platform, produce evidence-linked candidates, evaluate them independently on reserved cases, and export auditable decisions.
 
 **Architecture:** Place Harness2 behind `RefinementEngine`, preserve Propose-Probe-Compose and scoped reflection, and keep evaluation in a separate module. Refinement receives only diagnosis cases; evaluation alone receives reserved cases and applies deterministic, measured, calibrated judge, and human signals.
 
@@ -56,7 +56,7 @@
 **Files:**
 - Create: `packages/application/src/refinement/run-refinement.ts`
 - Create: `packages/application/src/refinement/change-policy.ts`
-- Create: `packages/adapters/src/harness2/lynn-mapper.ts`
+- Create: `packages/adapters/src/harness2/platform-mapper.ts`
 - Test: `packages/application/src/refinement/run-refinement.test.ts`
 
 - [ ] Test small independent proposals, immutable-rule protection, supported component enforcement, equivalent probe conditions, incompatible change rejection, stopping limits, and scoped lessons.
@@ -64,7 +64,7 @@
 - [ ] Implement the chain `finding -> evidence -> hypothesis -> proposal -> execution result` as required identifiers, not free text alone.
 - [ ] Probe baseline and candidates through `CandidateExecutor`; compose only compatible evidence-supported changes.
 - [ ] Persist adopted and rejected lessons scoped by agent/domain and exclude reserved cases.
-- [ ] Commit with `git commit -m "feat: refine LYNN harnesses with Harness2"`.
+- [ ] Commit with `git commit -m "feat: refine Agent Platform harnesses with Harness2"`.
 
 ### Task 5: Build independent evaluation
 
@@ -84,15 +84,15 @@
 ### Task 6: Export candidates and audit reports
 
 **Files:**
-- Create: `packages/adapters/src/export/lynn-candidate-exporter.ts`
+- Create: `packages/adapters/src/export/candidate-exporter.ts`
 - Create: `packages/adapters/src/export/report-exporter.ts`
 - Test: `packages/adapters/src/export/exporters.test.ts`
 
-- [ ] Test complete LYNN artifact round-trip, unknown-field preservation, plain-language and technical diffs, report localization, content hashes, and secret redaction.
+- [ ] Test complete Agent Platform artifact round-trip, unknown-field preservation, plain-language and technical diffs, report localization, content hashes, and secret redaction.
 - [ ] Store exports under `APP_DATA_DIR/exports/<agent>/<round>/` and persist path, media type, hash, and source versions.
 - [ ] Include decision, confidence, sample, constraints, regressions, costs, limitations, and the complete evidence chain.
 - [ ] Prevent an export endpoint from publishing or promoting a candidate.
-- [ ] Commit with `git commit -m "feat: export auditable LYNN candidates"`.
+- [ ] Commit with `git commit -m "feat: export auditable Agent Platform candidates"`.
 
 ### Task 7: Orchestrate a complete real round
 
@@ -101,7 +101,7 @@
 - Create: `tests/integration/complete-round.test.ts`
 - Create: `tests/integration/real/complete-round.smoke.test.ts`
 
-- [ ] Write a hermetic test running collection, partition, diagnosis, refinement, LYNN execution, evaluation, decision, learning, and export through fake adapters.
+- [ ] Write a hermetic test running collection, partition, diagnosis, refinement, Agent Platform execution, evaluation, decision, learning, and export through fake adapters.
 - [ ] Assert cancellation, budget stop, missing trace, failed evaluator, critical regression, and resume at every checkpoint.
 - [ ] Implement stage orchestration with real counters and exact refinement/Harness2/evaluator versions.
 - [ ] Add a one-case opt-in real smoke that cannot target a production environment and never claims improvement when validation is insufficient.

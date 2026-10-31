@@ -3,6 +3,6 @@ import { APP_NAME } from "./index.js";
 
 describe("domain package", () => {
   it("exports the product identity", () => {
-    expect(APP_NAME).toBe("LYNN Harness Improvement");
+    expect(APP_NAME).toBe("Harness Lab");
   });
 });

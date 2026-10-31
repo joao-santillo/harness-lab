@@ -2,8 +2,8 @@ import { randomBytes } from "node:crypto";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { openSqliteDatabase, SqliteRunRepository } from "@lynn-harness/adapters";
-import type { AgentId, DomainId } from "@lynn-harness/domain";
+import { openSqliteDatabase, SqliteRunRepository } from "@harness-lab/adapters";
+import type { AgentId, DomainId } from "@harness-lab/domain";
 import { describe, expect, it } from "vitest";
 import { buildServer } from "../server.js";
 

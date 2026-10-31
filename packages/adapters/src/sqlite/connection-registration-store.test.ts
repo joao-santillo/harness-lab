@@ -19,7 +19,7 @@ describe("SqliteConnectionRegistrationStore", () => {
   afterEach(async () => Promise.all(directories.splice(0).map((path) => rm(path, { recursive: true, force: true }))));
 
   async function fixture() {
-    const directory = await mkdtemp(join(tmpdir(), "lynn-registration-"));
+    const directory = await mkdtemp(join(tmpdir(), "agent-platform-registration-"));
     directories.push(directory);
     const path = join(directory, "harness.sqlite");
     const key = randomBytes(32).toString("base64");
