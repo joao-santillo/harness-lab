@@ -1,4 +1,4 @@
-import type { SqliteDatabase, SqliteRoundJobStore, SqliteRunRepository } from "@harness-lab/adapters";
+import type { SqliteDatabase, SqliteRoundArtifactStore, SqliteRoundJobStore, SqliteRunRepository } from "@harness-lab/adapters";
 import type { AgentId, DomainId, Round, RoundId } from "@harness-lab/domain";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
@@ -15,8 +15,9 @@ export async function registerRoundRoutes(
   database: SqliteDatabase,
   repository: SqliteRunRepository,
   jobs: SqliteRoundJobStore,
+  artifacts: SqliteRoundArtifactStore,
 ): Promise<void> {
-  server.get("/api/v1/rounds", async () => ({ items: [] }));
+  server.get("/api/v1/rounds", async () => ({ items: await repository.listRounds() }));
   server.post("/api/v1/rounds", async (request, reply) => {
     const input = roundInput.safeParse(request.body);
     if (!input.success) return reply.code(400).send({ code: "ROUND_INVALID" });
@@ -51,6 +52,26 @@ export async function registerRoundRoutes(
   server.get<{ Params: { id: string } }>("/api/v1/rounds/:id", async (request, reply) => {
     const round = await repository.getRound(request.params.id as RoundId);
     return round ?? reply.code(404).send({ code: "ROUND_NOT_FOUND" });
+  });
+  server.get<{ Params: { id: string } }>("/api/v1/rounds/:id/results", async (request, reply) => {
+    const roundId = request.params.id as RoundId;
+    if (await repository.getRound(roundId) === null) return reply.code(404).send({ code: "ROUND_NOT_FOUND" });
+    const session = await artifacts.get(roundId);
+    if (session?.evaluation === null || session === null) return reply.code(409).send({ code: "ROUND_RESULT_NOT_READY" });
+    const { evaluation } = session;
+    // Não serialize a sessão inteira: ela inclui snapshot opaco e material de evidência que não pertence à resposta pública.
+    return {
+      roundId,
+      decision: evaluation.decision,
+      sampleSize: evaluation.sampleSize,
+      confidence: evaluation.confidence,
+      aggregateScoreChange: evaluation.aggregateScoreChange,
+      costChange: evaluation.costChange,
+      latencyChange: evaluation.latencyChange,
+      cases: evaluation.cases,
+      limitations: evaluation.limitations,
+      rationale: evaluation.rationale,
+    };
   });
   server.post<{ Params: { id: string } }>("/api/v1/rounds/:id/cancel", async (request, reply) => {
     const roundId = request.params.id as RoundId;

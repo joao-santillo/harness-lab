@@ -12,6 +12,7 @@ const migrations = [
   { name: "0004_encrypted_secrets", path: fileURLToPath(new URL("./migrations/0004_encrypted_secrets.sql", import.meta.url)) },
   { name: "0005_connection_registrations", path: fileURLToPath(new URL("./migrations/0005_connection_registrations.sql", import.meta.url)) },
   { name: "0006_round_jobs", path: fileURLToPath(new URL("./migrations/0006_round_jobs.sql", import.meta.url)) },
+  { name: "0007_round_artifacts", path: fileURLToPath(new URL("./migrations/0007_round_artifacts.sql", import.meta.url)) },
 ] as const;
 
 export interface SqliteStatement {

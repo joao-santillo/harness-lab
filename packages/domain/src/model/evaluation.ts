@@ -27,3 +27,7 @@ export interface EvaluationResult {
   readonly limitations: readonly string[];
   readonly rationale: string;
 }
+
+export interface VersionedEvaluationResult extends EvaluationResult {
+  readonly evaluatorVersion: string;
+}

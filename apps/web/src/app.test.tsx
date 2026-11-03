@@ -23,18 +23,19 @@ describe("operations interface", () => {
 
   it("supports navigation, locales, masked credentials, validation, and empty rounds", async () => {
     const user = userEvent.setup();
-    render(<App eventSourceFactory={(url) => new FakeEventSource(url)} />);
+    const request = vi.fn(async () => Response.json({ items: [] }));
+    render(<App request={request as typeof fetch} eventSourceFactory={(url) => new FakeEventSource(url)} />);
 
     expect(screen.getByRole("navigation", { name: "Principal" })).toBeVisible();
     const agentsTab = screen.getByRole("tab", { name: "Agentes" });
     agentsTab.focus();
     await user.keyboard("{ArrowRight}");
     expect(screen.getByRole("tab", { name: "Rodadas" })).toHaveFocus();
-    expect(screen.getByText("Nenhuma rodada encontrada")).toBeVisible();
+    expect(screen.getByText("Nenhum agente cadastrado")).toBeVisible();
     await user.keyboard("{ArrowRight}");
     expect(screen.getByRole("tab", { name: "Resultados" })).toHaveFocus();
     await user.keyboard("{ArrowLeft}");
-    expect(screen.getByText("Nenhuma rodada encontrada")).toBeVisible();
+    expect(screen.getByText("Nenhum agente cadastrado")).toBeVisible();
 
     await user.selectOptions(screen.getByLabelText("Idioma"), "en");
     expect(screen.getByRole("tab", { name: "Agents" })).toBeVisible();
@@ -42,17 +43,17 @@ describe("operations interface", () => {
 
     const secret = screen.getByLabelText("Secret key");
     expect(secret).toHaveAttribute("type", "password");
-    await user.click(screen.getByRole("button", { name: "Validate connection" }));
+    await user.click(screen.getByRole("button", { name: "Save connection" }));
     expect(screen.getByText("Complete all required fields.")).toBeVisible();
 
     await user.selectOptions(screen.getByLabelText("Language"), "es");
     expect(screen.getByRole("tab", { name: "Rondas" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Validar conexión" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Guardar conexión" })).toBeVisible();
   });
 
   it("reconnects an active round event stream", async () => {
     vi.useFakeTimers();
-    render(<App activeRoundId="round-1" eventSourceFactory={(url) => new FakeEventSource(url)} />);
+    render(<App activeRoundId="round-1" request={vi.fn(async () => Response.json({ items: [] })) as typeof fetch} eventSourceFactory={(url) => new FakeEventSource(url)} />);
     fireEvent.click(screen.getByRole("tab", { name: "Rodadas" }));
 
     expect(FakeEventSource.instances).toHaveLength(1);

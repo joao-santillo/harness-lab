@@ -1,6 +1,9 @@
 import { useRef, useState, type KeyboardEvent } from "react";
 import { ConnectionForm } from "./features/connections/connection-form.js";
-import { useRoundEvents, type EventSourceFactory } from "./features/rounds/use-round-events.js";
+import { AgentCaseForm } from "./features/cases/agent-case-form.js";
+import { RoundsDashboard } from "./features/rounds/rounds-dashboard.js";
+import { ResultsDashboard } from "./features/rounds/results-dashboard.js";
+import type { EventSourceFactory } from "./features/rounds/use-round-events.js";
 import { messages, type Locale, type MessageKey } from "./i18n/messages.js";
 import "./styles.css";
 
@@ -9,17 +12,17 @@ type View = "agents" | "rounds" | "results";
 interface AppProps {
   activeRoundId?: string;
   eventSourceFactory?: EventSourceFactory;
+  request?: typeof fetch;
 }
 
 const browserEventSourceFactory: EventSourceFactory = (url) => new EventSource(url);
 const views = ["agents", "rounds", "results"] as const;
 
-export function App({ activeRoundId, eventSourceFactory = browserEventSourceFactory }: AppProps) {
+export function App({ activeRoundId, eventSourceFactory = browserEventSourceFactory, request = fetch }: AppProps) {
   const [locale, setLocale] = useState<Locale>("pt-BR");
   const [view, setView] = useState<View>("agents");
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const t = (key: MessageKey) => messages[locale][key];
-  const streamState = useRoundEvents(activeRoundId, eventSourceFactory);
 
   function moveTab(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
@@ -78,7 +81,8 @@ export function App({ activeRoundId, eventSourceFactory = browserEventSourceFact
               <h1 id="agents-title">{t("agentsTitle")}</h1>
               <p>{t("agentsDescription")}</p>
             </div>
-            <ConnectionForm t={t} />
+            <ConnectionForm t={t} request={request} />
+            <AgentCaseForm t={t} request={request} />
           </section>
         )}
         {view === "rounds" && (
@@ -87,17 +91,7 @@ export function App({ activeRoundId, eventSourceFactory = browserEventSourceFact
               <h1 id="rounds-title">{t("roundsTitle")}</h1>
               <p>{t("roundsDescription")}</p>
             </div>
-            {activeRoundId === undefined ? (
-              <div className="empty-state">
-                <strong>{t("emptyRounds")}</strong>
-                <span>{t("emptyRoundsHint")}</span>
-              </div>
-            ) : (
-              <div className={`stream-status ${streamState}`} role="status">
-                <span aria-hidden="true" />
-                {streamState === "connected" ? t("streamConnected") : streamState === "reconnecting" ? t("streamReconnecting") : t("streamConnecting")}
-              </div>
-            )}
+            <RoundsDashboard t={t} request={request} eventSourceFactory={eventSourceFactory} {...(activeRoundId === undefined ? {} : { initialActiveRoundId: activeRoundId })} />
           </section>
         )}
         {view === "results" && (
@@ -106,7 +100,7 @@ export function App({ activeRoundId, eventSourceFactory = browserEventSourceFact
               <h1 id="results-title">{t("resultsTitle")}</h1>
               <p>{t("resultsDescription")}</p>
             </div>
-            <div className="empty-state"><strong>{t("emptyResults")}</strong></div>
+            <ResultsDashboard t={t} request={request} />
           </section>
         )}
       </main>

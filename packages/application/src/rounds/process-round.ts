@@ -11,7 +11,8 @@ import {
 } from "@harness-lab/domain";
 
 export interface RoundStageRunner {
-  run(round: Round): Promise<void>;
+  run(round: Round): Promise<void | RoundEvent>;
+  getCompletionEvent?(round: Round): Promise<RoundEvent>;
 }
 
 export interface RoundJobControl {
@@ -54,7 +55,10 @@ export class ProcessRound {
   public async execute(roundId: RoundId, workerId: string): Promise<Round> {
     let round = await this.repository.getRound(roundId);
     if (round === null) throw new Error("ROUND_NOT_FOUND");
+    // Após reiniciar em `exporting`, o retorno em memória do estágio já se perdeu; a decisão deve vir do artefato persistido.
+    const recoveringExport = round.state === "exporting";
     let sequence = (await this.repository.listEvents(roundId, -1)).at(-1)?.sequence ?? -1;
+    let terminalEvent: RoundEvent = "recommendation_completed";
 
     while (nextStage[round.state] !== undefined) {
       if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
@@ -66,7 +70,8 @@ export class ProcessRound {
       const stage = nextStage[round.state];
       if (stage === undefined) break;
       try {
-        await this.stages[stage.runner].run(round);
+        const stageResult = await this.stages[stage.runner].run(round);
+        if (stage.runner === "export" && stageResult !== undefined) terminalEvent = stageResult;
       } catch {
         if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
         round = await this.commit(round, "integration_failed", ++sequence);
@@ -78,7 +83,20 @@ export class ProcessRound {
     }
     if (round.state === "exporting") {
       if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
-      round = await this.commit(round, "recommendation_completed", ++sequence);
+      if (recoveringExport) {
+        try {
+          const recoverCompletionEvent = this.stages.export.getCompletionEvent;
+          // Falhar fechado evita transformar falta de avaliação em recomendação por omissão.
+          if (recoverCompletionEvent === undefined) throw new Error("ROUND_TERMINAL_DECISION_UNAVAILABLE");
+          terminalEvent = await recoverCompletionEvent(round);
+        } catch {
+          if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
+          round = await this.commit(round, "integration_failed", ++sequence);
+          await this.jobs.complete(round.id, workerId);
+          return round;
+        }
+      }
+      round = await this.commit(round, terminalEvent, ++sequence);
     }
     await this.jobs.complete(round.id, workerId);
     return round;

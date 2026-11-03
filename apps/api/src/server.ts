@@ -4,21 +4,26 @@ import {
   EncryptedSqliteSecretStore,
   openSqliteDatabase,
   SqliteConnectionRegistrationStore,
+  SqliteCaseRepository,
+  SqliteRoundArtifactStore,
   SqliteRoundJobStore,
   SqliteRunRepository,
   type SqliteDatabase,
 } from "@harness-lab/adapters";
 import { registerAgentRoutes } from "./routes/agents.js";
+import { registerCaseRoutes } from "./routes/cases.js";
 import { registerConnectionRoutes } from "./routes/connections.js";
 import { registerEventRoutes } from "./routes/events.js";
 import type { EventStreamOptions } from "./routes/events.js";
 import { registerRoundRoutes } from "./routes/rounds.js";
 import { localize } from "./i18n.js";
+import { ExternalConnectionTester } from "./connection-tester.js";
 
 export interface ServerOptions {
   readonly encryptionKey: string;
   readonly databasePath?: string;
-  readonly connectionTester: ConnectionTester;
+  readonly connectionTester?: ConnectionTester;
+  readonly fetch?: typeof fetch;
   readonly eventStreamOptions?: EventStreamOptions;
 }
 
@@ -29,9 +34,12 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
   const registrationStore = new SqliteConnectionRegistrationStore(database, options.encryptionKey);
   const runRepository = new SqliteRunRepository(database);
   const roundJobs = new SqliteRoundJobStore(database);
-  await registerConnectionRoutes(server, database, secretStore, new RegisterConnection(options.connectionTester, registrationStore));
-  await registerAgentRoutes(server);
-  await registerRoundRoutes(server, database, runRepository, roundJobs);
+  const roundArtifacts = new SqliteRoundArtifactStore(database);
+  const connectionTester = options.connectionTester ?? new ExternalConnectionTester(options.fetch);
+  await registerConnectionRoutes(server, database, secretStore, new RegisterConnection(connectionTester, registrationStore));
+  await registerAgentRoutes(server, database);
+  await registerCaseRoutes(server, new SqliteCaseRepository(database));
+  await registerRoundRoutes(server, database, runRepository, roundJobs, roundArtifacts);
   await registerEventRoutes(server, runRepository, options.eventStreamOptions);
   server.setNotFoundHandler((request, reply) => reply.code(404).send({
     code: "ROUTE_NOT_FOUND",

@@ -199,6 +199,13 @@ export class SqliteRunRepository implements RunRepository {
     return row === undefined ? null : toRound(roundSchema.parse(parseJson(row.payload_json)));
   }
 
+  public async listRounds(limit = 100): Promise<readonly Round[]> {
+    if (!Number.isInteger(limit) || limit < 1 || limit > 500) throw new Error("ROUND_LIST_LIMIT_INVALID");
+    const rows = this.database.prepare(`SELECT payload_json FROM rounds
+      ORDER BY created_at DESC, id LIMIT ?`).all(limit) as unknown as PayloadRow[];
+    return rows.map((row) => toRound(roundSchema.parse(parseJson(row.payload_json))));
+  }
+
   public async saveRound(round: Round): Promise<void> {
     this.database.assertOpen();
     this.upsertRound(roundSchema.parse(round));

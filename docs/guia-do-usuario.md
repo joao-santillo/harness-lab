@@ -1,0 +1,75 @@
+# Guia do usuário
+
+Este guia explica o fluxo disponível na interface. Os textos da aplicação podem ser alternados entre português do Brasil, inglês e espanhol.
+
+## 1. Configure uma conexão
+
+Na aba **Agentes**, escolha uma integração:
+
+- **Langfuse:** informe nome, URL base, chave pública e chave secreta. A API testa o acesso pelo endpoint de capabilities antes de salvar.
+- **Agent Platform:** informe nome, URL base e token. Neste estado do projeto, o backend valida o formato da URL e a presença do token, mas **não confirma autenticação nem acesso à plataforma**. O contrato real de verificação ainda precisa ser validado.
+
+A interface envia a conexão ao backend e limpa os campos secretos depois da tentativa. A API retorna somente metadados; não retorna os valores das credenciais.
+
+## 2. Cadastre um agente
+
+Na seção **Agentes e casos de avaliação**, informe:
+
+- **ID do agente:** letras minúsculas, números e hífens; comece com letra ou número.
+- **ID do domínio:** escopo lógico usado para separar dados e aprendizados.
+- **Nome do agente:** nome legível para a equipe.
+
+Se o agente já existir, a interface permite tentar importar casos para ele. O backend valida novamente o escopo.
+
+## 3. Importe casos
+
+Selecione o formato e informe de 1 a 40 casos por lote. Cada caso precisa de ID único, sessão, grupo de similaridade e conteúdo.
+
+### JSON
+
+```json
+[
+  {
+    "id": "caso-001",
+    "sessionId": "sessao-001",
+    "similarityGroup": "grupo-perguntas-acesso",
+    "content": "Como solicito acesso ao sistema?"
+  }
+]
+```
+
+As opções de origem são:
+
+- **JSON** ou **Manual:** conteúdo fornecido pela equipe;
+- **Histórico importado:** exige uma `sourceReference` que identifique o conjunto de origem;
+- **Sintético:** exige o marcador literal `SYNTHETIC` em cada caso.
+
+O rótulo não comprova qualidade nem validade do conteúdo; ele registra apenas a proveniência declarada.
+
+### CSV
+
+O arquivo deve conter as colunas `id,sessionId,similarityGroup,content`. O parser aceita campos entre aspas, vírgulas, quebras de linha e aspas escapadas conforme CSV RFC4180. A API atribui a origem `csv`; o cliente não pode escolher esse rótulo para outros formatos.
+
+A importação é atômica: se houver ID duplicado ou escopo inválido, nenhum caso do lote é gravado.
+
+## 4. Inicie e acompanhe uma rodada
+
+Na aba **Rodadas**:
+
+1. selecione o agente;
+2. descreva o objetivo;
+3. selecione **Iniciar rodada**;
+4. acompanhe o estado e o stream de eventos;
+5. use **Cancelar rodada** para solicitar cancelamento cooperativo.
+
+A solicitação de cancelamento não significa que a rodada já terminou: a chamada à integração em andamento não é interrompida à força. Quando a etapa atual retorna, o worker verifica o pedido antes de iniciar a próxima etapa, grava o estado terminal e libera o job. O tempo depende do timeout configurado no provider. Uma rodada recém-criada aparece como `setup` até um worker ativo reivindicar o job.
+
+## 5. Consulte resultados
+
+A aba **Resultados** mostra resumos das avaliações persistidas: decisão, quantidade de casos, confiança, justificativa e limitações. A lista não inclui o payload opaco do harness nem credenciais.
+
+Rodadas sem avaliação disponível não aparecem como recomendadas. Se nenhuma avaliação foi persistida, a tela informa que ainda não há resultados.
+
+## O que pode impedir uma rodada
+
+A API e a interface podem criar e enfileirar uma rodada, mas o worker precisa de um `WORKER_PROVIDER_MODULE` válido. Esse módulo deve fornecer associação entre casos e traces, leitura do harness, propostas, execução, avaliação e exportação. O repositório não contém um provider real completo, porque o contrato da Agent Platform e as políticas de proposta/exportação ainda precisam de confirmação.

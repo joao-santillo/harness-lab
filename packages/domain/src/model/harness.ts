@@ -13,6 +13,9 @@ export interface HarnessSnapshot {
   readonly components: Readonly<Record<string, string>>;
   readonly immutableConstraints: readonly string[];
   readonly createdAt: string;
+  readonly sourceVersion?: string;
+  readonly artifactHash?: string;
+  readonly opaquePayload?: Readonly<Record<string, unknown>>;
 }
 
 export interface CandidateChange {

@@ -1,0 +1,42 @@
+{
+  "taskId": "trace-cohort-01",
+  "budget": 2,
+  "baseline": {
+    "system-prompt": "Answer with cited evidence.",
+    "tool-guidance": "Use search before answering."
+  },
+  "evidence": [
+    { "id": "ev-1", "summary": "Two answers lacked citations." },
+    { "id": "ev-2", "summary": "Search was skipped in one run." }
+  ],
+  "proposals": [
+    {
+      "id": "inv1",
+      "dimension": "invariant",
+      "component": "system-prompt",
+      "after": "Answer with cited evidence and state uncertainty.",
+      "evidenceIds": ["ev-1"]
+    },
+    {
+      "id": "dom1",
+      "dimension": "domain",
+      "component": "tool-guidance",
+      "after": "Use search before answering and cite the retrieved source.",
+      "evidenceIds": ["ev-2"]
+    },
+    {
+      "id": "inv2",
+      "dimension": "invariant",
+      "component": "system-prompt",
+      "after": "Answer only from cited evidence.",
+      "evidenceIds": ["ev-1"]
+    },
+    {
+      "id": "dom2",
+      "dimension": "domain",
+      "component": "tool-guidance",
+      "after": "Search once, then cite every factual claim.",
+      "evidenceIds": ["ev-2"]
+    }
+  ]
+}

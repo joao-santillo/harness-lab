@@ -1,9 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;600;700&display=swap");
-
 :root {
   color: #17201d;
   background: #edf0eb;
-  font-family: "Manrope", sans-serif;
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
   font-synthesis: none;
   letter-spacing: 0;
 }
@@ -30,7 +28,7 @@ button, select, input { border-radius: 4px; }
 }
 
 .topbar > div { align-items: baseline; display: flex; gap: 16px; }
-.topbar strong { font-family: "IBM Plex Mono", monospace; font-size: 22px; }
+.topbar strong { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 22px; }
 .topbar span { color: #aebbb5; font-size: 13px; }
 .locale-picker { align-items: center; display: flex; gap: 10px; font-size: 13px; }
 .locale-picker select { background: #26312d; border: 1px solid #52615b; color: white; padding: 7px 28px 7px 9px; }
@@ -61,12 +59,13 @@ main section { max-width: 960px; }
 .section-heading { border-bottom: 1px solid #cbd2cd; margin-bottom: 28px; padding-bottom: 22px; }
 .section-heading h1 { font-size: 30px; margin: 4px 0 8px; }
 .section-heading p { color: #5d6964; margin: 0; max-width: 680px; }
-.section-heading .eyebrow { color: #25754b; font-family: "IBM Plex Mono", monospace; font-size: 12px; text-transform: uppercase; }
+.section-heading .eyebrow { color: #25754b; font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 12px; text-transform: uppercase; }
 
 .connection-form { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; max-width: 760px; }
 .connection-form label { color: #46524d; display: grid; font-size: 13px; font-weight: 600; gap: 7px; }
 .connection-form input, .connection-form select { background: #fff; border: 1px solid #aeb8b1; min-height: 42px; padding: 8px 10px; }
 .connection-form button { background: #1f7048; border: 0; color: #fff; cursor: pointer; justify-self: start; min-height: 42px; padding: 0 18px; }
+.connection-form button:disabled, .setup-card button:disabled { cursor: not-allowed; opacity: .55; }
 .notice { grid-column: 1 / -1; margin: 0; padding: 10px 12px; }
 .notice.error { background: #f8dfdc; color: #812a23; }
 .notice.success { background: #dceadd; color: #235b32; }
@@ -76,6 +75,38 @@ main section { max-width: 960px; }
 .stream-status { align-items: center; display: flex; gap: 9px; }
 .stream-status span { background: #d19a28; border-radius: 50%; height: 9px; width: 9px; }
 .stream-status.connected span { background: #2b915d; }
+.rounds-dashboard, .results-dashboard { display: grid; gap: 20px; }
+.round-create { align-items: end; background: #f8f9f6; border-left: 3px solid #2b8055; display: grid; gap: 14px; grid-template-columns: minmax(160px, .7fr) minmax(220px, 1.4fr) auto auto; padding: 18px; }
+.round-create label { color: #46524d; display: grid; font-size: 13px; font-weight: 600; gap: 7px; }
+.round-create input, .round-create select { background: white; border: 1px solid #aeb8b1; min-height: 42px; padding: 8px 10px; }
+.round-create button { background: #1f7048; border: 0; color: white; cursor: pointer; min-height: 42px; padding: 0 16px; }
+.round-create button:disabled { cursor: not-allowed; opacity: .55; }
+.secondary-button { background: transparent; border: 1px solid #1f7048; color: #1f7048; cursor: pointer; min-height: 38px; padding: 0 14px; justify-self: start; }
+.secondary-button:disabled { cursor: not-allowed; opacity: .55; }
+.danger-button { border-color: #9c3d32; color: #8c3028; }
+.round-list, .result-list { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.round-list li > button { align-items: center; background: #f8f9f6; border: 1px solid #d6dcd7; color: #17201d; cursor: pointer; display: grid; gap: 10px; grid-template-columns: minmax(140px, .7fr) minmax(120px, 1fr) auto; padding: 14px 16px; text-align: left; width: 100%; }
+.round-list li.selected > button { border-color: #2b8055; box-shadow: inset 3px 0 #2b8055; }
+.round-id { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 12px; overflow-wrap: anywhere; }
+.round-state { color: #52615b; font-size: 12px; text-transform: capitalize; }
+.result-card { background: #f8f9f6; border-top: 2px solid #2b8055; display: grid; gap: 12px; padding: 20px; }
+.result-card-heading { align-items: baseline; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+.result-card p { margin: 0; }
+.result-card dl { display: flex; flex-wrap: wrap; gap: 28px; margin: 0; }
+.result-card dl div { display: grid; gap: 3px; }
+.result-card dt { color: #5d6964; font-size: 12px; }
+.result-card dd { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; margin: 0; }
+.result-limitations { color: #5d6964; font-size: 13px; }
+
+.case-setup { margin-top: 52px; }
+.case-setup-grid { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.setup-card { align-content: start; background: #f8f9f6; border-left: 3px solid #2b8055; display: grid; gap: 14px; padding: 22px; }
+.setup-card-label { color: #25754b; font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.setup-card h3 { font-size: 18px; margin: 0 0 4px; }
+.setup-card label { color: #46524d; display: grid; font-size: 13px; font-weight: 600; gap: 7px; }
+.setup-card input, .setup-card textarea { background: #fff; border: 1px solid #aeb8b1; min-height: 42px; padding: 8px 10px; width: 100%; }
+.setup-card textarea { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 12px; line-height: 1.5; resize: vertical; }
+.setup-card button { background: #1f7048; border: 0; color: #fff; cursor: pointer; justify-self: start; min-height: 42px; padding: 0 18px; }
 
 @media (max-width: 680px) {
   .app-shell { grid-template: auto auto 1fr / 1fr; }
@@ -87,4 +118,7 @@ main section { max-width: 960px; }
   .sidebar button { min-width: 96px; text-align: center; }
   main { padding: 28px 18px; }
   .connection-form { grid-template-columns: 1fr; }
+  .case-setup-grid { grid-template-columns: 1fr; }
+  .round-create { grid-template-columns: 1fr; }
+  .round-list li > button { align-items: start; grid-template-columns: 1fr; }
 }

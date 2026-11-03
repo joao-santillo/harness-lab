@@ -1,4 +1,5 @@
 import type { EvaluationResult } from "../model/evaluation.js";
+import type { CaseRecord } from "../model/case.js";
 import type { Evidence, Finding, Hypothesis } from "../model/evidence.js";
 import type {
   Candidate,
@@ -10,6 +11,7 @@ import type {
 import type {
   AgentId,
   CaseId,
+  DomainId,
   ExportId,
   Round,
   RoundCheckpoint,
@@ -35,6 +37,11 @@ export interface TracePage {
 
 export interface TraceRepository {
   collect(query: TraceQuery): Promise<TracePage>;
+}
+
+export interface CaseRepository {
+  saveMany(cases: readonly CaseRecord[]): Promise<number>;
+  listByScope(agentId: AgentId, domainId: DomainId): Promise<readonly CaseRecord[]>;
 }
 
 export interface AgentCapabilities {
