@@ -38,6 +38,13 @@ export async function registerConnectionRoutes(
     return reply.code(result.status === "created" ? 201 : 200).send(result.connection);
   });
 
+  server.get("/api/v1/connections", async () => {
+    const rows = database.prepare(
+      "SELECT id, kind, name FROM connection_registrations ORDER BY name COLLATE NOCASE, id",
+    ).all() as Record<string, unknown>[];
+    return { items: rows.map(serialize) };
+  });
+
   server.get<{ Params: { id: string } }>("/api/v1/connections/:id", async (request, reply) => {
     const row = database.prepare("SELECT id, kind, name FROM connection_registrations WHERE id = ?").get(request.params.id);
     if (row === undefined) {

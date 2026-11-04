@@ -80,9 +80,19 @@ export class ProcessRound {
       }
       if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
       round = await this.commit(round, stage.event, ++sequence);
+      if (await this.jobs.isCancellationRequested(round.id)) {
+        round = await this.commit(round, "cancel_requested", ++sequence);
+        await this.jobs.complete(round.id, workerId);
+        return round;
+      }
     }
     if (round.state === "exporting") {
       if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
+      if (await this.jobs.isCancellationRequested(round.id)) {
+        round = await this.commit(round, "cancel_requested", ++sequence);
+        await this.jobs.complete(round.id, workerId);
+        return round;
+      }
       if (recoveringExport) {
         try {
           const recoverCompletionEvent = this.stages.export.getCompletionEvent;
@@ -95,6 +105,12 @@ export class ProcessRound {
           await this.jobs.complete(round.id, workerId);
           return round;
         }
+      }
+      if (!await this.jobs.isOwnedBy(round.id, workerId)) throw new Error("ROUND_CLAIM_LOST");
+      if (await this.jobs.isCancellationRequested(round.id)) {
+        round = await this.commit(round, "cancel_requested", ++sequence);
+        await this.jobs.complete(round.id, workerId);
+        return round;
       }
       round = await this.commit(round, terminalEvent, ++sequence);
     }

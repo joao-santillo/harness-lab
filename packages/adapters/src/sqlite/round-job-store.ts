@@ -22,13 +22,20 @@ export class SqliteRoundJobStore {
       const leaseCutoff = new Date(new Date(now).getTime() - this.leaseMs).toISOString();
       const candidate = this.database.prepare(
         `SELECT round_id FROM round_jobs
-         WHERE status = 'queued' OR (status = 'claimed' AND claimed_at < ?)
+         WHERE status = 'queued'
+           OR (status = 'cancel_requested' AND claimed_by IS NULL)
+           OR (status IN ('claimed', 'cancel_requested') AND claimed_at < ?)
          ORDER BY created_at, round_id LIMIT 1`,
       ).get(leaseCutoff);
       if (candidate === undefined) return null;
       const claimed = this.database.prepare(`UPDATE round_jobs
-        SET status = 'claimed', claimed_by = ?, claimed_at = ?, updated_at = ?
-        WHERE round_id = ? AND (status = 'queued' OR (status = 'claimed' AND claimed_at < ?))
+        SET status = CASE WHEN status = 'cancel_requested' THEN status ELSE 'claimed' END,
+            claimed_by = ?, claimed_at = ?, updated_at = ?
+        WHERE round_id = ? AND (
+          status = 'queued'
+          OR (status = 'cancel_requested' AND claimed_by IS NULL)
+          OR (status IN ('claimed', 'cancel_requested') AND claimed_at < ?)
+        )
         RETURNING round_id`)
         .get(workerId, now, now, String(candidate.round_id), leaseCutoff);
       if (claimed === undefined) return null;
@@ -38,7 +45,7 @@ export class SqliteRoundJobStore {
 
   public requestCancellation(roundId: RoundId, now: string): boolean {
     return this.database.prepare(`UPDATE round_jobs
-      SET status = 'cancel_requested', claimed_by = NULL, claimed_at = NULL, updated_at = ?
+      SET status = 'cancel_requested', updated_at = ?
       WHERE round_id = ? AND status IN ('queued', 'claimed')
       RETURNING round_id`)
       .get(now, roundId) !== undefined;
@@ -50,12 +57,12 @@ export class SqliteRoundJobStore {
   }
 
   public async isOwnedBy(roundId: RoundId, workerId: string): Promise<boolean> {
-    return this.database.prepare("SELECT round_id FROM round_jobs WHERE round_id = ? AND status = 'claimed' AND claimed_by = ?")
+    return this.database.prepare("SELECT round_id FROM round_jobs WHERE round_id = ? AND status IN ('claimed', 'cancel_requested') AND claimed_by = ?")
       .get(roundId, workerId) !== undefined;
   }
 
   public async complete(roundId: RoundId, workerId: string): Promise<boolean> {
-    return this.database.prepare("DELETE FROM round_jobs WHERE round_id = ? AND status = 'claimed' AND claimed_by = ? RETURNING round_id")
+    return this.database.prepare("DELETE FROM round_jobs WHERE round_id = ? AND status IN ('claimed', 'cancel_requested') AND claimed_by = ? RETURNING round_id")
       .get(roundId, workerId) !== undefined;
   }
 

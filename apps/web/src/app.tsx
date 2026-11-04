@@ -1,13 +1,12 @@
-import { useRef, useState, type KeyboardEvent } from "react";
-import { ConnectionForm } from "./features/connections/connection-form.js";
+import { useState } from "react";
+import { BrowserRouter, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
+import { ConnectionsDashboard } from "./features/connections/connections-dashboard.js";
 import { AgentCaseForm } from "./features/cases/agent-case-form.js";
 import { RoundsDashboard } from "./features/rounds/rounds-dashboard.js";
 import { ResultsDashboard } from "./features/rounds/results-dashboard.js";
 import type { EventSourceFactory } from "./features/rounds/use-round-events.js";
 import { messages, type Locale, type MessageKey } from "./i18n/messages.js";
 import "./styles.css";
-
-type View = "agents" | "rounds" | "results";
 
 interface AppProps {
   activeRoundId?: string;
@@ -16,22 +15,53 @@ interface AppProps {
 }
 
 const browserEventSourceFactory: EventSourceFactory = (url) => new EventSource(url);
-const views = ["agents", "rounds", "results"] as const;
 
 export function App({ activeRoundId, eventSourceFactory = browserEventSourceFactory, request = fetch }: AppProps) {
   const [locale, setLocale] = useState<Locale>("pt-BR");
-  const [view, setView] = useState<View>("agents");
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [connectionsRefreshKey, setConnectionsRefreshKey] = useState(0);
   const t = (key: MessageKey) => messages[locale][key];
 
-  function moveTab(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-    event.preventDefault();
-    const offset = event.key === "ArrowRight" ? 1 : -1;
-    const nextIndex = (index + offset + views.length) % views.length;
-    const nextView = views[nextIndex]!;
-    setView(nextView);
-    tabRefs.current[nextIndex]?.focus();
+  return (
+    <BrowserRouter>
+      <AppShell
+        {...(activeRoundId === undefined ? {} : { activeRoundId })}
+        connectionsRefreshKey={connectionsRefreshKey}
+        eventSourceFactory={eventSourceFactory}
+        onConnectionSaved={() => setConnectionsRefreshKey((current) => current + 1)}
+        request={request}
+        setLocale={setLocale}
+        t={t}
+        locale={locale}
+      />
+    </BrowserRouter>
+  );
+}
+
+interface AppShellProps {
+  activeRoundId?: string;
+  connectionsRefreshKey: number;
+  eventSourceFactory: EventSourceFactory;
+  locale: Locale;
+  onConnectionSaved(): void;
+  request: typeof fetch;
+  setLocale: (locale: Locale) => void;
+  t(key: MessageKey): string;
+}
+
+const resourceLinks = [
+  { path: "/agents", key: "agents" },
+  { path: "/connections", key: "connections" },
+  { path: "/rounds", key: "rounds" },
+  { path: "/results", key: "results" },
+] as const satisfies readonly { path: string; key: MessageKey }[];
+
+function AppShell({ activeRoundId, connectionsRefreshKey, eventSourceFactory, locale, onConnectionSaved, request, setLocale, t }: AppShellProps) {
+  const navigate = useNavigate();
+
+  function agentCasesPath(agentId: string, step: 1 | 2 | 3): string {
+    if (step === 1) return "/agents";
+    const root = `/agents/${encodeURIComponent(agentId)}/cases`;
+    return step === 2 ? `${root}/import` : root;
   }
 
   return (
@@ -51,59 +81,135 @@ export function App({ activeRoundId, eventSourceFactory = browserEventSourceFact
         </label>
       </header>
 
-      <nav aria-label={t("navLabel")} className="sidebar" role="navigation">
-        <div role="tablist" aria-label={t("navLabel")}>
-        {views.map((item, index) => (
-          <button
-            aria-controls={`${item}-panel`}
-            aria-selected={view === item}
-            className={view === item ? "active" : ""}
-            id={`${item}-tab`}
-            key={item}
-            onClick={() => setView(item)}
-            onKeyDown={(event) => moveTab(event, index)}
-            ref={(element) => { tabRefs.current[index] = element; }}
-            role="tab"
-            tabIndex={view === item ? 0 : -1}
-            type="button"
-          >
-            {t(item)}
-          </button>
-        ))}
+      <nav aria-label={t("navLabel")} className="sidebar">
+        <div className="resource-nav">
+          {resourceLinks.map(({ path, key }) => (
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} key={path} to={path}>
+              {t(key)}
+            </NavLink>
+          ))}
         </div>
       </nav>
 
       <main id="content">
-        {view === "agents" && (
-          <section aria-labelledby="agents-tab" id="agents-panel" role="tabpanel">
-            <div className="section-heading">
-              <p className="eyebrow">Agent Platform + Langfuse</p>
-              <h1 id="agents-title">{t("agentsTitle")}</h1>
-              <p>{t("agentsDescription")}</p>
-            </div>
-            <ConnectionForm t={t} request={request} />
-            <AgentCaseForm t={t} request={request} />
-          </section>
-        )}
-        {view === "rounds" && (
-          <section aria-labelledby="rounds-tab" id="rounds-panel" role="tabpanel">
-            <div className="section-heading">
-              <h1 id="rounds-title">{t("roundsTitle")}</h1>
-              <p>{t("roundsDescription")}</p>
-            </div>
-            <RoundsDashboard t={t} request={request} eventSourceFactory={eventSourceFactory} {...(activeRoundId === undefined ? {} : { initialActiveRoundId: activeRoundId })} />
-          </section>
-        )}
-        {view === "results" && (
-          <section aria-labelledby="results-tab" id="results-panel" role="tabpanel">
-            <div className="section-heading">
-              <h1 id="results-title">{t("resultsTitle")}</h1>
-              <p>{t("resultsDescription")}</p>
-            </div>
-            <ResultsDashboard t={t} request={request} />
-          </section>
-        )}
+        <Routes>
+          <Route path="/" element={<Navigate replace to="/agents" />} />
+          <Route path="/agents" element={<AgentCaseForm
+            connectionsRefreshKey={connectionsRefreshKey}
+            onAgentSelected={(agentId, step) => navigate(agentCasesPath(agentId, step))}
+            onStepChange={(agentId, step) => navigate(agentCasesPath(agentId, step))}
+            request={request}
+            t={t}
+          />} />
+          <Route path="/agents/:agentId/cases" element={<AgentCaseRoute
+            connectionsRefreshKey={connectionsRefreshKey}
+            onStepChange={(agentId, step) => navigate(agentCasesPath(agentId, step))}
+            request={request}
+            t={t}
+          />} />
+          <Route path="/agents/:agentId/cases/import" element={<AgentCaseRoute
+            connectionsRefreshKey={connectionsRefreshKey}
+            onStepChange={(agentId, step) => navigate(agentCasesPath(agentId, step))}
+            request={request}
+            t={t}
+          />} />
+          <Route path="/connections" element={<ConnectionsDashboard
+            onSaved={onConnectionSaved}
+            refreshKey={connectionsRefreshKey}
+            request={request}
+            t={t}
+          />} />
+          <Route path="/rounds" element={<RoundsRoute
+            eventSourceFactory={eventSourceFactory}
+            request={request}
+            t={t}
+            {...(activeRoundId === undefined ? {} : { fallbackRoundId: activeRoundId })}
+          />} />
+          <Route path="/rounds/:roundId" element={<RoundsRoute
+            eventSourceFactory={eventSourceFactory}
+            request={request}
+            t={t}
+            {...(activeRoundId === undefined ? {} : { fallbackRoundId: activeRoundId })}
+          />} />
+          <Route path="/results" element={<ResultsRoute request={request} t={t} />} />
+          <Route path="/results/:roundId" element={<ResultsRoute request={request} t={t} />} />
+          <Route path="*" element={<Navigate replace to="/agents" />} />
+        </Routes>
       </main>
     </div>
+  );
+}
+
+interface RouteComponentProps {
+  request: typeof fetch;
+  t(key: MessageKey): string;
+}
+
+function AgentCaseRoute({ connectionsRefreshKey, onStepChange, request, t }: RouteComponentProps & {
+  connectionsRefreshKey: number;
+  onStepChange(agentId: string, step: 1 | 2 | 3): void;
+}) {
+  const { agentId } = useParams();
+  const location = useLocation();
+  const initialStep: 2 | 3 = location.pathname.endsWith("/import") ? 2 : 3;
+  if (agentId === undefined) return <Navigate replace to="/agents" />;
+  return <>
+    <nav aria-label={t("breadcrumbLabel")} className="breadcrumbs">
+      <NavLink to="/agents">{t("agents")}</NavLink>
+      <span>{agentId}</span>
+      <span>{t(initialStep === 2 ? "importCases" : "casesBrowserTitle")}</span>
+    </nav>
+    <AgentCaseForm
+      connectionsRefreshKey={connectionsRefreshKey}
+      initialAgentId={agentId}
+      initialStep={initialStep}
+      onStepChange={onStepChange}
+      request={request}
+      t={t}
+    />
+  </>;
+}
+
+function RoundsRoute({ eventSourceFactory, fallbackRoundId, request, t }: RouteComponentProps & {
+  eventSourceFactory: EventSourceFactory;
+  fallbackRoundId?: string;
+}) {
+  const { roundId } = useParams();
+  const navigate = useNavigate();
+  const initialActiveRoundId = roundId ?? fallbackRoundId;
+  return (
+    <section aria-labelledby="rounds-title">
+      <div className="section-heading">
+        <h1 id="rounds-title">{t("roundsTitle")}</h1>
+        <p>{t("roundsDescription")}</p>
+      </div>
+      <RoundsDashboard
+        eventSourceFactory={eventSourceFactory}
+        {...(initialActiveRoundId === undefined ? {} : { initialActiveRoundId })}
+        onPrepareCases={(agentId) => navigate(`/agents/${encodeURIComponent(agentId)}/cases/import`)}
+        onRoundSelect={(id) => navigate(`/rounds/${encodeURIComponent(id)}`)}
+        request={request}
+        t={t}
+      />
+    </section>
+  );
+}
+
+function ResultsRoute({ request, t }: RouteComponentProps) {
+  const { roundId } = useParams();
+  const navigate = useNavigate();
+  return (
+    <section aria-labelledby="results-title">
+      <div className="section-heading">
+        <h1 id="results-title">{t("resultsTitle")}</h1>
+        <p>{t("resultsDescription")}</p>
+      </div>
+      <ResultsDashboard
+        onResultSelect={(id) => navigate(`/results/${encodeURIComponent(id)}`)}
+        request={request}
+        {...(roundId === undefined ? {} : { selectedRoundId: roundId })}
+        t={t}
+      />
+    </section>
   );
 }

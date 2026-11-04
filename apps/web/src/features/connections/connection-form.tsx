@@ -4,11 +4,12 @@ import type { MessageKey } from "../../i18n/messages.js";
 interface ConnectionFormProps {
   t(key: MessageKey): string;
   request?: typeof fetch;
+  onSaved?: () => void;
 }
 
 type ConnectionStatus = "idle" | "invalid" | "submitting" | "saved" | "auth-failed" | "unavailable" | "conflict" | "failed";
 
-export function ConnectionForm({ t, request = fetch }: ConnectionFormProps) {
+export function ConnectionForm({ onSaved, t, request = fetch }: ConnectionFormProps) {
   const [kind, setKind] = useState<"langfuse" | "agent-platform">("langfuse");
   const [status, setStatus] = useState<ConnectionStatus>("idle");
   const registrationIdentity = useRef<{ signature: string; id: string; idempotencyKey: string } | null>(null);
@@ -55,6 +56,7 @@ export function ConnectionForm({ t, request = fetch }: ConnectionFormProps) {
       });
       if (response.ok) {
         setStatus("saved");
+        onSaved?.();
       } else if (response.status === 409) {
         setStatus("conflict");
       } else if (response.status === 422) {

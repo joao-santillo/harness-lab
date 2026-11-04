@@ -52,6 +52,34 @@ export class SqliteCaseRepository implements CaseRepository {
     return parsed.length;
   }
 
+  async saveManyIgnoringExisting(cases: readonly CaseRecord[]): Promise<number> {
+    if (cases.length === 0 || cases.length > MAX_CASES_PER_IMPORT) throw new Error("CASE_IMPORT_SIZE_INVALID");
+    const parsed = cases.map((item) => caseSchema.parse(item));
+    if (new Set(parsed.map(({ id }) => id)).size !== parsed.length) throw new Error("CASE_ID_DUPLICATE");
+    const createdAt = new Date().toISOString();
+    let inserted = 0;
+    try {
+      this.database.transaction(() => {
+        const insert = this.database.prepare(`INSERT OR IGNORE INTO cases
+          (id, agent_id, domain_id, created_at, payload_version, payload_json)
+          VALUES (?, ?, ?, ?, 1, ?)`);
+        for (const item of parsed) {
+          insert.run(item.id, item.agentId, item.domainId, createdAt, JSON.stringify(item));
+          const row = this.database.prepare("SELECT changes() AS count").get();
+          inserted += Number(row?.count ?? 0);
+        }
+      })();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "";
+      if (message.includes("FOREIGN KEY constraint failed") || message.includes("case scope must match agent scope")) {
+        throw new Error("CASE_SCOPE_INVALID");
+      }
+      throw error;
+    }
+    await this.database.flush();
+    return inserted;
+  }
+
   async listByScope(agentId: CaseRecord["agentId"], domainId: CaseRecord["domainId"]): Promise<readonly CaseRecord[]> {
     const rows = this.database.prepare(`SELECT payload_version, payload_json FROM cases
       WHERE agent_id = ? AND domain_id = ? ORDER BY created_at, id`).all(agentId, domainId);

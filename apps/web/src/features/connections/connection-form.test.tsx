@@ -33,6 +33,24 @@ describe("ConnectionForm", () => {
     expect(screen.getByLabelText("Secret key")).toHaveValue("");
   });
 
+  it("notifies the parent after saving a connection", async () => {
+    const user = userEvent.setup();
+    const onSaved = vi.fn();
+    const request = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => new Response(
+      JSON.stringify({ id: "langfuse-main", configured: true }),
+      { status: 201 },
+    ));
+    render(<ConnectionForm onSaved={onSaved} t={t} request={request as typeof fetch} />);
+
+    await user.type(screen.getByLabelText("Connection name"), "Langfuse main");
+    await user.type(screen.getByLabelText("Base URL"), "https://langfuse.example");
+    await user.type(screen.getByLabelText("Public key"), "pk-example");
+    await user.type(screen.getByLabelText("Secret key"), "sk-example");
+    await user.click(screen.getByRole("button", { name: "Save connection" }));
+
+    await waitFor(() => expect(onSaved).toHaveBeenCalledOnce());
+  });
+
   it("submits the Agent Platform token instead of Langfuse key fields", async () => {
     const user = userEvent.setup();
     const request = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => new Response(JSON.stringify({ id: "platform-main", configured: true }), { status: 201 }));

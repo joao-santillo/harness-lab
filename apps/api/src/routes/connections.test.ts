@@ -40,6 +40,43 @@ describe("connection routes", () => {
     await server.close();
   });
 
+  it("lists saved connections without returning plaintext credentials", async () => {
+    const server = await buildServer(serverOptions());
+    await server.inject({
+      method: "POST",
+      url: "/api/v1/connections",
+      payload: {
+        id: "langfuse-main",
+        kind: "langfuse",
+        name: "Langfuse principal",
+        credentials: { baseUrl: "https://langfuse.example", publicKey: "pk-live", secretKey: "sk-live" },
+      },
+    });
+    await server.inject({
+      method: "POST",
+      url: "/api/v1/connections",
+      payload: {
+        id: "agent-platform-main",
+        kind: "agent-platform",
+        name: "Agent Platform principal",
+        credentials: { baseUrl: "https://platform.example", token: "platform-secret" },
+      },
+    });
+
+    const response = await server.inject({ method: "GET", url: "/api/v1/connections" });
+    expect(response.statusCode).toBe(200);
+    expect(response.json()).toEqual({
+      items: [
+        { id: "agent-platform-main", kind: "agent-platform", name: "Agent Platform principal", configured: true },
+        { id: "langfuse-main", kind: "langfuse", name: "Langfuse principal", configured: true },
+      ],
+    });
+    expect(response.body).not.toContain("pk-live");
+    expect(response.body).not.toContain("sk-live");
+    expect(response.body).not.toContain("platform-secret");
+    await server.close();
+  });
+
   it.each([
     ["pt-BR", "Dados da conexão inválidos."],
     ["en", "Invalid connection data."],

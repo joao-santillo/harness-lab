@@ -136,6 +136,26 @@ describe("ProcessRound", () => {
     expect(state.events).toHaveLength(2);
   });
 
+  it("observes cancellation requested while the final export stage is running", async () => {
+    const state = fixture();
+    let cancelled = false;
+    state.stages.export.run = vi.fn(async () => { cancelled = true; });
+    const jobs: RoundJobControl = {
+      isOwnedBy: async () => true,
+      isCancellationRequested: async () => cancelled,
+      complete: vi.fn(async () => true),
+    };
+    const result = await new ProcessRound(state.repository, jobs, state.stages, {
+      now: () => "2026-10-30T12:00:01.000Z",
+      createId: () => "id",
+    }).execute("round-1" as RoundId, "worker-a");
+
+    expect(result.state).toBe("cancelled");
+    expect(state.events.at(-1)).toMatchObject({ event: "cancel_requested", state: "cancelled" });
+    expect(state.stages.export.run).toHaveBeenCalledOnce();
+    expect(jobs.complete).toHaveBeenCalledWith("round-1", "worker-a");
+  });
+
   it("resumes from a persisted intermediate state without rerunning completed stages", async () => {
     const state = fixture();
     await state.repository.saveRound({ ...state.getRound(), state: "diagnosing" });

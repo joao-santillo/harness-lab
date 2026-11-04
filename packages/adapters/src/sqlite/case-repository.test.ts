@@ -39,4 +39,45 @@ describe("SqliteCaseRepository", () => {
     await expect(repository.listByScope(agentId, domainId)).resolves.toEqual([record("duplicate")]);
     await database.close();
   });
+
+  it("inserts new cases and skips existing IDs without changing saveMany semantics", async () => {
+    const database = await openSqliteDatabase(":memory:");
+    const agentId = "agent-idempotent" as AgentId;
+    const domainId = "domain-idempotent" as DomainId;
+    database.prepare("INSERT INTO agents (id, domain_id, name, created_at) VALUES (?, ?, ?, ?)")
+      .run(agentId, domainId, "Case agent", "2026-11-03T10:00:00.000Z");
+    const repository = new SqliteCaseRepository(database);
+    const record = (id: string, currentAgentId = agentId): CaseRecord => ({
+      id: id as never, agentId: currentAgentId, domainId, sessionId: id, similarityGroup: id,
+      content: `Question ${id}`, source: "historical", sourceReference: `langfuse:${id}`,
+      createdAt: "2026-11-03T10:00:00.000Z",
+    });
+    await repository.saveMany([record("existing")]);
+
+    await expect(repository.saveManyIgnoringExisting([record("existing"), record("new")])).resolves.toBe(1);
+    await expect(repository.listByScope(agentId, domainId)).resolves.toHaveLength(2);
+
+    await expect(repository.saveManyIgnoringExisting([record("newer", "missing-agent" as AgentId)]))
+      .rejects.toThrow("CASE_SCOPE_INVALID");
+    await expect(repository.listByScope(agentId, domainId)).resolves.toHaveLength(2);
+    await database.close();
+  });
+
+  it("rejects duplicate IDs within an idempotent batch", async () => {
+    const database = await openSqliteDatabase(":memory:");
+    const agentId = "agent-batch-duplicate" as AgentId;
+    const domainId = "domain-batch-duplicate" as DomainId;
+    database.prepare("INSERT INTO agents (id, domain_id, name, created_at) VALUES (?, ?, ?, ?)")
+      .run(agentId, domainId, "Case agent", "2026-11-03T10:00:00.000Z");
+    const repository = new SqliteCaseRepository(database);
+    const record: CaseRecord = {
+      id: "same-id" as never, agentId, domainId, sessionId: "same", similarityGroup: "same",
+      content: "Question", source: "historical", sourceReference: "langfuse:same",
+      createdAt: "2026-11-03T10:00:00.000Z",
+    };
+
+    await expect(repository.saveManyIgnoringExisting([record, record])).rejects.toThrow("CASE_ID_DUPLICATE");
+    await expect(repository.listByScope(agentId, domainId)).resolves.toEqual([]);
+    await database.close();
+  });
 });

@@ -20,4 +20,16 @@ describe("ResultsDashboard", () => {
     expect(screen.getByText("Regression gate failed.")).toBeVisible();
     await waitFor(() => expect(request).toHaveBeenCalledWith("/api/v1/rounds/round-done/results"));
   });
+
+  it("keeps terminal rounds visible when their result is not ready yet", async () => {
+    const request = vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) === "/api/v1/rounds") return Response.json({ items: [{ id: "round-pending", state: "integration_failed" }] });
+      return Response.json({ code: "ROUND_RESULT_NOT_READY" }, { status: 409 });
+    });
+    render(<ResultsDashboard t={t} request={request as typeof fetch} />);
+
+    expect(await screen.findByText("round-pending")).toBeVisible();
+    expect(screen.getByText("Evaluation result is not available for this round.")).toBeVisible();
+    expect(screen.queryByText("No results available")).toBeNull();
+  });
 });

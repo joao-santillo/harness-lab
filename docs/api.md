@@ -71,6 +71,13 @@ Resposta não contém credenciais: `{ "id", "kind", "name", "configured": true }
 
 O tester Langfuse faz probe de capabilities. Para Agent Platform, o tester atual verifica apenas URL/token não vazios e a URL; não confirma a autenticação remota.
 
+### `GET /connections`
+
+Lista as conexões cadastradas em ordem alfabética pelo nome.
+
+Resposta: `{ "items": [{ "id", "kind", "name", "configured": true }] }`.
+As credenciais, URLs base e tokens nunca são retornados.
+
 ### `GET /connections/:id`
 
 Retorna metadados públicos da conexão. `404 CONNECTION_NOT_FOUND` se não existir.
@@ -114,6 +121,45 @@ O parser aceita LF e CRLF, ignora linhas vazias, aceita vírgulas/quebras de lin
 ### `GET /cases?agentId=<id>&domainId=<id>`
 
 Lista apenas cases do escopo solicitado. Retorna `400 CASE_SCOPE_REQUIRED` se faltar algum parâmetro.
+
+### `POST /cases/import-langfuse`
+
+Importa traces históricos de uma conexão Langfuse salva e os converte em até 40 cases no escopo informado.
+
+```json
+{
+  "agentId": "agente-suporte",
+  "domainId": "varejo",
+  "connectionId": "langfuse-principal",
+  "fromStartTime": "2026-11-03T00:00:00.000Z",
+  "toStartTime": "2026-11-04T00:00:00.000Z",
+  "limit": 20,
+  "filter": { "field": "traceName", "value": "support-flow" }
+}
+```
+
+`fromStartTime` e `toStartTime` devem ser ISO 8601 com offset, e o início deve ser anterior ao fim. `limit` aceita de 1 a 40. `filter` é opcional; quando informado, contém um dos campos `traceName`, `environment`, `tags`, `userId` ou `sessionId` e um `value` não vazio, de até 200 caracteres. `traceName`, `environment`, `userId` e `sessionId` usam correspondência exata; `tags` seleciona traces que contenham a tag informada. O limite é aplicado aos traces que correspondem ao filtro. Sem filtro, a busca continua abrangendo todos os traces na janela. A API valida o agente e o domínio antes de qualquer acesso externo e descriptografa a conexão somente no backend.
+
+Resposta `201`:
+
+```json
+{
+  "imported": 2,
+  "skipped": 1,
+  "source": {
+    "connectionId": "langfuse-principal",
+    "fromStartTime": "2026-11-03T00:00:00.000Z",
+    "toStartTime": "2026-11-04T00:00:00.000Z"
+  },
+  "limitations": []
+}
+```
+
+No endpoint v2, a leitura usa `GET /api/public/v2/observations`, campos seletivos, janela temporal e paginação por cursor. As observações são agrupadas por trace; o importador prefere o `input` serializável da raiz e, se a raiz não tiver input utilizável, usa o da observação filha elegível mais antiga. Uma raiz precisa estar presente na janela para o trace ser considerado. Outputs e o payload bruto remoto não são retornados nem gravados no response. Cada trace gera no máximo um case, com ID determinístico derivado da conexão e do trace. Repetições são idempotentes e contam cases já existentes em `skipped`.
+
+O adaptador tem retry único para `429`, respeitando `Retry-After` com teto de 30 segundos, limite de 100 páginas, 1.000 observações e 5 MB por resposta. Quando a capability negotiation indicar apenas `/api/public/traces`, o fallback legado é usado explicitamente e `limitations` informa que o endpoint é deprecated; os campos legados são normalizados para o mesmo contrato.
+
+Erros: `400 CASE_LANGFUSE_INVALID`, `404 CONNECTION_NOT_FOUND`, `422 CONNECTION_KIND_INVALID`, `422 AGENT_SCOPE_INVALID`, `422 CONNECTION_AUTH_FAILED` e `503 CONNECTION_UNAVAILABLE`. Nenhuma dessas respostas contém credenciais, URL privada, input, output ou corpo remoto.
 
 Erros de importação:
 

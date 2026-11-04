@@ -21,6 +21,12 @@ export async function registerRoundRoutes(
   server.post("/api/v1/rounds", async (request, reply) => {
     const input = roundInput.safeParse(request.body);
     if (!input.success) return reply.code(400).send({ code: "ROUND_INVALID" });
+    const agent = database.prepare("SELECT id FROM agents WHERE id = ? AND domain_id = ?")
+      .get(input.data.agentId, input.data.domainId);
+    if (agent === undefined) return reply.code(422).send({ code: "ROUND_SCOPE_INVALID" });
+    const caseCount = Number(database.prepare("SELECT COUNT(*) AS count FROM cases WHERE agent_id = ? AND domain_id = ?")
+      .get(input.data.agentId, input.data.domainId)?.count ?? 0);
+    if (caseCount < 2) return reply.code(422).send({ code: "ROUND_CASES_INSUFFICIENT" });
     const now = new Date().toISOString();
     const round: Round = {
       id: input.data.id as RoundId,

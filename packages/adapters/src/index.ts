@@ -17,5 +17,6 @@ export * from "./langfuse/client.js";
 export * from "./langfuse/capabilities.js";
 export * from "./langfuse/normalize.js";
 export * from "./langfuse/trace-repository.js";
+export * from "./langfuse/case-import-repository.js";
 export * from "./export/candidate-exporter.js";
 export * from "./export/report-exporter.js";

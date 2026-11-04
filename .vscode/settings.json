@@ -1,0 +1,22 @@
+{
+    "chat.agentSkillsLocations": {
+        ".context/skills": true,
+        ".github/skills": true,
+        ".agents/skills": true,
+        ".claude/skills": true,
+        "~/.copilot/skills": true,
+        "~/.agents/skills": true,
+        "~/.claude/skills": true
+    },
+    "chat.agentFilesLocations": {
+        ".github/agents": false,
+        ".context/agents": true,
+        ".claude/agents": false
+    },
+    "chat.instructionsFilesLocations": {
+        ".github/instructions": true,
+        ".context/docs": true,
+        ".claude/instructions": true,
+        ".claude/rules": true
+    }
+}

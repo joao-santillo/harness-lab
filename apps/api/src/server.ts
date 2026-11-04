@@ -38,7 +38,11 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
   const connectionTester = options.connectionTester ?? new ExternalConnectionTester(options.fetch);
   await registerConnectionRoutes(server, database, secretStore, new RegisterConnection(connectionTester, registrationStore));
   await registerAgentRoutes(server, database);
-  await registerCaseRoutes(server, new SqliteCaseRepository(database));
+  await registerCaseRoutes(server, new SqliteCaseRepository(database), {
+    database,
+    secretStore,
+    ...(options.fetch === undefined ? {} : { fetch: options.fetch }),
+  });
   await registerRoundRoutes(server, database, runRepository, roundJobs, roundArtifacts);
   await registerEventRoutes(server, runRepository, options.eventStreamOptions);
   server.setNotFoundHandler((request, reply) => reply.code(404).send({

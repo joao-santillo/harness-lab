@@ -11,6 +11,8 @@ Na aba **Agentes**, escolha uma integração:
 
 A interface envia a conexão ao backend e limpa os campos secretos depois da tentativa. A API retorna somente metadados; não retorna os valores das credenciais.
 
+Depois do cadastro, o painel **Conexões salvas** mostra o nome, o tipo e o status de cada integração configurada. A lista é atualizada automaticamente após um novo cadastro ou manualmente pelo botão de atualização; credenciais e URLs não são exibidas.
+
 ## 2. Cadastre um agente
 
 Na seção **Agentes e casos de avaliação**, informe:
@@ -51,6 +53,14 @@ O rótulo não comprova qualidade nem validade do conteúdo; ele registra apenas
 O arquivo deve conter as colunas `id,sessionId,similarityGroup,content`. O parser aceita campos entre aspas, vírgulas, quebras de linha e aspas escapadas conforme CSV RFC4180. A API atribui a origem `csv`; o cliente não pode escolher esse rótulo para outros formatos.
 
 A importação é atômica: se houver ID duplicado ou escopo inválido, nenhum caso do lote é gravado.
+
+### Importação automática do Langfuse
+
+Para transformar traces históricos em cases, escolha **Importar do Langfuse** na origem. Selecione uma conexão Langfuse salva, informe a janela de início e fim e escolha um limite entre 1 e 40. Opcionalmente, selecione um campo do Langfuse (`traceName`, ambiente, tag, ID de usuário ou ID de sessão) e informe o valor. O filtro é aplicado na busca remota antes do limite, evitando que traces recentes de outros agentes ocupem as vagas. Sem filtro, todos os traces da janela podem ser considerados. O agente selecionado define o destino dos cases no Harness; não é automaticamente um filtro nos traces do Langfuse. As credenciais permanecem no backend.
+
+O sistema prefere o `input` da observação raiz de cada trace. Se a raiz não tiver um `input` utilizável, tenta o da observação filha elegível mais antiga; sem uma raiz dentro da janela, o trace não é considerado. Inputs vazios, inválidos ou acima do limite continuam sendo ignorados quando nenhuma observação elegível tem conteúdo. Outputs nunca são copiados. O retorno informa quantos cases foram importados, quantos foram ignorados e quaisquer limitações da leitura.
+
+Repetir a mesma importação não cria duplicatas: cases já existentes são contados como ignorados. A leitura v2 é paginada por cursor, limitada e pode atrasar dados produzidos por SDKs ou OTEL mais antigos. Em instalações que só oferecem o endpoint legado, a interface informa a limitação de endpoint deprecated.
 
 ## 4. Inicie e acompanhe uma rodada
 

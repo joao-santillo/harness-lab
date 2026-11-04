@@ -27,6 +27,27 @@ describe("round routes", () => {
     });
     const payload = { id: "round-1", agentId: "agent-1", domainId: "domain-1", objective: "Improve" };
 
+    const emptyCorpus = await server.inject({ method: "POST", url: "/api/v1/rounds", payload });
+    expect(emptyCorpus.statusCode).toBe(422);
+    expect(emptyCorpus.json()).toEqual({ code: "ROUND_CASES_INSUFFICIENT" });
+    expect((await server.inject({ method: "GET", url: "/api/v1/rounds" })).json()).toEqual({ items: [] });
+    await server.inject({
+      method: "POST", url: "/api/v1/cases/import",
+      payload: { agentId: "agent-1", domainId: "domain-1", source: "json", cases: [
+        { id: "case-1", sessionId: "session-1", similarityGroup: "group-1", content: "Question one" },
+      ] },
+    });
+    const oneCase = await server.inject({ method: "POST", url: "/api/v1/rounds", payload: { ...payload, id: "round-one-case" } });
+    expect(oneCase.statusCode).toBe(422);
+    expect(oneCase.json()).toEqual({ code: "ROUND_CASES_INSUFFICIENT" });
+    expect((await server.inject({ method: "GET", url: "/api/v1/rounds" })).json()).toEqual({ items: [] });
+    await server.inject({
+      method: "POST", url: "/api/v1/cases/import",
+      payload: { agentId: "agent-1", domainId: "domain-1", source: "json", cases: [
+        { id: "case-2", sessionId: "session-2", similarityGroup: "group-2", content: "Question two" },
+      ] },
+    });
+
     const created = await server.inject({ method: "POST", url: "/api/v1/rounds", payload });
     expect(created.statusCode).toBe(201);
     expect(created.json()).toMatchObject({ ...payload, state: "setup" });
