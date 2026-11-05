@@ -210,6 +210,7 @@ def create_round_stages(input_data: Mapping[str, object]) -> dict[str, object]:
                         "findings": diagnosis.get("findings", []),
                         "hypotheses": diagnosis.get("hypotheses", []),
                         "evidence": diagnosis.get("evidence", []),
+                        "maxProposals": options.get("max_proposals", 3),
                     }
                 )
                 refined = await _await_maybe(refinement_engine["refine"](request))

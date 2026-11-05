@@ -67,16 +67,17 @@ class ProcessRound:
                 return round_obj
 
             event_name, stage_name = transitions[round_obj.state]
-            stage = self._stages[stage_name]
-            run = _get_stage_callable(stage, "run")
-            if run is None:
-                raise RuntimeError(f"ROUND_STAGE_INVALID:{stage_name}")
-
             try:
+                stage = self._stages[stage_name]
+                run = _get_stage_callable(stage, "run")
+                if run is None:
+                    raise RuntimeError(f"ROUND_STAGE_INVALID:{stage_name}")
                 stage_result = await self._await_maybe(run(round_obj))
                 if stage_name == "export" and stage_result is not None:
                     terminal_event = str(stage_result)
-            except Exception:
+            except Exception as error:
+                if isinstance(error, RuntimeError) and str(error) == "ROUND_CLAIM_LOST":
+                    raise
                 await self._ensure_owned(round_obj.id, worker_id)
                 round_obj = await self._commit(round_obj, "integration_failed", sequence + 1)
                 await self._jobs.complete(round_obj.id, worker_id)

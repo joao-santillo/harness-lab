@@ -162,3 +162,67 @@ def test_process_round_raises_when_round_claim_is_lost() -> None:
                 create_id=lambda: "id",
             ).execute("round-1", "worker-a")
         )
+
+
+def test_process_round_fails_closed_when_stage_runner_is_missing() -> None:
+    repository = _Repository()
+    jobs = _Jobs(owned=lambda: True, cancelled=lambda: False)
+    stages = _stages()
+    stages["collect"] = {}
+
+    result = _run(
+        ProcessRound(
+            repository=repository,
+            jobs=jobs,
+            stages=stages,
+            now=lambda: "2026-10-30T12:00:01.000Z",
+            create_id=lambda: "id",
+        ).execute("round-1", "worker-a")
+    )
+
+    assert result.state == "integration_failed"
+    assert repository.events[-1]["event"] == "integration_failed"
+    assert jobs.completed == [("round-1", "worker-a")]
+
+
+def test_process_round_ownership_loss_after_stage_is_not_mapped_to_integration_failed() -> None:
+    repository = _Repository()
+    ownership_checks = iter((True, False))
+    jobs = _Jobs(owned=lambda: next(ownership_checks), cancelled=lambda: False)
+
+    with pytest.raises(RuntimeError, match="ROUND_CLAIM_LOST"):
+        _run(
+            ProcessRound(
+                repository=repository,
+                jobs=jobs,
+                stages=_stages(),
+                now=lambda: "2026-10-30T12:00:01.000Z",
+                create_id=lambda: "id",
+            ).execute("round-1", "worker-a")
+        )
+
+    assert repository.events == []
+    assert jobs.completed == []
+
+
+def test_process_round_cancel_requested_after_stage_commit() -> None:
+    repository = _Repository()
+    cancellation_checks = iter((False, True))
+    jobs = _Jobs(owned=lambda: True, cancelled=lambda: next(cancellation_checks))
+
+    result = _run(
+        ProcessRound(
+            repository=repository,
+            jobs=jobs,
+            stages=_stages(),
+            now=lambda: "2026-10-30T12:00:01.000Z",
+            create_id=lambda: "id",
+        ).execute("round-1", "worker-a")
+    )
+
+    assert result.state == "cancelled"
+    assert [event["event"] for event in repository.events] == [
+        "collection_started",
+        "cancel_requested",
+    ]
+    assert jobs.completed == [("round-1", "worker-a")]

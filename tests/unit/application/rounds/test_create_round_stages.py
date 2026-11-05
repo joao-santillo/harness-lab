@@ -88,6 +88,7 @@ def test_create_round_stages_runs_complete_lifecycle_and_evaluates_reserved_only
     calls: list[dict[str, object]] = []
     exported: list[dict[str, object]] = []
     reserved_case_ids_seen: list[tuple[str, ...]] = []
+    refinement_budgets_seen: list[int] = []
 
     async def execute(request: dict[str, object]) -> ExecutionResult:
         calls.append(request)
@@ -98,6 +99,7 @@ def test_create_round_stages_runs_complete_lifecycle_and_evaluates_reserved_only
         exported.append(session)
 
     async def refine(request: Any) -> tuple[dict[str, object], ...]:
+        refinement_budgets_seen.append(request.max_proposals)
         del request
         return (
             {
@@ -162,6 +164,7 @@ def test_create_round_stages_runs_complete_lifecycle_and_evaluates_reserved_only
                 "partition_seed": "seed-1",
                 "minimum_reserved": 1,
                 "reserved_ratio": 0.25,
+                "max_proposals": 7,
             },
         }
     )
@@ -184,6 +187,7 @@ def test_create_round_stages_runs_complete_lifecycle_and_evaluates_reserved_only
     assert terminal_event == "recommendation_completed"
     assert exported
     assert reserved_case_ids_seen == [tuple(session["partition"]["reservedIds"])]
+    assert refinement_budgets_seen == [7]
 
 
 def test_export_stage_recovery_fails_closed_when_decision_missing() -> None:
@@ -247,6 +251,7 @@ def test_export_stage_recovery_fails_closed_when_decision_missing() -> None:
                 "partition_seed": "seed-1",
                 "minimum_reserved": 1,
                 "reserved_ratio": 0.25,
+                "max_proposals": 3,
             },
         }
     )

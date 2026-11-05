@@ -118,6 +118,7 @@ def test_complete_round_uses_reserved_cases_for_evaluation_and_persists_decision
                 "partition_seed": "seed",
                 "minimum_reserved": 1,
                 "reserved_ratio": 0.25,
+                "max_proposals": 3,
             },
         }
     )

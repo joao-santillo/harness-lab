@@ -107,6 +107,7 @@ class RefinementRequest(DomainModel):
     findings: tuple[Finding, ...]
     hypotheses: tuple[Hypothesis, ...]
     evidence: tuple[Evidence, ...]
+    max_proposals: Annotated[int, Field(gt=0)]
 
 
 class RefinementEngine(Protocol):

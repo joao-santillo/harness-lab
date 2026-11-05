@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import importlib.util
+import inspect
 import os
 import signal
 from pathlib import Path
@@ -13,6 +14,12 @@ from .config import resolve_worker_config
 from .runtime import create_round_worker_runtime
 
 
+async def _await_maybe(value: object) -> object:
+    if inspect.isawaitable(value):
+        return await value
+    return value
+
+
 async def start_worker(env: dict[str, str] | None = None) -> bool:
     effective_env = os.environ if env is None else env
     config = resolve_worker_config(effective_env)
@@ -20,20 +27,28 @@ async def start_worker(env: dict[str, str] | None = None) -> bool:
         return False
 
     provider_path = Path(config.provider_module)
-    spec = importlib.util.spec_from_file_location("worker_provider", provider_path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("WORKER_PROVIDER_MODULE_INVALID")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    try:
+        spec = importlib.util.spec_from_file_location("worker_provider", provider_path)
+        if spec is None or spec.loader is None:
+            raise RuntimeError("WORKER_PROVIDER_MODULE_INVALID")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    except RuntimeError:
+        raise
+    except Exception as error:
+        raise RuntimeError("WORKER_PROVIDER_MODULE_INVALID") from error
+
     create_dependencies = getattr(module, "create_round_stage_dependencies", None)
     if not callable(create_dependencies):
         raise RuntimeError("WORKER_PROVIDER_MODULE_INVALID")
 
-    provider_dependencies = create_dependencies(
-        {
-            "database_path": config.database_path,
-            "encryption_key": config.encryption_key,
-        }
+    provider_dependencies = await _await_maybe(
+        create_dependencies(
+            {
+                "database_path": config.database_path,
+                "encryption_key": config.encryption_key,
+            }
+        )
     )
 
     Path(config.database_path).parent.mkdir(parents=True, exist_ok=True)
@@ -62,6 +77,7 @@ async def start_worker(env: dict[str, str] | None = None) -> bool:
                     "partition_seed": config.partition_seed,
                     "minimum_reserved": config.minimum_reserved,
                     "reserved_ratio": config.reserved_ratio,
+                    "max_proposals": config.max_proposals,
                 },
             }
         )
