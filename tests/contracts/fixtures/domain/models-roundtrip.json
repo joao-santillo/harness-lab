@@ -1,0 +1,250 @@
+{
+  "round": {
+    "id": "round-1",
+    "agentId": "agent-1",
+    "domainId": "domain-1",
+    "state": "setup",
+    "objective": "Improve answer quality",
+    "createdAt": "2026-11-05T00:00:00.000Z",
+    "updatedAt": "2026-11-05T00:00:00.000Z"
+  },
+  "roundProgressEvent": {
+    "id": "event-1",
+    "roundId": "round-1",
+    "sequence": 1,
+    "event": "collection_started",
+    "state": "collecting",
+    "occurredAt": "2026-11-05T00:01:00.000Z",
+    "messageCode": "round.collection_started"
+  },
+  "roundCheckpoint": {
+    "id": "checkpoint-1",
+    "roundId": "round-1",
+    "state": "collecting",
+    "sequence": 1,
+    "createdAt": "2026-11-05T00:01:00.000Z"
+  },
+  "partitionCase": {
+    "id": "case-1",
+    "sessionId": "session-123",
+    "similarityGroup": "sg-1",
+    "content": "User asks for exchange policy"
+  },
+  "caseRecord": {
+    "id": "case-1",
+    "sessionId": "session-123",
+    "similarityGroup": "sg-1",
+    "content": "User asks for exchange policy",
+    "agentId": "agent-1",
+    "domainId": "domain-1",
+    "source": "historical",
+    "sourceReference": "trace://abc",
+    "syntheticLabel": "SYNTHETIC",
+    "createdAt": "2026-11-05T00:00:00.000Z"
+  },
+  "evidenceTrace": {
+    "kind": "trace",
+    "id": "evidence-1",
+    "roundId": "round-1",
+    "caseId": "case-1",
+    "traceId": "trace-1",
+    "observationId": null,
+    "excerpt": "response omitted a mandatory step",
+    "sourceUrl": "https://example.invalid/trace/1"
+  },
+  "evidenceExecution": {
+    "kind": "execution",
+    "id": "evidence-2",
+    "roundId": "round-1",
+    "caseId": "case-1",
+    "executionId": "exec-1",
+    "excerpt": "candidate produced compliant answer"
+  },
+  "evidenceMissingData": {
+    "kind": "missing_data",
+    "id": "evidence-3",
+    "roundId": "round-1",
+    "caseId": "case-1",
+    "field": "customer.segment",
+    "sourceReference": "payload.customer.segment"
+  },
+  "finding": {
+    "id": "finding-1",
+    "roundId": "round-1",
+    "categoryCode": "COMPLIANCE",
+    "observedFact": "baseline skipped policy check",
+    "frequency": 7,
+    "sampleSize": 10,
+    "severity": "high",
+    "impact": "wrong policy recommendation",
+    "evidenceIds": ["evidence-1", "evidence-2"],
+    "confidence": 0.91,
+    "limitations": ["small sample"]
+  },
+  "hypothesis": {
+    "id": "hypothesis-1",
+    "findingId": "finding-1",
+    "explanation": "missing validation prompt",
+    "evidenceIds": ["evidence-1"],
+    "expectedEffect": "reduce policy mismatch"
+  },
+  "harnessSnapshot": {
+    "id": "snapshot-1",
+    "agentId": "agent-1",
+    "domainId": "domain-1",
+    "version": "v2026.11.05",
+    "components": {
+      "planner": "prompt-v1",
+      "validator": "prompt-v2"
+    },
+    "immutableConstraints": ["no-secrets", "no-pii"],
+    "createdAt": "2026-11-05T00:00:00.000Z",
+    "sourceVersion": "source-v1",
+    "artifactHash": "sha256:abc123",
+    "opaquePayload": {
+      "notes": "opaque metadata",
+      "flags": {
+        "dryRun": true
+      }
+    }
+  },
+  "candidateChange": {
+    "component": "planner",
+    "before": "prompt-v1",
+    "after": "prompt-v1.1",
+    "rollback": "prompt-v1",
+    "expectedEffect": "increase precision"
+  },
+  "candidate": {
+    "id": "candidate-1",
+    "roundId": "round-1",
+    "baselineId": "snapshot-1",
+    "snapshot": {
+      "id": "snapshot-2",
+      "agentId": "agent-1",
+      "domainId": "domain-1",
+      "version": "v2026.11.05-c1",
+      "components": {
+        "planner": "prompt-v1.1",
+        "validator": "prompt-v2"
+      },
+      "immutableConstraints": ["no-secrets", "no-pii"],
+      "createdAt": "2026-11-05T00:03:00.000Z",
+      "sourceVersion": null,
+      "artifactHash": null,
+      "opaquePayload": null
+    },
+    "changes": [
+      {
+        "component": "planner",
+        "before": "prompt-v1",
+        "after": "prompt-v1.1",
+        "rollback": "prompt-v1",
+        "expectedEffect": "increase precision"
+      }
+    ],
+    "hypothesisIds": ["hypothesis-1"],
+    "evidenceIds": ["evidence-1", "evidence-2"]
+  },
+  "executionMetrics": {
+    "inputTokens": 120,
+    "outputTokens": 45,
+    "cost": 0.021,
+    "latencyMs": 843
+  },
+  "executionResult": {
+    "id": "exec-1",
+    "roundId": "round-1",
+    "caseId": "case-1",
+    "harnessSnapshotId": "snapshot-2",
+    "status": "succeeded",
+    "correlationId": "corr-1",
+    "traceId": "trace-1",
+    "output": "policy answer",
+    "metrics": {
+      "inputTokens": 120,
+      "outputTokens": 45,
+      "cost": 0.021,
+      "latencyMs": 843
+    },
+    "limitations": ["none"]
+  },
+  "caseEvaluation": {
+    "caseId": "case-1",
+    "baselineExecutionId": "exec-base-1",
+    "candidateExecutionId": "exec-1",
+    "passed": true,
+    "regression": false,
+    "scoreChange": 0.2,
+    "criticalViolations": []
+  },
+  "evaluationResult": {
+    "id": "eval-1",
+    "roundId": "round-1",
+    "candidateId": "candidate-1",
+    "decision": "recommended",
+    "sampleSize": 10,
+    "confidence": 0.93,
+    "aggregateScoreChange": 0.17,
+    "costChange": -0.01,
+    "latencyChange": -12.5,
+    "cases": [
+      {
+        "caseId": "case-1",
+        "baselineExecutionId": "exec-base-1",
+        "candidateExecutionId": "exec-1",
+        "passed": true,
+        "regression": false,
+        "scoreChange": 0.2,
+        "criticalViolations": []
+      }
+    ],
+    "limitations": ["small sample"],
+    "rationale": "Candidate improves quality without regressions."
+  },
+  "versionedEvaluationResult": {
+    "id": "eval-1",
+    "roundId": "round-1",
+    "candidateId": "candidate-1",
+    "decision": "recommended",
+    "sampleSize": 10,
+    "confidence": 0.93,
+    "aggregateScoreChange": 0.17,
+    "costChange": -0.01,
+    "latencyChange": -12.5,
+    "cases": [
+      {
+        "caseId": "case-1",
+        "baselineExecutionId": "exec-base-1",
+        "candidateExecutionId": "exec-1",
+        "passed": true,
+        "regression": false,
+        "scoreChange": 0.2,
+        "criticalViolations": []
+      }
+    ],
+    "limitations": ["small sample"],
+    "rationale": "Candidate improves quality without regressions.",
+    "evaluatorVersion": "v1.0.0"
+  },
+  "evaluatorDefinition": {
+    "id": "evaluator-default",
+    "version": "v1.0.0",
+    "minimumSampleSize": 30,
+    "recommendationThreshold": 0.05,
+    "maximumRegressionRate": 0.02
+  },
+  "partitionManifest": {
+    "version": 1,
+    "seed": "seed-123",
+    "diagnosisIds": ["case-1", "case-2"],
+    "reservedIds": ["case-9"],
+    "createdAt": "2026-11-05T00:00:00.000Z"
+  },
+  "partitionOptions": {
+    "seed": "seed-123",
+    "minimumReserved": 1,
+    "reservedRatio": 0.2,
+    "createdAt": "2026-11-05T00:00:00.000Z"
+  }
+}
