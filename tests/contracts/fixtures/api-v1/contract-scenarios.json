@@ -1,0 +1,632 @@
+{
+  "version": "2026-11-05",
+  "baseUrl": "http://127.0.0.1:3000/api/v1",
+  "sourceOfTruth": [
+    "docs/api.md",
+    "docs/seguranca.md",
+    "apps/api/src/routes/*.ts",
+    "apps/api/src/routes/*.test.ts"
+  ],
+  "globalForbiddenResponseFields": [
+    "credentials",
+    "credentials.secretKey",
+    "credentials.token",
+    "credentials.publicKey",
+    "opaquePayload",
+    "input",
+    "output",
+    "trace.input",
+    "trace.output",
+    "rawRemotePayload"
+  ],
+  "scenarios": [
+    {
+      "id": "agents-create-201",
+      "request": {
+        "method": "POST",
+        "path": "/agents",
+        "json": {
+          "id": "agente-suporte",
+          "domainId": "varejo",
+          "name": "Suporte"
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "id": "agente-suporte",
+          "domainId": "varejo",
+          "name": "Suporte",
+          "createdAt": "2026-11-05T12:00:00.000Z"
+        }
+      },
+      "publicResponseKeys": ["id", "domainId", "name", "createdAt"],
+      "stableCodes": []
+    },
+    {
+      "id": "agents-create-400-invalid",
+      "request": {
+        "method": "POST",
+        "path": "/agents",
+        "json": {
+          "id": "AGENTE_INVALIDO",
+          "domainId": "varejo",
+          "name": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "json": {
+          "code": "AGENT_INVALID"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["AGENT_INVALID"]
+    },
+    {
+      "id": "connections-create-langfuse-201",
+      "request": {
+        "method": "POST",
+        "path": "/connections",
+        "headers": {
+          "Idempotency-Key": "conn-langfuse-create-001"
+        },
+        "json": {
+          "id": "langfuse-principal",
+          "kind": "langfuse",
+          "name": "Langfuse principal",
+          "credentials": {
+            "baseUrl": "https://langfuse.example",
+            "publicKey": "pk_REDACTED",
+            "secretKey": "sk_REDACTED"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "id": "langfuse-principal",
+          "kind": "langfuse",
+          "name": "Langfuse principal",
+          "configured": true
+        }
+      },
+      "publicResponseKeys": ["id", "kind", "name", "configured"],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "credentials",
+        "publicKey",
+        "secretKey",
+        "baseUrl",
+        "token"
+      ]
+    },
+    {
+      "id": "connections-create-agent-platform-201",
+      "request": {
+        "method": "POST",
+        "path": "/connections",
+        "json": {
+          "id": "agent-platform-principal",
+          "kind": "agent-platform",
+          "name": "Agent Platform principal",
+          "credentials": {
+            "baseUrl": "https://platform.example",
+            "token": "token_REDACTED"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "id": "agent-platform-principal",
+          "kind": "agent-platform",
+          "name": "Agent Platform principal",
+          "configured": true
+        }
+      },
+      "publicResponseKeys": ["id", "kind", "name", "configured"],
+      "stableCodes": [],
+      "forbiddenResponseFields": ["credentials", "baseUrl", "token"]
+    },
+    {
+      "id": "connections-create-idempotent-replay-200",
+      "request": {
+        "method": "POST",
+        "path": "/connections",
+        "headers": {
+          "Idempotency-Key": "conn-replay-001"
+        },
+        "json": {
+          "id": "agent-platform-main",
+          "kind": "agent-platform",
+          "name": "Agent Platform principal",
+          "credentials": {
+            "token": "token_REDACTED"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "json": {
+          "id": "agent-platform-main",
+          "kind": "agent-platform",
+          "name": "Agent Platform principal",
+          "configured": true
+        }
+      },
+      "publicResponseKeys": ["id", "kind", "name", "configured"],
+      "stableCodes": []
+    },
+    {
+      "id": "connections-create-idempotency-conflict-409",
+      "request": {
+        "method": "POST",
+        "path": "/connections",
+        "headers": {
+          "Idempotency-Key": "conn-replay-001"
+        },
+        "json": {
+          "id": "agent-platform-main",
+          "kind": "agent-platform",
+          "name": "Agent Platform principal",
+          "credentials": {
+            "token": "different_token_REDACTED"
+          }
+        }
+      },
+      "response": {
+        "status": 409,
+        "json": {
+          "code": "IDEMPOTENCY_CONFLICT"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["IDEMPOTENCY_CONFLICT"]
+    },
+    {
+      "id": "connections-list-200",
+      "request": {
+        "method": "GET",
+        "path": "/connections"
+      },
+      "response": {
+        "status": 200,
+        "json": {
+          "items": [
+            {
+              "id": "agent-platform-main",
+              "kind": "agent-platform",
+              "name": "Agent Platform principal",
+              "configured": true
+            },
+            {
+              "id": "langfuse-main",
+              "kind": "langfuse",
+              "name": "Langfuse principal",
+              "configured": true
+            }
+          ]
+        }
+      },
+      "publicResponseKeys": [
+        "items[].id",
+        "items[].kind",
+        "items[].name",
+        "items[].configured"
+      ],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "credentials",
+        "token",
+        "publicKey",
+        "secretKey",
+        "baseUrl"
+      ]
+    },
+    {
+      "id": "connections-credentials-200",
+      "request": {
+        "method": "GET",
+        "path": "/connections/langfuse-main/credentials"
+      },
+      "response": {
+        "status": 200,
+        "json": {
+          "connectionId": "langfuse-main",
+          "configured": true
+        }
+      },
+      "publicResponseKeys": ["connectionId", "configured"],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "credentials",
+        "token",
+        "publicKey",
+        "secretKey",
+        "baseUrl"
+      ]
+    },
+    {
+      "id": "connections-get-not-found-404",
+      "request": {
+        "method": "GET",
+        "path": "/connections/inexistente"
+      },
+      "response": {
+        "status": 404,
+        "json": {
+          "code": "CONNECTION_NOT_FOUND"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["CONNECTION_NOT_FOUND"]
+    },
+    {
+      "id": "cases-import-json-201",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import",
+        "json": {
+          "agentId": "agente-suporte",
+          "domainId": "varejo",
+          "source": "json",
+          "cases": [
+            {
+              "id": "caso-001",
+              "sessionId": "sessao-001",
+              "similarityGroup": "grupo-acesso",
+              "content": "Como solicito acesso?"
+            },
+            {
+              "id": "caso-002",
+              "sessionId": "sessao-002",
+              "similarityGroup": "grupo-faturamento",
+              "content": "Como emitir segunda via?"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "imported": 2
+        }
+      },
+      "publicResponseKeys": ["imported"],
+      "stableCodes": []
+    },
+    {
+      "id": "cases-import-csv-201",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import-csv",
+        "json": {
+          "agentId": "csv-agent",
+          "domainId": "csv-domain",
+          "csv": "id,sessionId,similarityGroup,content\\r\\ncase-csv,s-1,g-1,\"Question, with comma\""
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "imported": 1
+        }
+      },
+      "publicResponseKeys": ["imported"],
+      "stableCodes": []
+    },
+    {
+      "id": "cases-import-langfuse-201",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import-langfuse",
+        "json": {
+          "agentId": "langfuse-agent",
+          "domainId": "langfuse-domain",
+          "connectionId": "langfuse-connection",
+          "fromStartTime": "2026-11-03T00:00:00.000Z",
+          "toStartTime": "2026-11-04T00:00:00.000Z",
+          "limit": 20,
+          "filter": {
+            "field": "traceName",
+            "value": "support-flow"
+          }
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "imported": 1,
+          "skipped": 0,
+          "source": {
+            "connectionId": "langfuse-connection",
+            "fromStartTime": "2026-11-03T00:00:00.000Z",
+            "toStartTime": "2026-11-04T00:00:00.000Z"
+          },
+          "limitations": []
+        }
+      },
+      "publicResponseKeys": [
+        "imported",
+        "skipped",
+        "source.connectionId",
+        "source.fromStartTime",
+        "source.toStartTime",
+        "limitations"
+      ],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "input",
+        "output",
+        "rawRemotePayload",
+        "credentials",
+        "baseUrl",
+        "publicKey",
+        "secretKey"
+      ]
+    },
+    {
+      "id": "cases-import-langfuse-preview-200",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import-langfuse/preview",
+        "json": {
+          "agentId": "preview-agent",
+          "domainId": "preview-domain",
+          "connectionId": "preview-langfuse",
+          "fromStartTime": "2026-11-03T00:00:00.000Z",
+          "toStartTime": "2026-11-04T00:00:00.000Z",
+          "limit": 20
+        }
+      },
+      "response": {
+        "status": 200,
+        "json": {
+          "previewId": "opaque-preview-id",
+          "expiresAt": "2026-11-05T12:05:00.000Z",
+          "summary": {
+            "total": 3,
+            "ready": 1,
+            "existing": 1,
+            "discarded": 1
+          },
+          "items": [
+            {
+              "status": "ready",
+              "traceId": "trace-1",
+              "startTime": "2026-11-03T10:00:00.000Z",
+              "existing": false
+            },
+            {
+              "status": "ready",
+              "traceId": "trace-2",
+              "startTime": "2026-11-03T10:01:00.000Z",
+              "existing": true
+            },
+            {
+              "status": "discarded",
+              "traceId": "trace-3",
+              "startTime": "2026-11-03T10:02:00.000Z",
+              "reason": "MISSING_ROOT"
+            }
+          ],
+          "limitations": []
+        }
+      },
+      "publicResponseKeys": [
+        "previewId",
+        "expiresAt",
+        "summary.total",
+        "summary.ready",
+        "summary.existing",
+        "summary.discarded",
+        "items[].status",
+        "items[].traceId",
+        "items[].startTime",
+        "items[].existing",
+        "items[].reason",
+        "limitations"
+      ],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "input",
+        "output",
+        "rawRemotePayload",
+        "opaqueCandidateContent"
+      ]
+    },
+    {
+      "id": "cases-import-langfuse-confirm-201",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import-langfuse/confirm",
+        "json": {
+          "previewId": "opaque-preview-id",
+          "traceIds": ["trace-1"]
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "imported": 1,
+          "skipped": 0
+        }
+      },
+      "publicResponseKeys": ["imported", "skipped"],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "input",
+        "output",
+        "rawRemotePayload",
+        "opaqueCandidateContent"
+      ]
+    },
+    {
+      "id": "cases-import-langfuse-confirm-400-invalid-selection",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import-langfuse/confirm",
+        "json": {
+          "previewId": "opaque-preview-id",
+          "traceIds": ["trace-unknown"]
+        }
+      },
+      "response": {
+        "status": 400,
+        "json": {
+          "code": "PREVIEW_SELECTION_INVALID"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["PREVIEW_SELECTION_INVALID"]
+    },
+    {
+      "id": "cases-import-langfuse-confirm-410-expired",
+      "request": {
+        "method": "POST",
+        "path": "/cases/import-langfuse/confirm",
+        "json": {
+          "previewId": "opaque-preview-id-expired",
+          "traceIds": ["trace-1"]
+        }
+      },
+      "response": {
+        "status": 410,
+        "json": {
+          "code": "PREVIEW_EXPIRED"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["PREVIEW_EXPIRED"]
+    },
+    {
+      "id": "rounds-create-201",
+      "request": {
+        "method": "POST",
+        "path": "/rounds",
+        "json": {
+          "id": "rodada-001",
+          "agentId": "agente-suporte",
+          "domainId": "varejo",
+          "objective": "Melhorar respostas"
+        }
+      },
+      "response": {
+        "status": 201,
+        "json": {
+          "id": "rodada-001",
+          "agentId": "agente-suporte",
+          "domainId": "varejo",
+          "state": "setup",
+          "objective": "Melhorar respostas",
+          "createdAt": "2026-11-05T12:00:00.000Z",
+          "updatedAt": "2026-11-05T12:00:00.000Z"
+        }
+      },
+      "publicResponseKeys": [
+        "id",
+        "agentId",
+        "domainId",
+        "state",
+        "objective",
+        "createdAt",
+        "updatedAt"
+      ],
+      "stableCodes": []
+    },
+    {
+      "id": "rounds-create-422-scope-invalid",
+      "request": {
+        "method": "POST",
+        "path": "/rounds",
+        "json": {
+          "id": "rodada-escopo-invalido",
+          "agentId": "agente-suporte",
+          "domainId": "outro-dominio",
+          "objective": "Melhorar respostas"
+        }
+      },
+      "response": {
+        "status": 422,
+        "json": {
+          "code": "ROUND_SCOPE_INVALID"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["ROUND_SCOPE_INVALID"]
+    },
+    {
+      "id": "rounds-cancel-202",
+      "request": {
+        "method": "POST",
+        "path": "/rounds/rodada-001/cancel"
+      },
+      "response": {
+        "status": 202,
+        "json": {
+          "id": "rodada-001",
+          "cancellationRequested": true
+        }
+      },
+      "publicResponseKeys": ["id", "cancellationRequested"],
+      "stableCodes": []
+    },
+    {
+      "id": "rounds-results-200",
+      "request": {
+        "method": "GET",
+        "path": "/rounds/rodada-001/results"
+      },
+      "response": {
+        "status": 200,
+        "json": {
+          "roundId": "rodada-001",
+          "decision": "rejected",
+          "sampleSize": 1,
+          "confidence": 1,
+          "aggregateScoreChange": -0.5,
+          "costChange": 0.1,
+          "latencyChange": 5,
+          "cases": [],
+          "limitations": ["human review incomplete"],
+          "rationale": "Regression gate failed."
+        }
+      },
+      "publicResponseKeys": [
+        "roundId",
+        "decision",
+        "sampleSize",
+        "confidence",
+        "aggregateScoreChange",
+        "costChange",
+        "latencyChange",
+        "cases",
+        "limitations",
+        "rationale"
+      ],
+      "stableCodes": [],
+      "forbiddenResponseFields": [
+        "opaquePayload",
+        "snapshot",
+        "rawTraceInput",
+        "rawTraceOutput"
+      ]
+    },
+    {
+      "id": "rounds-results-409-not-ready",
+      "request": {
+        "method": "GET",
+        "path": "/rounds/rodada-setup/results"
+      },
+      "response": {
+        "status": 409,
+        "json": {
+          "code": "ROUND_RESULT_NOT_READY"
+        }
+      },
+      "publicResponseKeys": ["code"],
+      "stableCodes": ["ROUND_RESULT_NOT_READY"]
+    }
+  ]
+}

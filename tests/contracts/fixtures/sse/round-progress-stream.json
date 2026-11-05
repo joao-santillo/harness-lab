@@ -1,0 +1,83 @@
+{
+  "version": "2026-11-05",
+  "description": "SSE contract examples for /api/v1/rounds/:roundId/events",
+  "sourceOfTruth": [
+    "docs/api.md",
+    "apps/api/src/routes/events.ts",
+    "apps/api/src/routes/events.test.ts"
+  ],
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/rounds/round-1/events",
+    "headers": {
+      "Accept": "text/event-stream",
+      "Last-Event-ID": "0"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "text/event-stream; charset=utf-8",
+      "cache-control": "no-cache, no-transform",
+      "connection": "keep-alive"
+    }
+  },
+  "frames": [
+    {
+      "id": 1,
+      "event": "round-progress",
+      "data": {
+        "id": "event-1",
+        "roundId": "round-1",
+        "sequence": 1,
+        "event": "diagnosis_started",
+        "state": "diagnosing",
+        "occurredAt": "2026-10-30T12:00:02.000Z",
+        "messageCode": "ROUND_DIAGNOSIS_STARTED"
+      }
+    },
+    {
+      "comment": ": heartbeat"
+    },
+    {
+      "id": 2,
+      "event": "round-progress",
+      "data": {
+        "id": "event-2",
+        "roundId": "round-1",
+        "sequence": 2,
+        "event": "cancelled",
+        "state": "cancelled",
+        "occurredAt": "2026-10-30T12:00:03.000Z",
+        "messageCode": "ROUND_CANCELLED"
+      }
+    }
+  ],
+  "rawExample": "id: 1\nevent: round-progress\ndata: {\"id\":\"event-1\",\"roundId\":\"round-1\",\"sequence\":1,\"event\":\"diagnosis_started\",\"state\":\"diagnosing\",\"occurredAt\":\"2026-10-30T12:00:02.000Z\",\"messageCode\":\"ROUND_DIAGNOSIS_STARTED\"}\n\n: heartbeat\n\nid: 2\nevent: round-progress\ndata: {\"id\":\"event-2\",\"roundId\":\"round-1\",\"sequence\":2,\"event\":\"cancelled\",\"state\":\"cancelled\",\"occurredAt\":\"2026-10-30T12:00:03.000Z\",\"messageCode\":\"ROUND_CANCELLED\"}\n\n",
+  "resumeBehavior": {
+    "lastEventIdRequestHeader": "0",
+    "expectedFirstEventId": 1,
+    "mustNotReplayEventIds": [0],
+    "cursorField": "Last-Event-ID"
+  },
+  "terminalBehavior": {
+    "terminalStates": [
+      "recommended",
+      "rejected",
+      "inconclusive",
+      "pending_validation",
+      "validation_insufficient",
+      "stopped_by_limit",
+      "cancelled",
+      "integration_failed"
+    ],
+    "streamClosesAfterTerminalState": true
+  },
+  "forbiddenDataFields": [
+    "opaquePayload",
+    "credentials",
+    "input",
+    "output",
+    "rawRemotePayload"
+  ]
+}
