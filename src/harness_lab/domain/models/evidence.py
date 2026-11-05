@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import Literal, NewType, TypeAlias
 
-from pydantic import Field
-
 from . import DomainModel
 from .round import CaseId, RoundId
 
@@ -67,5 +65,5 @@ class Hypothesis(DomainModel):
     id: HypothesisId
     finding_id: FindingId
     explanation: str
-    evidence_ids: tuple[EvidenceId, ...] = Field(default_factory=tuple)
+    evidence_ids: tuple[EvidenceId, ...]
     expected_effect: str

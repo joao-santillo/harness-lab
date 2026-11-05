@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Literal, Mapping, NewType, TypeAlias
 
+from pydantic import Field, field_validator
+
 from . import DomainModel
 from .evidence import EvidenceId, HypothesisId
 from .round import AgentId, CaseId, DomainId, RoundId
@@ -20,9 +22,19 @@ class HarnessSnapshot(DomainModel):
     components: Mapping[str, str]
     immutable_constraints: tuple[str, ...]
     created_at: str
-    source_version: str | None = None
-    artifact_hash: str | None = None
-    opaque_payload: Mapping[str, Any] | None = None
+    source_version: str | None = Field(default=None, exclude_if=lambda value: value is None)
+    artifact_hash: str | None = Field(default=None, exclude_if=lambda value: value is None)
+    opaque_payload: Mapping[str, Any] | None = Field(
+        default=None,
+        exclude_if=lambda value: value is None,
+    )
+
+    @field_validator("source_version", "artifact_hash", "opaque_payload", mode="before")
+    @classmethod
+    def _reject_explicit_null_on_omissible_fields(cls, value: object) -> object:
+        if value is None:
+            raise ValueError("field must be omitted instead of null")
+        return value
 
 
 class CandidateChange(DomainModel):
