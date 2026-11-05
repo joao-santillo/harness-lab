@@ -1,70 +1,90 @@
 from __future__ import annotations
 
 import json
+import re
+import shutil
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from harness2.core import library as library_store
-from harness2.core import recursion, selection
-from harness2.core import tree as harness_tree
-from harness2.core.proposer import Proposer
+from harness2.core.proposer import Reply
 from harness2.core.schedule import run_task
-from harness2.core.spec import RunView
+from harness2.core.spec import ChannelSpec
 
 from harness_lab.adapters.harness2.benchmark import InMemoryBenchmarkAdapter
 from harness_lab.adapters.harness2.substrate import EditableSurfaceSubstrate
 
 
-def _patch_deterministic_mode(monkeypatch) -> None:
-    def fake_run_mode(mode: str, *a, **kw):
-        task_id = a[0]
-        k = a[1]
-        adapter = kw["adapter"]
-        work_dir = kw["work_dir"]
-        run_id_of = kw["run_id_of"]
-        base_tree = kw["base_tree"]
+def _safe(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", value)
 
-        label = "agg1" if mode == "agg" else "c1"
-        edited_tree = dict(base_tree)
-        edited_tree["AGENTS.md"] = (
-            edited_tree.get("AGENTS.md", "# Harness\n")
-            + "\n- Candidate harness edited deterministically.\n"
-        )
 
-        harness_dir = Path(work_dir) / "harnesses" / label
-        harness_tree.write_tree(adapter.substrate.surface(), edited_tree, harness_dir, stubs=True)
+@dataclass
+class DeterministicProposer:
+    spec: ChannelSpec
+    workspace_root: Path
+    attempts: int = 1
+    audit_dir: Path | None = None
+    project: str = "local"
+    region: str = "local"
+    _calls: int = field(default=0, init=False)
 
-        run_id = run_id_of(label)
-        run_dir = adapter.execute(task_id, harness_dir, run_id)
-        rollout = RunView(
+    def call(
+        self,
+        mission: str,
+        context_dir: Path | str | None,
+        label: str,
+        *,
+        system: str = "",
+        timeout: int | None = None,
+        max_attempts: int | None = None,
+        harvest: str | None = None,
+    ) -> Reply:
+        del mission, system, timeout, max_attempts
+        self._calls += 1
+
+        workspace = None
+        if harvest:
+            source = Path(context_dir) / harvest if context_dir else None
+            if source is not None and not source.is_dir() and harvest.startswith("context/"):
+                source = Path(context_dir) / harvest.removeprefix("context/")
+            if source is not None and source.is_dir():
+                workspace = self.workspace_root / f"{_safe(label)}-{self._calls}.workspace"
+                shutil.rmtree(workspace, ignore_errors=True)
+                shutil.copytree(source, workspace)
+                agents = workspace / "AGENTS.md"
+                body = agents.read_text(encoding="utf-8") if agents.exists() else "# Harness\n"
+                body += f"\n- deterministic edit from {label}.\n"
+                agents.write_text(body, encoding="utf-8")
+
+        if label.startswith("experience."):
+            text = (
+                "<experience>\n"
+                "cue: deterministic-cue\n"
+                "lesson: deterministic-lesson\n"
+                "evidence: deterministic-evidence\n"
+                "confidence: high\n"
+                "</experience>\n"
+                "<edits>Updated AGENTS.md with deterministic stage markers.</edits>\n"
+            )
+        elif label.startswith("select."):
+            text = "```choice\nA\n```\n<why>Deterministic single-candidate selection.</why>\n"
+        else:
+            text = f"<notes>deterministic stage {label}</notes>"
+
+        return Reply(
             label=label,
-            run_id=run_id,
-            run_dir=run_dir,
+            text=text,
             ok=True,
-            delivered=adapter.delivered(run_dir),
+            cost_usd=0.0,
+            wall_s=0.0,
+            attempts=1,
+            cached=False,
+            channel=self.spec.kind,
+            error="",
+            audit=None,
+            workspace=workspace,
         )
-
-        stage = recursion.Stage(label=label, dim="inv", tree=edited_tree, notes="deterministic stage")
-        return recursion.ModeResult(
-            mode=mode,
-            task_id=task_id,
-            k=k,
-            stages=[stage],
-            trees={label: edited_tree},
-            rollouts={label: rollout},
-            finals=[label],
-        )
-
-    def fake_reflect_adoption(task_id: str, sel, candidates, **kwargs):
-        del task_id, candidates, kwargs
-        sel.experience = {
-            "cue": "deterministic-cue",
-            "lesson": "deterministic-lesson",
-            "evidence": "deterministic-evidence",
-        }
-        return dict(sel.experience)
-
-    monkeypatch.setattr(recursion, "run_mode", fake_run_mode)
-    monkeypatch.setattr(selection, "reflect_adoption", fake_reflect_adoption)
 
 
 def _normalize_result(result) -> dict:
@@ -96,7 +116,11 @@ def _run_once(tmp_path: Path, runs_root: Path) -> dict:
         deliverable_text_value="final-answer",
     )
 
-    prop = Proposer(adapter.spec.channels["proposer"], attempts=1)
+    prop = DeterministicProposer(
+        adapter.spec.channels["proposer"],
+        workspace_root=tmp_path / "proposer-workspaces",
+        attempts=1,
+    )
     lib = library_store.Library(root=tmp_path / "library", domain="retail", surface=substrate.surface())
 
     result = run_task(
@@ -115,17 +139,34 @@ def _run_once(tmp_path: Path, runs_root: Path) -> dict:
 
     mode = result.modes["agg"]
     assert mode["ok"] is True
+    assert mode["finals"] == ["agg1"]
+    assert [stage["label"] for stage in mode["stages"]] == ["inv1", "dom1", "agg1"]
+    assert all(stage["fell_back"] is False for stage in mode["stages"])
 
-    selection = result.selections["agg"]
-    assert selection["ok"] is True
-    assert selection["chosen_label"]
+    final_harness = runs_root / "harness-lab-local-agg1" / "task-001" / "harnesses" / "agg1" / "AGENTS.md"
+    assert final_harness.exists()
+    final_harness_body = final_harness.read_text(encoding="utf-8")
+    assert "deterministic edit from agg1" in final_harness_body
 
-    chosen_run_id = selection["chosen_run_id"]
+    selected = result.selections["agg"]
+    assert selected["ok"] is True
+    assert selected["trivial"] is True
+    assert selected["chosen_label"] == "agg1"
+    assert selected["chosen_tree_is_base"] is False
+
+    chosen_run_id = selected["chosen_run_id"]
     assert chosen_run_id
 
-    chosen_run_dir = Path(selection["chosen_run_dir"])
+    chosen_run_dir = Path(selected["chosen_run_dir"])
     assert chosen_run_dir.exists()
     assert adapter.delivered(chosen_run_dir)
+    assert adapter.deliverable_text(chosen_run_dir) == "final-answer"
+
+    selection_json = runs_root / "harness-lab-local-agg1" / "task-001" / "selection" / "agg1" / "selection.json"
+    assert selection_json.exists()
+    selection_payload = json.loads(selection_json.read_text(encoding="utf-8"))
+    assert selection_payload["chosen_label"] == "agg1"
+    assert selection_payload["trivial"] is True
 
     summary = runs_root / "harness-lab-local-agg1" / "task-001" / "summary.json"
     assert summary.exists()
@@ -136,13 +177,17 @@ def _run_once(tmp_path: Path, runs_root: Path) -> dict:
 
     entries = lib.entries()
     assert entries == ["task-001"]
+    entry = lib.entry_dir("task-001")
+    exp = (entry / "EXPERIENCE.md").read_text(encoding="utf-8")
+    assert "deterministic-lesson" in exp
+    assert "deterministic-evidence" in exp
+    stored_harness = (entry / "harness" / "AGENTS.md").read_text(encoding="utf-8")
+    assert "deterministic edit from agg1" in stored_harness
 
     return _normalize_result(result)
 
 
-def test_run_task_contract_upstream_parallel_k1(tmp_path: Path, monkeypatch) -> None:
-    _patch_deterministic_mode(monkeypatch)
-
+def test_run_task_contract_upstream_parallel_k1(tmp_path: Path) -> None:
     first = _run_once(tmp_path / "case-1", tmp_path / "runs-1")
     second = _run_once(tmp_path / "case-2", tmp_path / "runs-2")
 
