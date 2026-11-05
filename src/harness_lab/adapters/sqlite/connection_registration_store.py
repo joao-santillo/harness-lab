@@ -21,6 +21,7 @@ def _canonical_request(request: dict[str, Any]) -> str:
             "credentials": credentials,
         },
         separators=(",", ":"),
+        ensure_ascii=False,
     )
 
 

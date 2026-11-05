@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -9,6 +11,8 @@ from harness_lab.adapters.sqlite.case_repository import SqliteCaseRepository
 from harness_lab.adapters.sqlite.client import open_sqlite_database
 from harness_lab.adapters.sqlite.connection_registration_store import (
     SqliteConnectionRegistrationStore,
+    _canonical_request,
+    _request_hash,
 )
 from harness_lab.adapters.sqlite.run_repository import SqliteRunRepository
 from harness_lab.domain.models.case import CaseRecord
@@ -229,4 +233,46 @@ def test_connection_registration_idempotency_and_encrypted_secret(tmp_path: Path
         "SELECT ciphertext FROM encrypted_secrets WHERE id = ?"
     ).get("langfuse-main")[0]
     assert "sk" not in str(ciphertext)
+    database.close()
+
+
+def test_connection_registration_unicode_canonicalization_matches_json_stringify(tmp_path: Path) -> None:
+    database = open_sqlite_database(str(tmp_path / "harness.sqlite"))
+    encoded_master_key = "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY="
+    store = SqliteConnectionRegistrationStore(database, encoded_master_key)
+    request = {
+        "id": "langfuse-unicode",
+        "kind": "langfuse",
+        "name": "Conexão São Paulo",
+        "credentials": {"publicKey": "pk", "secretKey": "ação-token"},
+        "idempotencyKey": "req-unicode-1",
+    }
+
+    canonical = _canonical_request(request)
+    assert "\\u" not in canonical
+
+    ts_json_stringify_equivalent = json.dumps(
+        {
+            "id": request["id"],
+            "kind": request["kind"],
+            "name": request["name"],
+            "credentials": dict(sorted(request["credentials"].items(), key=lambda item: item[0])),
+        },
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    assert canonical == ts_json_stringify_equivalent
+
+    expected_hash = hashlib.sha256(ts_json_stringify_equivalent.encode("utf-8")).hexdigest()
+    assert _request_hash(request) == expected_hash
+
+    created = _run(store.register(request))
+    assert created["status"] == "created"
+    replayed = _run(store.register(request))
+    assert replayed["status"] == "replayed"
+
+    stored_hash = database.prepare(
+        "SELECT request_hash FROM connection_registrations WHERE idempotency_key = ?"
+    ).get("req-unicode-1")[0]
+    assert str(stored_hash) == expected_hash
     database.close()
