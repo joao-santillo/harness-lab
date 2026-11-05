@@ -5,7 +5,7 @@
 
 ## Objetivo
 
-Migrar API, worker, domínio, aplicação e adapters do Harness Lab de TypeScript para Python, usando a implementação upstream do Harness² para o fluxo de refinamento reutilizável. Manter a interface React/TypeScript e preservar os contratos HTTP/SSE, os dados SQLite e o comportamento público existentes.
+Migrar toda a aplicação do Harness Lab de TypeScript para Python, usando a implementação upstream do Harness² para o fluxo de refinamento reutilizável. Substituir React/TypeScript por interface server-rendered em Jinja2 com HTMX e preservar os contratos HTTP/SSE, os dados SQLite e o comportamento público existentes.
 
 ## Contexto verificado
 
@@ -19,6 +19,7 @@ Migrar API, worker, domínio, aplicação e adapters do Harness Lab de TypeScrip
 ### Incluído
 
 - Backend Python para API REST/SSE e worker durável.
+- Interface web renderizada no servidor com Jinja2, interações HTMX e CSS; migrar formulários, navegação, localização e atualizações de estado hoje implementados em React.
 - Portabilidade das regras de domínio e aplicação que pertencem ao Harness Lab.
 - Adapters Python para SQLite, criptografia, redaction, Langfuse, Agent Platform, Harness² e exportação.
 - Integração fina com Harness², sem reimplementar sua recursão, composição, seleção ou biblioteca de experiências quando as APIs upstream forem compatíveis.
@@ -26,7 +27,7 @@ Migrar API, worker, domínio, aplicação e adapters do Harness Lab de TypeScrip
 
 ### Fora de escopo
 
-- Reescrever `apps/web` ou remover TypeScript do frontend.
+- Adicionar lógica de aplicação em JavaScript/TypeScript no navegador; usar HTMX para interações e manter CSS/HTML como recursos da apresentação.
 - Inventar ou presumir o contrato de produção da Agent Platform; a ativação real depende da confirmação externa documentada.
 - Alterar o produto para multi-tenant, introduzir autenticação de usuário ou trocar SQLite por outro banco.
 - Manter duas implementações de refinamento ou um fork privado do Harness² como solução padrão.
@@ -35,22 +36,21 @@ Migrar API, worker, domínio, aplicação e adapters do Harness Lab de TypeScrip
 
 ```text
 Navegador
-   │ REST / SSE (contrato atual)
+   │ HTML renderizado + HTMX
    ▼
-React + TypeScript (apps/web, mantido)
-   │
-   ▼
-API Python ───────────── SQLite existente
-   │                         ▲
-   │ jobs/checkpoints        │ stores Python
-   ▼                         │
-Worker Python ───────────────┘
+FastAPI + Jinja2 ───────── SQLite existente
+   │ REST / SSE (contrato atual) │
+   │ jobs/checkpoints            │ stores Python
+   ▼                             │
+Worker Python ──────────────────┘
    ├── aplicação Harness Lab: isolamento, diagnóstico, avaliação, decisão e exportação
    ├── adapter Harness²: benchmark/substrate/proposer e conversão de harness
    └── adapters externos: Langfuse e Agent Platform
 ```
 
-A organização Python deve espelhar as fronteiras de responsabilidade atuais, não os arquivos TypeScript: `domain`, `application`, `adapters`, `api` e `worker`. O framework HTTP recomendado é FastAPI com schemas Pydantic; o acesso ao SQLite pode usar `sqlite3` e as migrations SQL já existentes, evitando uma conversão de ORM que não agregue valor à migração.
+A organização Python deve espelhar as fronteiras de responsabilidade atuais, não os arquivos TypeScript: `domain`, `application`, `adapters`, `api`, `worker` e `web/templates`. FastAPI atende rotas HTML e REST; Jinja2 renderiza páginas e fragmentos; HTMX fornece submissões e atualizações parciais sem lógica de aplicação JavaScript/TypeScript própria. O CSS existente será reaproveitado e adaptado. O acesso ao SQLite pode usar `sqlite3` e as migrations SQL já existentes, evitando uma conversão de ORM que não agregue valor à migração. As rotas HTML chamarão serviços de aplicação compartilhados com a API, sem fazer chamadas HTTP para a própria aplicação.
+
+A interface Python deve preservar navegação e funções atuais: cadastro de conexões, importação/revisão de cases, criação e acompanhamento de rodadas e consulta de resultados. Estados em andamento podem ser atualizados por fragmentos HTMX via polling; o endpoint SSE JSON existente permanece disponível e compatível. Não adicionar porcentagem artificial. Usar HTML semântico, labels, mensagens acessíveis e suporte de localização pt-BR/en/es. HTMX e extensões necessárias devem ser fixados por versão e carregados como dependências estáticas controladas pelo projeto.
 
 ### Adapter Harness²
 
@@ -89,7 +89,8 @@ Particionamento determinístico, diagnóstico de traces, política de recomenda�
 3. **Adapters e regras de produto:** migrar redaction, Langfuse, mapeamento Agent Platform e exports; portar particionamento, diagnóstico, avaliação e políticas, mantendo a separação de Harness².
 4. **Worker e orquestração:** migrar leases, cancelamento, checkpoints, retomada e fluxo de rodada; garantir que a decisão terminal sempre venha do artefato persistido e que falhas fechem como integração falha/inconclusiva, nunca como recomendação implícita.
 5. **API Python compatível:** implementar REST/SSE e validar todos os contratos existentes, incluindo respostas de erro e sanitização.
-6. **Paridade, cutover e remoção:** rodar testes de unidade, integração e E2E; fazer backup/cutover único; verificar UI e retomada; então remover API/worker e pacotes TS de backend, mantendo `apps/web`.
+6. **Interface Jinja2/HTMX:** migrar páginas, formulários, navegação, estados, localização e acessibilidade; manter os mesmos serviços de aplicação e contratos REST/SSE.
+7. **Paridade, cutover e remoção:** rodar testes de unidade, integração e E2E; fazer backup/cutover único; verificar UI e retomada; então remover React, Vite, TypeScript, API/worker e pacotes TS, além da toolchain Node/pnpm se nenhum outro componente ainda depender dela.
 
 ## Estratégia de testes e critérios de aceite
 
@@ -100,7 +101,8 @@ Particionamento determinístico, diagnóstico de traces, política de recomenda�
 - **Isolamento:** testes comprovam que conteúdo e IDs reservados não chegam ao adapter/refinamento/biblioteca Harness² e que apenas a avaliação os consome.
 - **Adapters:** schemas, erros estáveis, `opaquePayload` preservado em round-trip, redaction e exports sanitizados.
 - **Round lifecycle:** testes herméticos para leases, idempotência, cancelamento, falha de integração, retomada em checkpoints e decisão recuperada após reinício.
-- **Frontend:** manter e passar testes React/Vitest e Playwright contra API Python.
+- **Interface:** testes de rotas/templates e interações HTMX; E2E Playwright cobre os fluxos equivalentes à suíte atual, incluindo navegação por teclado, labels, feedback de erros, importação, acompanhamento e resultados. Preferir executar os testes E2E em Python para não manter TypeScript/Node como dependência apenas de testes.
+- **Remoção de TypeScript:** após a paridade, nenhum código de aplicação frontend/backend em TypeScript/JavaScript, build Vite ou pacote pnpm permanece; dependências estáticas de terceiros usadas pelo HTMX são fixadas e não contêm lógica de negócio do produto.
 - **Cutover:** backup legível, procedimento de rollback ensaiado e nenhum processo TypeScript de backend escrevendo simultaneamente com o Python.
 
 ## Riscos e gates
