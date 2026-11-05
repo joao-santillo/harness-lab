@@ -210,20 +210,59 @@ class LangfuseCaseImportRepository:
             start_time = item.get("startTime")
             if not isinstance(trace_id, str) or trace_id.strip() == "" or not isinstance(start_time, str):
                 raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+
+            id_value: str | None = None
+            if "id" in item:
+                requested_id = item["id"]
+                if not isinstance(requested_id, str):
+                    raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+                id_value = requested_id
+
+            parent_observation_id: str | None = None
+            if "parentObservationId" in item:
+                requested_parent_observation_id = item["parentObservationId"]
+                if not isinstance(requested_parent_observation_id, str) and requested_parent_observation_id is not None:
+                    raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+                parent_observation_id = requested_parent_observation_id
+
+            is_root_observation: bool | None = None
+            if "isRootObservation" in item:
+                requested_is_root_observation = item["isRootObservation"]
+                if not isinstance(requested_is_root_observation, bool):
+                    raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+                is_root_observation = requested_is_root_observation
+
+            session_id: str | None = None
+            if "sessionId" in item:
+                requested_session_id = item["sessionId"]
+                if not isinstance(requested_session_id, str) and requested_session_id is not None:
+                    raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+                session_id = requested_session_id
+
+            trace_name: str | None = None
+            if "traceName" in item:
+                requested_trace_name = item["traceName"]
+                if not isinstance(requested_trace_name, str) and requested_trace_name is not None:
+                    raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+                trace_name = requested_trace_name
+
+            name: str | None = None
+            if "name" in item:
+                requested_name = item["name"]
+                if not isinstance(requested_name, str) and requested_name is not None:
+                    raise _sanitized_error("LANGFUSE_CASE_IMPORT_FAILED")
+                name = requested_name
+
             parsed.append(
                 _TraceObservation(
-                    id=item.get("id") if isinstance(item.get("id"), str) else None,
+                    id=id_value,
                     trace_id=trace_id,
                     start_time=start_time,
-                    parent_observation_id=item.get("parentObservationId")
-                    if isinstance(item.get("parentObservationId"), str) or item.get("parentObservationId") is None
-                    else None,
-                    is_root_observation=item.get("isRootObservation")
-                    if isinstance(item.get("isRootObservation"), bool)
-                    else None,
-                    session_id=item.get("sessionId") if isinstance(item.get("sessionId"), str) or item.get("sessionId") is None else None,
-                    trace_name=item.get("traceName") if isinstance(item.get("traceName"), str) or item.get("traceName") is None else None,
-                    name=item.get("name") if isinstance(item.get("name"), str) or item.get("name") is None else None,
+                    parent_observation_id=parent_observation_id,
+                    is_root_observation=is_root_observation,
+                    session_id=session_id,
+                    trace_name=trace_name,
+                    name=name,
                     input=item.get("input"),
                 )
             )

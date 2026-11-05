@@ -92,6 +92,36 @@ def test_case_import_classifies_trace_items() -> None:
     )
 
 
+def test_case_import_rejects_malformed_typed_optional_fields() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/api/public/v2/observations"
+        return httpx.Response(
+            200,
+            json={
+                "data": [
+                    {
+                        "id": "obs-1",
+                        "traceId": "trace-invalid-typed",
+                        "isRootObservation": "yes",
+                        "sessionId": 123,
+                        "startTime": FROM_START,
+                        "input": {"prompt": "hello"},
+                    }
+                ],
+                "meta": {},
+            },
+        )
+
+    with pytest.raises(RuntimeError, match="LANGFUSE_CASE_IMPORT_FAILED"):
+        _run(
+            _repository(httpx.MockTransport(handler)).import_cases(
+                from_start_time=FROM_START,
+                to_start_time=TO_START,
+                limit=1,
+            )
+        )
+
+
 def test_case_import_retries_once_on_429_then_sanitizes_rate_limit() -> None:
     attempts = {"count": 0}
 
