@@ -30,6 +30,6 @@ def write_artifact(
 
     return {
         "path": str(destination),
-        "media_type": media_type,
+        "mediaType": media_type,
         "hash": hashlib.sha256(payload).hexdigest(),
     }

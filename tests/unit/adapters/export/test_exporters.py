@@ -60,13 +60,14 @@ def test_candidate_export_redacts_preserves_unknown_fields_and_hash_mode(tmp_pat
         secret_values=("top-secret",),
     )
 
-    assert [artifact["media_type"] for artifact in artifacts] == [
+    assert [artifact["mediaType"] for artifact in artifacts] == [
         "application/json",
         "application/json",
         "text/plain",
     ]
 
     for artifact in artifacts:
+        assert "media_type" not in artifact
         path = Path(artifact["path"])
         content = path.read_bytes()
         assert hashlib.sha256(content).hexdigest() == artifact["hash"]
