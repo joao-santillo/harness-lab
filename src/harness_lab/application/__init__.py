@@ -30,6 +30,7 @@ from .evaluation.evaluate_candidate import (
     evaluate_candidate,
 )
 from .evaluation.recommendation_policy import decide_recommendation
+from .rounds import InMemoryRoundArtifactStore, ProcessRound, create_round_stages, terminal_event_for_decision
 from .refinement.change_policy import ProposalRejectionReason, RefinementProposal, validate_proposal
 
 __all__ = [
@@ -48,6 +49,7 @@ __all__ = [
     "DiagnosticTrace",
     "NON_HARNESS_CATEGORIES",
     "ProposalRejectionReason",
+    "ProcessRound",
     "RefinementProposal",
     "RegisterConnection",
     "RegisterConnectionRequest",
@@ -56,8 +58,11 @@ __all__ = [
     "decide_recommendation",
     "diagnose_executions",
     "evaluate_candidate",
+    "create_round_stages",
     "partition_cases",
     "run_refinement_with_diagnosis_cases",
     "seal_partition_manifest",
+    "InMemoryRoundArtifactStore",
+    "terminal_event_for_decision",
     "validate_proposal",
 ]
