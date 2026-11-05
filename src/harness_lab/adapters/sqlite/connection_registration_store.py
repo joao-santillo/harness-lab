@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import base64
 import hashlib
 import json
 from datetime import UTC, datetime
 from typing import Any
 
-from nacl import secret, utils
+from harness_lab.adapters.security.secretbox_codec import SecretBoxCodec
 
 from .client import SqliteDatabase
 
@@ -30,12 +29,9 @@ def _request_hash(request: dict[str, Any]) -> str:
 
 
 class SqliteConnectionRegistrationStore:
-    def __init__(self, database: SqliteDatabase, encoded_master_key: str) -> None:
-        decoded = base64.b64decode(encoded_master_key.encode("ascii"), validate=True)
-        if len(decoded) != 32 or base64.b64encode(decoded).decode("ascii") != encoded_master_key:
-            raise ValueError("INVALID_ENCRYPTION_KEY")
+    def __init__(self, database: SqliteDatabase, codec: SecretBoxCodec) -> None:
         self._database = database
-        self._master_key = decoded
+        self._codec = codec
 
     async def find_replay(self, request: dict[str, Any]) -> dict[str, Any] | None:
         if request.get("idempotencyKey") is None:
@@ -58,7 +54,9 @@ class SqliteConnectionRegistrationStore:
         }
 
     async def register(self, request: dict[str, Any]) -> dict[str, Any]:
-        encrypted = self._encrypt(json.dumps(request["credentials"], separators=(",", ":")))
+        encrypted = self._codec.encrypt(
+            json.dumps(request["credentials"], separators=(",", ":"), ensure_ascii=False)
+        )
         request_hash = _request_hash(request)
 
         def operation() -> dict[str, Any]:
@@ -88,7 +86,7 @@ class SqliteConnectionRegistrationStore:
                   ciphertext = excluded.ciphertext, updated_at = excluded.updated_at"""
             ).run(
                 request["id"],
-                encrypted["keyVersion"],
+                encrypted["key_version"],
                 encrypted["nonce"],
                 encrypted["ciphertext"],
                 now,
@@ -120,13 +118,3 @@ class SqliteConnectionRegistrationStore:
             }
 
         return self._database.transaction(operation)()
-
-    def _encrypt(self, value: str) -> dict[str, Any]:
-        box = secret.SecretBox(self._master_key)
-        nonce = utils.random(secret.SecretBox.NONCE_SIZE)
-        encrypted = box.encrypt(value.encode("utf-8"), nonce=nonce)
-        return {
-            "keyVersion": 1,
-            "nonce": base64.b64encode(nonce).decode("ascii"),
-            "ciphertext": base64.b64encode(encrypted.ciphertext).decode("ascii"),
-        }

@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from harness_lab.adapters.security.secretbox_codec import SecretBoxCodec
 from harness_lab.adapters.sqlite.case_repository import SqliteCaseRepository
 from harness_lab.adapters.sqlite.client import open_sqlite_database
 from harness_lab.adapters.sqlite.connection_registration_store import (
@@ -212,7 +213,8 @@ def test_round_event_and_checkpoint_cascade_delete(tmp_path: Path) -> None:
 def test_connection_registration_idempotency_and_encrypted_secret(tmp_path: Path) -> None:
     database = open_sqlite_database(str(tmp_path / "harness.sqlite"))
     encoded_master_key = "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY="
-    store = SqliteConnectionRegistrationStore(database, encoded_master_key)
+    codec = SecretBoxCodec(encoded_master_key)
+    store = SqliteConnectionRegistrationStore(database, codec)
     request = {
         "id": "langfuse-main",
         "kind": "langfuse",
@@ -232,14 +234,18 @@ def test_connection_registration_idempotency_and_encrypted_secret(tmp_path: Path
     ciphertext = database.prepare(
         "SELECT ciphertext FROM encrypted_secrets WHERE id = ?"
     ).get("langfuse-main")[0]
-    assert "sk" not in str(ciphertext)
+    assert isinstance(ciphertext, str)
+    persisted = b"".join(path.read_bytes() for path in tmp_path.glob("harness.sqlite*"))
+    assert b'"secretKey":"sk"' not in persisted
+    assert b'"publicKey":"pk"' not in persisted
     database.close()
 
 
 def test_connection_registration_unicode_canonicalization_matches_json_stringify(tmp_path: Path) -> None:
     database = open_sqlite_database(str(tmp_path / "harness.sqlite"))
     encoded_master_key = "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY="
-    store = SqliteConnectionRegistrationStore(database, encoded_master_key)
+    codec = SecretBoxCodec(encoded_master_key)
+    store = SqliteConnectionRegistrationStore(database, codec)
     request = {
         "id": "langfuse-unicode",
         "kind": "langfuse",
