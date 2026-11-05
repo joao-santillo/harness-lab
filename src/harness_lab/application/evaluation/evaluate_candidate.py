@@ -36,7 +36,7 @@ class CandidateEvaluationInput(DomainModel):
     evaluator: EvaluatorDefinition
     cases: tuple[CandidateCaseSignal, ...]
     lifecycle: LifecycleDecision | None = None
-    reserved_case_ids: tuple[str, ...] | None = None
+    reserved_case_ids: tuple[str, ...]
 
 
 def _average(values: tuple[float, ...]) -> float:
@@ -52,10 +52,9 @@ def evaluate_candidate(
         else CandidateEvaluationInput.model_validate(input_data)
     )
 
-    if input_value.reserved_case_ids is not None:
-        reserved = set(input_value.reserved_case_ids)
-        if any(signal.case_id not in reserved for signal in input_value.cases):
-            raise ValueError("EVALUATION_CASE_NOT_RESERVED")
+    reserved = set(input_value.reserved_case_ids)
+    if any(signal.case_id not in reserved for signal in input_value.cases):
+        raise ValueError("EVALUATION_CASE_NOT_RESERVED")
 
     completion_changes = tuple(signal.completion_change for signal in input_value.cases)
     mean_completion = _average(completion_changes)

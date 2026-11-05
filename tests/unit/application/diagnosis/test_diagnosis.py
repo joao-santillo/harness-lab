@@ -88,3 +88,35 @@ def test_diagnosis_non_harness_failures_do_not_propose_changes_or_hypotheses() -
     assert len(blocked_actionability) == 2
     assert blocked_actionability[0].proposed_change is False
     assert blocked_actionability[1].proposed_change is False
+
+
+def test_unnecessary_tool_requires_explicit_empty_expected_tools() -> None:
+    base_trace = {
+        "id": "trace-tool",
+        "output": "ok",
+        "tool_calls": ({"name": "search", "valid_parameters": True, "failed": False},),
+    }
+
+    without_expected = diagnose_executions(
+        ROUND_ID,
+        (
+            {
+                **base_trace,
+                "expected_tools": None,
+            },
+        ),
+    )
+    assert [item.category_code for item in without_expected.findings] == []
+
+    with_explicit_empty = diagnose_executions(
+        ROUND_ID,
+        (
+            {
+                **base_trace,
+                "expected_tools": (),
+            },
+        ),
+    )
+    assert [item.category_code for item in with_explicit_empty.findings] == [
+        "UNNECESSARY_TOOL"
+    ]

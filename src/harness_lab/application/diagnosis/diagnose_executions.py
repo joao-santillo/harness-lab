@@ -66,7 +66,11 @@ def _matches_missing_tool(trace: DiagnosticTrace) -> bool:
 
 
 def _matches_unnecessary_tool(trace: DiagnosticTrace) -> bool:
-    return bool(trace.tool_calls) and len(trace.expected_tools or ()) == 0
+    return (
+        trace.expected_tools is not None
+        and bool(trace.tool_calls)
+        and len(trace.expected_tools) == 0
+    )
 
 
 def _matches_invalid_tool_parameters(trace: DiagnosticTrace) -> bool:

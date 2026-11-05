@@ -45,6 +45,7 @@ BASE = {
             "critical_violations": (),
         },
     ),
+    "reserved_case_ids": ("case-1", "case-2"),
 }
 
 
@@ -158,6 +159,42 @@ def test_evaluation_rejects_non_reserved_inputs() -> None:
                 BASE,
                 {
                     "reserved_case_ids": ("case-1",),
+                },
+            )
+        )
+
+
+def test_evaluation_requires_reserved_case_ids() -> None:
+    invalid_input = copy.deepcopy(BASE)
+    invalid_input.pop("reserved_case_ids")
+
+    with pytest.raises(ValueError, match="reserved_case_ids|reservedCaseIds"):
+        evaluate_candidate(invalid_input)
+
+
+def test_evaluation_accepts_only_reserved_case_ids() -> None:
+    accepted = evaluate_candidate(
+        _merge(
+            BASE,
+            {
+                "cases": (
+                    BASE["cases"][0],
+                ),
+                "reserved_case_ids": ("case-1",),
+            },
+        )
+    )
+    assert accepted.sample_size == 1
+
+    with pytest.raises(ValueError, match="EVALUATION_CASE_NOT_RESERVED"):
+        evaluate_candidate(
+            _merge(
+                BASE,
+                {
+                    "cases": (
+                        BASE["cases"][0],
+                    ),
+                    "reserved_case_ids": (),
                 },
             )
         )
