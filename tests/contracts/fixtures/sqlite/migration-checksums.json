@@ -1,0 +1,10 @@
+{
+  "0001_foundation.sql": "60e1c9743254b26e3509ff8b391ae8b455138e73447b1f3c78063764d7fc3e9c",
+  "0002_immutable_harness.sql": "f59fc3ddd78018b66d53e15a4db388bc5aeded5aaae514a64e07ac342043fa19",
+  "0003_scope_integrity.sql": "2f69231f9f01d6e74a1c93ca7cae23283cb1c9eb2f9fd5ded483f76ca42a5e4c",
+  "0004_encrypted_secrets.sql": "7b68ea15fd689dfc4f489ea2dd04d7e6cbd8dc8077e30bee2ab22d3397d616d4",
+  "0005_connection_registrations.sql": "f04d7f9a12246d966ef5f4247ac0591ea43438bbb28b50029da9e9e219bd68d7",
+  "0006_round_jobs.sql": "8317a373a1e9c130e3b1e7478920535867e3966000f8224192606db3f6bacfca",
+  "0007_round_artifacts.sql": "7d08f7379f6749906c7cc6ba9f33c2d7f4e1dd80306867998243f85a87cd6a4a",
+  "0008_round_job_cancellation_leases.sql": "d91be146d210e5135b95d58f9cd91be3fd70e9e3df025c94afe138ef56938c8e"
+}
