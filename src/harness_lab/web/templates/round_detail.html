@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{ round.id }} | Harness Lab{% endblock %}
+{% block content %}
+<section class="page-heading"><p class="eyebrow">{{ round.state }}</p><h1>{{ round.id }}</h1><p class="lede">{{ round.objective }}</p></section>
+<section class="workbench"><h2>Controle</h2><form method="post" action="/rounds/{{ round.id }}/cancel"><button class="danger" type="submit">Solicitar cancelamento</button></form></section>
+<section><h2>Progresso</h2><ol class="timeline">{% for event in events %}<li><strong>{{ event.message_code }}</strong><span>{{ event.occurred_at }}</span></li>{% else %}<li>Aguardando o worker.</li>{% endfor %}</ol></section>
+{% if artifact and artifact.evaluation %}<section><h2>Resultado</h2><pre>{{ artifact.evaluation }}</pre></section>{% endif %}
+{% endblock %}

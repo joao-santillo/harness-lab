@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Cases | Harness Lab{% endblock %}
+{% block content %}
+<section class="page-heading"><p class="eyebrow">Dados</p><h1>Cases</h1><p class="lede">Importe exemplos historicos para compor a avaliacao.</p></section>
+<section class="workbench"><h2>Importar CSV</h2>
+  <form method="post" action="/cases/csv" class="form-grid">
+    <label>Agente <select name="agent_id" required>{% for agent in agents %}<option value="{{ agent.id }}">{{ agent.name }}</option>{% endfor %}</select></label>
+    <label>Dominio <input name="domain_id" required></label>
+    <label class="wide">CSV <textarea name="csv_content" rows="7" required>id,sessionId,similarityGroup,content</textarea></label>
+    <button type="submit">Importar cases</button>
+  </form>
+</section>
+<section><h2>Cases registrados</h2><ul class="resource-list">{% for case in cases %}<li class="resource-row"><div><strong>{{ case.id }}</strong><span>{{ case.agentId }} · {{ case.domainId }}</span></div></li>{% else %}<li class="empty-state">Nenhum case importado.</li>{% endfor %}</ul></section>
+{% endblock %}

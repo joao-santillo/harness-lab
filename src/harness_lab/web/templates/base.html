@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Harness Lab{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">Harness Lab</a>
+      <nav aria-label="Navegacao principal">
+        <a href="/">Agentes</a>
+        <a href="/cases">Cases</a>
+        <a href="/connections">Conexoes</a>
+        <a href="/rounds">Rodadas</a>
+      </nav>
+    </header>
+    <main id="main-content" class="page-shell">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

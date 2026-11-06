@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Conexoes | Harness Lab{% endblock %}
+{% block content %}
+<section class="page-heading"><p class="eyebrow">Integracoes</p><h1>Conexoes</h1><p class="lede">Status das integracoes configuradas. Credenciais nunca sao exibidas.</p></section>
+<section><h2>Conexoes configuradas</h2><ul class="resource-list">{% for connection in connections %}<li class="resource-row"><div><strong>{{ connection.name }}</strong><span>{{ connection.id }} · {{ connection.kind }}</span></div><span class="status">Configurada</span></li>{% else %}<li class="empty-state">Nenhuma conexao configurada.</li>{% endfor %}</ul></section>
+{% endblock %}

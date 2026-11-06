@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Agentes | Harness Lab{% endblock %}
+{% block content %}
+<section class="page-heading" aria-labelledby="page-title">
+  <p class="eyebrow">Operacao</p>
+  <h1 id="page-title">Agentes</h1>
+  <p class="lede">Acompanhe os ambientes disponiveis para diagnostico e refinamento.</p>
+</section>
+<section aria-labelledby="agents-title">
+  <h2 id="agents-title">Ambientes configurados</h2>
+  {% if agents %}
+  <ul class="resource-list">
+    {% for agent in agents %}
+    <li class="resource-row">
+      <div>
+        <strong>{{ agent.name }}</strong>
+        <span>{{ agent.id }} · {{ agent.domainId }}</span>
+      </div>
+      <a class="text-link" href="/rounds?agentId={{ agent.id }}">Ver rodadas</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty-state">Nenhum agente configurado.</p>
+  {% endif %}
+</section>
+<section class="workbench" aria-labelledby="create-agent-title">
+  <h2 id="create-agent-title">Novo agente</h2>
+  <form method="post" action="/agents" class="form-grid">
+    <label>ID <input name="agent_id" pattern="[a-z0-9][a-z0-9-]*" required></label>
+    <label>Dominio <input name="domain_id" required></label>
+    <label>Nome <input name="name" required></label>
+    <button type="submit">Criar agente</button>
+  </form>
+</section>
+{% endblock %}
