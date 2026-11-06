@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a92eb94fdb622056fafe5d0254a5e4bd242ce013bc1433705d5f077a74e26334",
+  "claims": [
+    {
+      "id": "claim_192f6ff6cfd945a685deb114ff9aefd6",
+      "statement": "LangfuseClient encapsulates HTTP transport using Basic authentication with Base64-encoded public and secret keys, validates http/https schemes, applies configurable timeouts, and translates HTTP transport exceptions into sanitized RuntimeError instances.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/client.py#L9-L42",
+          "version": "repo-lines-v1:sha256:b5c6d5979cacb0ce0193e7c4fc8a8dc2a0555f2b3d257e83e4f12ec0496a015f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiODYzMThjOGUxNTk3YWE2ZWRiODgwZTc5MTI4NWY4ZGEzZTg3ZTFjMjYwOTI3OTU1ZmJkMjQ2ZjViZjI5YTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYWQ3OWIzZTFjMGVmYjY4ZDM3ZTRjN2EyYzFhY2NlOWNmZjdiOTI2ODA5MWU2MTkwNmRmNzI3Y2UxZjkxMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhNzcwNmFlNzM4MjhhNmZkOTkzOWMyOWRjM2FhMDczYzk0YTdkYmJkODkyMTdkNDJjMWQ1NWM0MGYyZmQxYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3b27791cd62440c7abc711b355cefce1",
+      "statement": "The capability negotiation function probes GET /api/public/v2/observations?limit=1 and falls back to GET /api/public/traces on HTTP 404/405, returning a LangfuseCapabilities object with capability features and limitations or raising explicit domain runtime errors for invalid credentials or rate limits.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/capabilities.py#L29-L98",
+          "version": "repo-lines-v1:sha256:f762803c3eae6bac5ece471d3f559daad242017b1dd12efdf8cd38a6206cfb65:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzOTllNTQ4OGQ1Nzg3OWZjZGZjNjhmYzZhOTIyNDA4YzE4OTE4NTAwMTdhODM0MDQ0MjhjMzMxMzAzNTljZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNDVlYjk0Y2E5NGNmN2E0OGYwNjg3NGY3NmRmOWVjMDU4ZDQ5YTRjMTI5ODY5MTZlNjgxMWQwNzA5OGY3ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5NWE4OTY0ZjAxODFiY2I4NGI3M2ZjNTU0MTcwNzRkNTVkMGVmOTY0NDZlMTgzNTg3ZjRiZjIyMDhmM2YzYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_31827f60033649909834066902cafbf2",
+      "statement": "Observation normalization deduplicates raw Langfuse observation objects, resolves root hierarchy when parent IDs are missing or absent from the batch, calculates latency, and collects limitations for missing parent references, absent cost/usage details, or multiple root observations.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/normalize.py#L55-L113",
+          "version": "repo-lines-v1:sha256:28351c4dd405b44b22ce109664329a591e0c653ea6378d15f92b1d79eaf32025:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YmM1YWVkYmMxZDEzZGEyNmM5MTZjNGViYjU2ZDY3YzBjMjcxMGYzYWFlM2UzN2FjYjhiNmY5NTQ5OTM1MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkYTJjNzM5NGVlYTM5NTQzMDFkYzBiYjE5ZTczZmEwNDQ0ODlmYTBlMWJjYzQ5MDExMGFhMjhiYWZlZGY4MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f615cff26d144ed9a499b9d1c2b3b98b",
+      "statement": "LangfuseCaseImportRepository classifies historical execution traces into ready or discarded recovery items with explicit reason codes, enforcing constraints on request limits, observation budgets, payload sizes, and retry delays.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/case_import_repository.py#L15-L38",
+          "version": "repo-lines-v1:sha256:cbadf528a86c55376e4748675f7e28350313ef7771c2f67f6035015868b4f2af:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4MWUwNzI5NDk0NGIzN2RhZjQxMWQ0MmZkOTYwYTJjYTI1OWNiZDdjNjc1NTAyMGZhZGVhZmI1MzNmNzRjZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOWI1ZjQzNjZiYzdmNDg5MzEzZGQ1NTgxNjQwNGViNzQ3NmRkZjg1Mjg3ZTZhMzAzMjgwNmI2ODBkNDYwZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4OGI2OTAyMDIxODNlOGNkNzU0OTBkZDBlOTY0ZTY0YjYzNTJjYTAxZGVkOTM1Y2EzMzdjYzZkNGNmMjgzMjUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/case_import_repository.py#L271-L360",
+          "version": "repo-lines-v1:sha256:fa7298d9a55c997144b727360ed7193d925d3f6872641c0ca34932d311d6424c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0ZjlkN2M4MzdkYzY2ZWUxOTQzZTNhMmQ4NDc5NjMzYTQ4YzU4ZDI0NWNlM2YzNDdiZTY3NDlkNjNmY2EwNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlZGUzMTRkNzUxMDRkZjQxMDVmNTkyOWU4N2Y2M2ZjNTNiN2JkZjYxNjg2ZTcwNDhhNGY4MjI4OTU2MDFkMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkZWJlM2ZkMWQwM2NiZjA4OGIwZTQ5NmQwNjQ5ZGIyYzU3OWRhZGFlNWNhNjFjNTc5ZmQ3ZDk2MTA2M2RkNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a44685a693994e58979c42f78effaea7",
+      "statement": "The langfuse_case_id function deterministically computes case identifiers using a SHA-256 hash of the connection ID and trace ID to guarantee idempotent case creation.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/case_import_repository.py#L548-L550",
+          "version": "repo-lines-v1:sha256:dc477035f69b31936d21f50ce66a57d55823631df10aeb1dccffecda31bc0a8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjdhNzY0YWM1Mjk0OTRiODgyNmEzZjkxMzljMTc1YjZlNzg2MWI2MWQ3NDVjZTNiYWE2MWZjM2JkOTFjYzY5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDA1NTFmNGIwMjI0ZmQ0MjllYTQwNDJiNGFlMjcwNGVkOGYyMDY3ZWRiYWFkYmQ5NGFkZjI1ZmUyOTVmNTc5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjNkZjJhY2YwNmU4YzNmMDNjNzEzNWM2ZThhYzVhOWNhNTQzMmFiZTA2YTc0YWNhMGZkZDlhNTNhMDA4Zjk4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzk0NDMwYTgwYTQ2ZjQ5MjJmNTExMTI1OWE3NTIxZTI3NTI3ZWNkYTE3YTllZmE0NTZiMDJmZTcwZWY5NDQxOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_34d07303d242441d861f13225ba90cce",
+      "statement": "LangfuseImportPreviewStore manages ephemeral case import previews in memory with a default 5-minute TTL and 100-preview capacity limit, purging expired or oldest entries and enforcing atomic one-time consumption.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/case_import_repository.py#L553-L642",
+          "version": "repo-lines-v1:sha256:00c8d1888cedef95cce3798b80d3a047245008dfdd4d92b29145b53ce7192663:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0M2NkMGUzOTQ2NTc2NzRjZjM5ZTllOTNlNWU0MDMzM2MxOGRmMGY4MGY2MDE4MGQ3ZmFiODRlNjdhNjkzOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwMWQzZThkYWE3ZmNiZjc4YmQwNmJhYTA5ZjRmY2YyZGY1ZmUxZDhmNmQ3ZTVlMzEyZjFhY2ZhN2UxYzRhYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3OTUyNmZjMGU2NDhjMGM1YWNmNjk4NjJkNjhiMjgyOGE1NmY3MjQ4YzQ2YmU3ODEzNTBlM2NiNTY1ZGM3NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2457a07c75d4150b3776ee5cd8102c8",
+      "statement": "LangfuseTraceRepository collects evaluation traces over specified time windows via Observations v2 or legacy Traces API, mapping observations to EvidenceTrace domain objects with 1000-character truncated JSON excerpts and single-retry backoff handling for HTTP 429 rate limits.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/langfuse/trace_repository.py#L31-L134",
+          "version": "repo-lines-v1:sha256:4d3905a628740e0730efaf16f1dcd831be9dbd31a0b6a76f58ca25157dcb4855:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5ZDQyMDMwZmZkZDI5ODVkN2Q5ZTk3ZGI5NjY2ZWM3NGY3ODk0NTBjNDI1MmIxNzAwNjBmOGU0MjcwNzNlMGU4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiMmJlMTQ0Yzc0OTJiZjE5NzllMDE4ZTczZjYwMmY5MjJlNjQyNTVkMjY2MDZiN2IyZmM3NTI0YTllNzVhMjExIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2ZDgwYjMzMjJiNjg2NjQ0NDRiZTQ2YzViMWY1NDBhNDVmNTY1ODBlMDcyZDMwMzQzMWYxMGI2MDg2MzFkOWE2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

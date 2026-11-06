@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a0003c7b2a7a505791294dc9c6bd42cbe74eb1e6aeaf8eeeb9c55b1641e85f02",
+  "claims": [
+    {
+      "id": "claim_e81b1705968d476abdc868f5d8bae3ed",
+      "statement": "The Round domain object model uses a deterministic finite state machine defined by ACTIVE_ROUND_STATES, TERMINAL_STATES, and ROUND_TRANSITIONS.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L17-L140",
+          "version": "repo-lines-v1:sha256:b9abb131b131f5e90ec9d3f7bd8115d018fb6eadeefeeb34a18a8cb1fb8a9f81:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZmNmMGEzZjUzODA1YjEwNzE2MTQwZWI1NDhkZDBmMWU0MTJlZGExNTgzNDQyMzhmZTkzZTRlM2YwYTdjZjU5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5NmUwYzY5ZDNmODlkMWIwMzE5Y2M3MmRjODY5NmE3YjY3MzY2YjcwODU4ZGJmNDg0MmQzN2I1ZTRmYWM4YzJiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzNGM2NGU3NGU1YjI2YTI0OWRkMDViZWEyMWQyNWZjYWE3NjkwNTYzZjMzNjlmMGIwNzM2NzUwMzc2ZGVlOWI1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_49233fe44689438f8f5774b997d40726",
+      "statement": "The active lifecycle of a Round consists of seven sequential states: setup, collecting, diagnosing, refining, executing, evaluating, and exporting.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L120-L128",
+          "version": "repo-lines-v1:sha256:229076e6e36096937cae9f0d9c8b965adf4dab73afae0f9055afcb1b18fbcfbf:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Q4MWNmM2NkMDA0NTUyY2U2YWM1NDQ4ZDNlN2QxNjcyM2QyZDI0ZTJiMDI3YTQwZGU1MTUzMjEyNThlMDg4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTBjN2RmNmRhMDYwM2JkYTZiNTBjOWE3ODFiZTcwOWI0YWFkNWJlMTFlOTE3YzY0YzM5MWU0OTMzYmRlNzhjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjExYmNjZGNjYTliOGI3N2E5NTQxNzcyMzQyNzkyZTQxNTY4YTM4NTkzMmEzMjI3NDM0NGQ5N2ZjZjBlYmE4NiJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L28-L36",
+          "version": "repo-lines-v1:sha256:8463cf81b46853d1bd5e5b8af82f41afa1bc410c4c047ec9996b452897b38660:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODg4NWEwOTcyZDU4NjZhNDIxNDRiYzRiY2FhMGY3MWYxYzU1ZThjOTM1NTUwZDE1YzQ5ZjczMGVmM2FkNWUyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk0MTZlMDlmNzhiYTMxNmMwMzI1NjgyMTNiODU1ZWU3NTZlNDE1NjVkOTE4ZjA5NTE5YzgxZmQ2MjBmNDA2MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2U3ZDI0Y2EwODM2YTllZjM0ODQ5MGM0ZjRjOTc4ZDIyOWJmZWZlZDU4NTU0N2UxZmUxODEzMGZlYjg0Y2MwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2U5YTVkMzcxMWU0ZDBkMjk3MWIxZDczZjFiY2Y5ZGYwNjQ5YjVhZmY4ZTkwYmUyYWUyYTg4YmY5NWY3Yjk3YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a33b2cb5f2c2474f83daf148d0c8685d",
+      "statement": "Terminal states for a Round are irreversible once reached, causing transition_round to raise a ValueError upon any subsequent event.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L110-L118",
+          "version": "repo-lines-v1:sha256:c0bd25ef81f60b819f7ab73b19db64ae5aa6e196c5d973c59cfda11cf61735ad:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdlNjBhYzE5N2E4MzA2NDE1MzQ2MzI1MmE4ZTBlOTdlMTY2MzhkNzgxNGQzZjQwZDJjMDlmYTUwY2JhMjA5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjc1ZDRhMTVlOWQ0NThlMjlmMmZhMWI3NDA2YTA4ZDY5YTI3NjlhN2JhODc0NTMyY2Y5NjEyZDUyNGFhOTNkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGNmNjYwNWM5OGZkNDc4Y2I0NzhkOWZlODFkZTcyMzlmNzk4ZDZhYTZjOTZjMzQ5Y2Q4MDRiNjBhY2IwOGM3MSJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L142-L146",
+          "version": "repo-lines-v1:sha256:2e5d05fe0f30ad4a053773f86fbd582d08a55f0a7e6dcaa9612e120b6c5e503a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkzNDRkZDhkN2FkYmRhZDU2Y2QyZjMzYmMyNjhkZjE4Mzk5OTQ4MjUxY2FjYjA5OWRmMmIwMTIxOTA3NzQxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYxNWViMzdhNTYyNzA2ZmJjYzMxYjY4Mjc5ZWNmYzgzNmRmM2E2OTQ2NzI2YzMwNjg1OGEyMzU5NzhlMmQ5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTk4YjA2M2Q5YjQ3ZTY1Mzc5NjI1NTcyY2NlMTk3NjY5ZDU3NjdlMTJjMThiZTA3NTY1MmI4Y2Q5ODFjZThkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjEzZTU5ZDQ0Yzg3ZjhiNWFlMDY3N2M3ZjVkN2M0ZTRhMWQyOTQ5ODE4Y2M0Njc0YzY4NTQ2ZDhmZTY2ODY0MiJ9"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_round.py#L71-L75",
+          "version": "repo-lines-v1:sha256:674e755390d211fcbc15e13948b4208ab95ab06a6096b59119f06e4858135991:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmExNDhmNGRmODdhYzM5ZDUwMDk4NTc1Njg1OTRjYTgwMTBmZGNmYjY4NjhmN2IyYzA0ZTkzNzU3MDUxOGI5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDhkMzNiOGQ5MTY5NWVlMTNiYzI3YzRlMjUzNDA2NDEyNmU3ZWIwYTgxNDMwMGFmYWJhMzk1ODc5ZGI4NDNiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzE2ZjllNjQ0NWQ5ZWRhNTlmMWY4Nzg0NTc3MmYxM2M5OThiZmFmZDk5YmNmY2M5YTkxYTg0NjMzYzY1N2E3YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a1ad6ec4bdb34f6c91eb6a610c9bf6c0",
+      "statement": "Evaluation decisions can transition a Round from evaluating or exporting into recommended, rejected, inconclusive, pending_validation, or validation_insufficient.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L89-L108",
+          "version": "repo-lines-v1:sha256:73acb2d70c7f9ffa3329720d7444cba4157990e104ccc9c76537f423773a52e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3NzNhN2U3N2NkNDU1MzU2ZTM1NTkwYTA1ZjY1OTZjNTcxMDhiOWY0MWQ2NWM0MDg3ZmIzYjliZGI2MzA5MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZDUwZGQyNjJjNjUzZTY5YmMxYTZkMDI0NGRmNTRkMjlkYjM4MTJjMmVhNDQ1MjMwOGQ3MGM0NmQzZGU2YzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NWQ0YTE1ZTlkNDU4ZTI5ZjJmYTFiNzQwNmEwOGQ2OWEyNzY5YTdiYTg3NDUzMmNmOTYxMmQ1MjRhYTkzZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzMjY1ZGQyMzBkNTE2NWY1MmZkYWU1OGY5MDQ2YmU5OTVhNzdhYzU3NTk1NmU4ZDI4Mjc2ZWZlMTNlYWFkMGYifQ"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_round.py#L23-L33",
+          "version": "repo-lines-v1:sha256:61cb347064f5bd8a6b06f8b614b92533558143ebd5ef86e77b423d82a5efab00:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0MjRkY2RkNGQ1NTU4MTA2MDhlZGI1OTNjZGZmNDEwZWQ4MWJiNDM1ZThiZTU2YzkzZjMxZjNhMDM5MTliYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5ZThmNDQ2ZGYyNGE0M2RmYWMzN2VmYjFhMGZmMWE0MzgzNGM1ZDRmYjgzMmE0ZDlmNzFmOGYyNzI5OWQ3MzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0YTg3M2NhNTVlZWIyMGFkOWIzM2Y2ZTUwMDBmN2JlZDQ1MWM2MzA0MTdjMWZmMTJmZDE3Zjg3NzM0OWNjOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0NmFiOTkwZjVjYjI4ZjcxZWVjM2IwMDc5MTQwMDEzNmE1ZDFkZTNhZGYxOWViNGZmNDlhMDE2YTU4MDRlYTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfc82c0f97874258a91d1dc3be464cb8",
+      "statement": "Operational terminal states stopped_by_limit, cancelled, and integration_failed can be reached from any active Round state.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L57-L109",
+          "version": "repo-lines-v1:sha256:d6e74d1f4b32978cadb8485d8cba2eb65c227a6910c08587335c573883d2a2cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4MWUyMDNhMWNlM2FhN2Q0N2YwMDRkOGUyYjE5OTZmYWU1YTlkYTcxMjdlYzczZTk1Mjg5MjQyZjk4ODVkYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlN2QyNGNhMDgzNmE5ZWYzNDg0OTBjNGY0Yzk3OGQyMjliZmVmZWQ1ODU1NDdlMWZlMTgxMzBmZWI4NGNjMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhNWYyODg3MzI4NjM0YWU3ZDA4MmM1MzQwNzIyNGRiNTlhMDA1NjQ5ZGRlYmU0NmM0ZmE3ZmE5ZTZlZjg2YjgifQ"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_round.py#L62-L70",
+          "version": "repo-lines-v1:sha256:5c0d840d32c0031143b01f1030cd0bf13615282540f0f0762c1585a2262b93ea:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU3ZmNiYzAzOTMyM2JlOWExNjUxY2NiNDdmNzFkYTJmZjVhMzJmZmY1NDQxY2JiZDZjZjViNTEwMTVkYWRhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JkOWFhMzNlNzgwZGFkMjY4ZWRjY2ZmZmUxMTI4ZDVkZWZjNjY2MGY2YTc4YzU0OThiYTk1ZjQ0YjUxMjY1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDBlM2RmYWYzNDc5YTBkNjAyOTk0MzQ0Yzg4MGJhYTk2NWNjOTQ5MmYzOTgzZGNlZmY2YWViOWE5OTFhMjg4MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e0421ae66c0a46dab184e9ae8bbc8b3f",
+      "statement": "ProcessRound verifies worker ownership before and after each stage using is_owned_by, raising RuntimeError('ROUND_CLAIM_LOST') without mapping loss of claim to integration_failed.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L149-L151",
+          "version": "repo-lines-v1:sha256:7f92a8e545ed488bcbf026e94f53bbe7fff31d7153b0717f61f3142e23461ddd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE2YWZkMmQ0NzY3YjAyNDRlNTk0NTIwNGQzMzUzNTk4MjhlNTEwZTU3NzU1NzM4ZDQxOWU5M2Y0NjA2N2M5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGFjY2ZkMDA4YTkxMzVhY2Q2MDY5NTRiZjhkYTJlMWVkYTU4ZDI0M2FmYTlmNDBjYzY2NjNkNDg0MDQwODc4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRlYzVkNjhhYTE1MTRhZTExZmViMDRiOGY3NDM4NzY2MDE4ZTEzZmU0OWY1Y2JkZjdmMzZhZWUzYzM2ZjU3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNkNmZmYTQ3ZmM5NzU5YzNkNmUxMmI2NWMwMDAyNGFiYjM3ZjE2NTgxZDgyNDZkZTE2YTg3MTIwM2YwNDlkYyJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L80-L101",
+          "version": "repo-lines-v1:sha256:727993e366418b96f60656c8b65fcbe13b82cd7e6b7cfd5dac91d146c8530f75:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzY2ZiMzIxOThmNjdjZmRhZjEwMTA4OGY2NmQyNWUwMmMzNjFhN2ViYTRjY2E1NzVhZjRmN2Y2OTBlMWJkYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMjUwNmM5ZWUwZTVlNWZiZDJhNTUyMWNkYTY4ZGZhMGVjOWY2YmQ2Y2Q1NTVmZDAxNDMyYzU3Nzk1YWQ3NWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhZGViNzQ2ZDdkMjZjNDhlN2Y4NWE4M2Y4YWMzZDU5MjZhODRjZWEyZjk3MGUzZWRjZjQxMDgwZmE1ODYxNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwNjQwNDk1MDllZmQzYzJjZjdmYWQ2YTViZTFhYmY3NzQ0NzdlZmZhM2EyZmNmYTYzOWJmY2FhNDkzYTRkNTQifQ"
+        },
+        {
+          "resource": "repo://tests/unit/application/rounds/test_process_round.py#L188-L206",
+          "version": "repo-lines-v1:sha256:65cd02ef457363eb8e085c413cdb5849313bcd9d00eb2c8048222e318f0cceac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwMzcyMWE3ZDhiNmE1M2MxNTJiZWNhMWIxMWUzNWQ3NTg0M2I3ZGRmNmJjODg0ZGFkZmQ5NGUxMzk4ODkwOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5N2JjODA0MGZiNmVhYjY2Y2Q2YzNmZDM1ZGIzNmFiZTFkYjNiZTNkMzNiZmI0NzA5ZWUzYTg1MGE5MjZmMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlOGVjYzAxMGRkMTk5MjhhMTIzNjViYTY2ZmY4OWM1ZTVmYjRjN2ZlZmU0NDM0OTBmYjM2Yzc3NzNhMzBmNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_39905fc1a558408b9dd51a79b7425d27",
+      "statement": "If an unhandled exception occurs during a stage or if export recovery lacks a persisted decision, ProcessRound fails closed by transitioning the Round to integration_failed.",
+      "evidence": [
+        {
+          "resource": "repo://docs/arquitetura.md#L40-L41",
+          "version": "repo-lines-v1:sha256:4f5de3f393875d6a8e366040b3a266bccc9a147600f4600f5d5e04f826457989:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2VlZDI2ZGZjZmU0MmYxMDg3ZWFjNGE4MGViMGViZTdhZmRkOTliZWQzMTM5YjJkYzIyNzQwNmYyZWU0YzZjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjQyMzEzYzM3N2NiMGFlNjVjMDBjNGFhYWIxZTFiNTljNTQ1ZjFhM2FkOThiNGFjYTc3NWQyNDRhN2JjZDNhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTY0NTM4MGUzYTg1MWQ1NjgyYTI0OGJlM2M3MzZiYTY0NjEzOWY1ZjNiNmY3ODFhZjE1YTU5NTNhMGJiMDIyNiJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L121-L134",
+          "version": "repo-lines-v1:sha256:ebe242f4616c41482d7a37f3190194c28dd62650f17ed805cdcec31c99817043:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZWI3MTIxNjliYTBmZWMxZjNiN2VkMzY1NjZlZTAxMGQ1YzViMjQxYTgyMzBmZmU4NDcyNmQ1Y2EwNWU0MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMDUzNDhkNzZjMWY1MzAzZDhmZDFjNTBiNzQ5MDkwM2IyNWIzYjgxMTRhMzExNTZlNzM1NGM5OTAwYmUxYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MTE4MzlmZGQ3ODMwMTYwZDBiYWUzYjdmYTdlZjY4ZjE2YjdjODI1ZjdmNjRkMDA4YjM0Zjk4NWZiODBlN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3MTQwYThjZWQ1MTgyNGQwNDIzMjJkMzc4MWNjZDYxMzg4MThjYTczMDY3ZmUzMzE4ZjM2ZThkZGVhN2UyZTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L95-L101",
+          "version": "repo-lines-v1:sha256:0a1fe817bc706af54c60be166edfe3e94063d0ad4ed397110b9306885a014c7e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTI1MWY4YWEzY2Y3ZWU4Mzc1M2YyN2MzYzQ4YTE5NDEzMzYxNTA4NjlkZDZlMDUwNWRiOGVkNmE1NWNhMTNlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyNTA2YzllZTBlNWU1ZmJkMmE1NTIxY2RhNjhkZmEwZWM5ZjZiZDZjZDU1NWZkMDE0MzJjNTc3OTVhZDc1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTM0NjRjMTQyMWIzMzc1ZWE1NzViMTk0MjM0NzNkMDNjNDE0NTYwODM0ODM3YmM2OWZhZjgwZjc1MmFjZmZiMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDA2NDA0OTUwOWVmZDNjMmNmN2ZhZDZhNWJlMWFiZjc3NDQ3N2VmZmEzYTJmY2ZhNjM5YmZjYWE0OTNhNGQ1NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8eb0e297637e477da993d3796f3b7dc6",
+      "statement": "Round state updates are immutable through apply_round_event, which creates a new Round copy and persists progress via atomic RoundProgressCommit containing a RoundCheckpoint and RoundProgressEvent.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L153-L178",
+          "version": "repo-lines-v1:sha256:93d92f427348870707890071f3dd5f50dc1eb9795282598af7cede0da80fff11:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzM2I4N2Y2OWE0ZTdmZDViYjc4ZDM1YTU2M2MyNzc3OThlMTk1OGMwMDBiODlmMDhmNWEzZDcyNmU3NjkwNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3OTdiOTZlN2ExZjVkZDg3ODA1MmY0MDRjYjUwYmE4MjQzNGQ5YTRkZDE1NWNiMzA4OGI5ZDFlZTkzYjgzZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxZWYzN2RjZDFlYjBmNmQwYTlkYTllMGI5ZTg4NWQyZGZkYWI1ODRjYzRlMjhmNjY3MjA2NzI2NTE1YjhkNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMDQyMTA5ZTAwZTQ5MzViZmI4YzcyZWViNTYxYjg3MTBiODM1ZTA2NzY3NDViMWYwNTUyOWFkZWY5MWY4NzIifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L177-L183",
+          "version": "repo-lines-v1:sha256:7e2c312f45ba009e9e9bae1cc9e826b51988914d4f4aa0eca7b0723e0edb0301:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGIwZDE3N2RlMmQ3YzQ4NzIyZjQyNzg2ZjdkNjQ3MDljNzc5NGI0OGIzN2IyOGRkODc4NjA0NGE0MDg2OWY2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBjMWYxODhmMTQyZWQ3YTgyNDY4MGIyMDcxNzJjNTUxOWJjNjE0YTQ4ZmRhN2NmMTY3ZWRiOGRkZjc5OTU2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzdkOTEyN2M4ZDhlZmU2YmFlZWEzNmJiMDE3YmRmMDg3ZWY5Nzc5ZjBlNzAyY2MwZWJjNjllOTU3ODJmM2NkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

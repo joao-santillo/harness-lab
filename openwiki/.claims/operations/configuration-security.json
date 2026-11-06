@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e0b7a1d851b9c3a0e98581b1a2b0fd311a989842222856220e3c10415fd860d3",
+  "claims": [
+    {
+      "id": "claim_cc4708dd04a94107b723a2d920834312",
+      "statement": "The worker runtime configuration validates APP_ENCRYPTION_KEY as a canonical 32-byte Base64 string and raises ValueError('APP_ENCRYPTION_KEY_INVALID') if the key is missing, not 32 bytes when decoded, or non-canonically formatted.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/worker/config.py#L24-L33",
+          "version": "repo-lines-v1:sha256:f69c0642f17d292e3f472379b58173476563b5c2f65cd08f4dc9c22f94249907:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwY2FhMGZjNzYwMzc3NTc0YzEyMDgyYjNkOTY3MWRiZDk1OTVmMDVkODFhZTViOGJkNjc5OTFmNzRkZWFkMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5M2ExMzA2MmYxMGVlNGYxMjE4ZDkzZTM3YTZmODFkMzQ2ZmYxMWVjN2U1NWRkNTQyZTJkMmQyZWYwNzExZjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkZWFkYzg5NjJjNDM3Y2VjMDVjNmIyODVkZmIxZjZjODlkMGQxYTU0MTViZTI3MTE0OTQxMWVhOGM4YzczZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4YzQ3NmUxODc0OWMyZTlhMDFmY2IwZTZkZWQ0ZGQ3OTY4YmIwZjIzZmU4MDI2ZmI4Y2FlYmZlNGRkNTU5NGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a015af284f0d4abf8777733ae6c9f6b2",
+      "statement": "The SecretBoxCodec uses PyNaCl SecretBox with XSalsa20 and Poly1305 MAC to encrypt secrets using 24-byte random nonces and 16-byte MAC prefixes, encoding nonces and ciphertexts as unpadded Base64 strings.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/security/secretbox_codec.py#L34-L44",
+          "version": "repo-lines-v1:sha256:ba39c7e4433b78d3dc2ee95c0ff7c2bb7f8aa0b9320d8fc2c5a954ffdf2f578e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmMTFlMDQyYWY1ZDJkYWIyYTFiY2U2ZjRmYWE1N2FmODg0ZGRlODViZTFiYTBjMGNlNGZmMTRkOGM4YTRmMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmM2I0ZmVhMzljMzhlYWY4Y2VjOTY2NzhjZWM5YjQ4OWEwZmNhNjVkOWIxZDMwNWQ0NTk1YmY4YzVmMzcxMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5NjUxN2ZlNWQ4ZGYzYzcyZGMwNGU1ZmQyNTQ3MDFlODllNGEyZDQ3OTdlY2FhYmVjOTI1NWNlYzA1NDM0N2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e25124c7350345a08b36ce8d42879933",
+      "statement": "The EncryptedSqliteSecretStore persists encrypted secret envelopes into the encrypted_secrets SQLite table using ON CONFLICT(id) DO UPDATE, and raises SECRET_STORE_CORRUPT for malformed envelopes or SECRET_DECRYPTION_FAILED upon Poly1305 MAC decryption failures.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/security/encrypted_secret_store.py#L17-L49",
+          "version": "repo-lines-v1:sha256:977631a53306dfd3d854351045fb28f9d27cdce64d6d0bf289ef39f66c6cd0f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlYWZkOGJlOGRjMmNjOWJmMjAxMGYzMTk1NTA1NDhjYjgwY2FkMjBhMmI0MzM2OTJiOTFhZWIzYTc1NGI3MGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYWNmNTMzOTg5NmIyMTZjNDJmZDk0NThjMTg4NGIwYjE1Y2VhNTg4MTNjYzk2NTRhZjdmYjljNTJlZTg2Y2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4ZDJiYTFhOWZhZjcyYTZjMTZlZDQ2ZWUyNjVkNzNkMDY0OWJkMTQxMWE1N2I3NTZkZDI1Mzc2MDM4N2UzYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMzA3NjIxNmZiZjA5NDZkN2QyODdhNjRiYjQzMzUwYmZlYzU4ZmM3M2FlODZjYWMwMzIzYjFlNWI5Mjg0YzkifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/security/secretbox_codec.py#L54-L68",
+          "version": "repo-lines-v1:sha256:ce37824eaed5fb41981d96b4e8a9d6ab12998bf1a89cdf904308b15fa5bcb10e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4ZGQ5OTRhNDY2OGQ5NDk1ZWFkMDBmN2FkMWExYjc0ZDNhNWI2YzI2MmI2ZDc4NmVmNDFmMjI4OGQ4YzE5ZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NzAwMzcwNTdlM2I4ODM4ZWNhOTI4ZThhZDc3Mzg2MGI3MzY5NDdlNmY5NDNiNjNmODhjZjBlN2YzYjMxYmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZDA4NWMyNDRlZjE0N2QxN2E3ZGIxNDZhYmI1MjFjMmViN2JmODk1NTcyMGQxY2U3NDg0OTgzOTMzNDM0NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlZWM4ODJjMzAwN2NjYjhkZDFiOGE3ZDNkODVkOGU2NzlhMWYwMGU0YWY0ZGIxYjQ1MTg2Y2M0MDJmNDQxMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56b5e093ba9f4f9f90660589010f1c1a",
+      "statement": "The Redactor recursively sanitizes input data structures, replacing sensitive dictionary keys matching normalized names (authorization, token, password, apiKey, secret, clientSecret, signature, x-amz-signature), authority credentials and sensitive query parameters in HTTP/HTTPS URLs, and explicit known secret strings with [REDACTED] while preventing infinite recursion on cyclic references.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/security/redactor.py#L11-L22",
+          "version": "repo-lines-v1:sha256:9057e49abef051e3741e6fe612e42ee58f34055979a7847a22f1d9981afed65b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNmVmODBlMTM1NjlmN2NjOGMyMjg3ZmVlOWFmYjg5MmI3MWUwMzdjMTFjNTcxMTY5NjRmMjNjNTBlY2NkOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5NDVhYzA4N2Q3MzNkMTI1YzRkNGIyMDNmNmQ5N2U3ZjhiYTVkNzEyYmM2NWNhZmZkZDcyMGYzOWRiYjE4ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmNmQwZDE2N2QwMmI0NzRmYjA3ZjVkOGI4ZjZjZDY0ZWYzZmI0ZGM0ZTExZTZmZTk0OWMzYjBiOTRhZTQyM2QifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/security/redactor.py#L32-L81",
+          "version": "repo-lines-v1:sha256:eb00da67d478fc04a4aaaaa643ecaf47199afd11b6509f4f5d6fe68054f7d131:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5OGE1NGFlMjg3ZTExOWUyZTAwNjUzOWIzYWE0MzhjMmQyZDJhOTAwMzg1MGRjMTFiNTVlMGJmMTVhNjgyNmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlMTlmNGUxZjdmMTkwYzM3MGNmMTkyNTEwYzcyYTkxMmUyNGY4ODBmMjM4ZTZlNmMxZmU4YTUyZmUwMDczNzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyZDJjMWNlMTg3ZWFlNjJlOGZhNzQ4Y2VhOWMyYTBkMzdlNjU2ZGVjYmNhZDdkMjVmMmZlNDlhODNhMDNiN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYTMxYmMyZGNiNGNjODliOTBhMmYyY2ZjNjczNDlhN2E4YTI1YjM5YmViM2VmZjYwYTM5MWJmOGI0ZTZmYWYifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/security/redactor.py#L88-L158",
+          "version": "repo-lines-v1:sha256:468551a28c411eaae8b92be7064fe2db28a74e44303b3c44532971802bc2fe66:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWU0MzEwZjlmNTlmZWFjMWExMDkzNjNlM2RmYzk3MTQ5YmY3YzM2YTEzMzcwYTFkMDUwZjYwZDNkYTc3YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMWRlYjY1MTYzMmY5M2U2ZTNmZWU0MzliZmJhOGJiN2VmZTYzM2ZmYjFlNzk3OTgzMjk1YzYyZWZiYjgzZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMjI4MGJlOTYxMTZjOTgzNDIzNjM4NjY2MGU2ODY0NjEyZThiNDk4NTU5OGNjMjZiODNmYjc3ZDk0N2QyY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmMDE3YWI1YmIxZDZkZTQ4MDFiNDFhMDBiNGZkMjY1ZDU3MzhjMjAwZDg2NGEzMzJkMTE0NTNiNDMzYzAzZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e51d713d385049ffbe38eee5ea951901",
+      "statement": "The SafeLogger enforces structured log safety by filtering log payloads against an explicit allowlist of fields, unconditionally stripping reserved denied keys (credential, credentials, trace, input, prompt, opaquepayload, opaque_payload), and redacting sensitive values before emitting events.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/security/safe_logging.py#L8-L49",
+          "version": "repo-lines-v1:sha256:414f89ae9f48c7728360e9ab96fbb053bf7b5353e7555c53916e6c3ebb48bc66:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmMzI2NGNkYWJmZTRlZDM5ZjE3ODUzZDgzZTk2YTdhMDU1NDIxZDc2NTEyN2YzZjQyOWI3OGY0MDNmNmEwNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1NjI5NDlhMjNhMDEzYjEzYzJlOWMzODkxYTUwMTI2ZTU2ODUxNDAxYzAyY2JlOTg1MDRiODU4MTkyZjgyNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhZjA1MzU4MDk1NzRkZGQ1NmRmYzdmOTY2ZGE0ZTJhMjE5NWRhYjhjMzNkMDE4Yzk3ZDc3NmIwYjU4ZDVjNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3b363e82debb4211a10ace4a0d6a97ad",
+      "statement": "The FastAPI connection routes test external provider credentials via a capability probe before saving them to EncryptedSqliteSecretStore, return HTTP 422 (CONNECTION_AUTH_FAILED) on failure, support request idempotency via Idempotency-Key, and never return raw credential values in responses.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/api/routes/connections.py#L42-L52",
+          "version": "repo-lines-v1:sha256:87755aec89559e06afe67f279e76365d5a5716714ee53244fc4fda88baf8b496:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhZDllYmNiZTcwMmE0ZTU5NWZiODg5ZTc0ZmUwMWRjN2VlY2ZhMjlmYzg1N2JiNDc2MDNmOGZjNzBkZjYyYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjNWJkNGFhYmI2MmQ2NDViOTJkYTJhNWU4YjM3NTU4ZjBkZDg2MTQ2ZTlkNzQ3MDNlNzIxMThhNDIyNTdjMWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4NWE5NjVmMTMzZDYwMWY2YzU0NmE2MWUzN2IxZTgzNWI2NzE5Y2Y3MGQ3ZDY4OTI5N2JhZjVkMjY2NGM2N2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MGE1MDVhNTM5YzBhZTgxMmZjYmNhNDhkZTIxMTMyYmVkZGM4NTZlODA2MzI4NTJiNTVjNWM4ZTk4Yjg5MWUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/api/routes/connections.py#L67-L87",
+          "version": "repo-lines-v1:sha256:fd19d171528eaa905ee85e7a8a6bc35cce39ba8d90f92a0c3f60956b7a03c6e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNTU2NmZhMjA3MzQyNDRjYzlkZWRmOTJjNTVlNDFhY2UxMmNmZDBlNTMyM2Y5MjU4NmI4NWUzOWU5NGVmNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiM2EyZWM2YzE3ODIzNmZlN2I3ZDljOWU2Y2I3M2Y5NDA4NDQ4MzkzZDAyNjk3ZDdmNzFkMjYwODk4YjIzNWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNTJmMDJhZjcxZTU3ZTk2OGYyZDA4NmExZmUzYjk5N2FkZTc3MTcyM2JjNGIwMDFmN2Y5NmY4OGEyMDk4MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhOGM2YmQ2ZmRiOWY3M2Y5YmFjNWZmZGYyOTNmY2Q5ODJmZmM2NWJlNzFkNGFmOWFmZDA0MTBkZGVkNTIwMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f9a0d0b87a6480db00ee2d87e90aed7",
+      "statement": "The Python SecretBoxCodec maintains binary interoperability with TypeScript @slidev/libsodium fixtures, producing identical version-1 encrypted payloads when provided with matching master keys, plaintexts, and nonces.",
+      "evidence": [
+        {
+          "resource": "repo://tests/integration/security/test_secretbox_legacy_compatibility.py#L15-L40",
+          "version": "repo-lines-v1:sha256:1b7d8f4653f28cb67e9b45ef404af7fa8e9ef5fbd9f06d612dd69ee2da9f37e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMzY2ZThmZmFmMDQ1ZTRkZWVhZTkzN2Y1Nzg0YWQ1MmJmNjFhMjVhZWI3ZTNlMDM5OTk0ZWM0ZTMzMGVhZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyMWE3MDJlYzczZTRiOTdhMzI1MGU3NDUyZjg0OWE4NjM4N2M4NTYxMWIwYzllZDJkZDgyOGZjYTZkNWM1OTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

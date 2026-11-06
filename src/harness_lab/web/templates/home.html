@@ -1,36 +1,159 @@
 {% extends "base.html" %}
-{% block title %}Agentes | Harness Lab{% endblock %}
+{% block title %}Harness Lab | Engenharia mensurável de agentes{% endblock %}
+{% block main_class %}landing{% endblock %}
 {% block content %}
-<section class="page-heading" aria-labelledby="page-title">
-  <p class="eyebrow">Operacao</p>
-  <h1 id="page-title">Agentes</h1>
-  <p class="lede">Acompanhe os ambientes disponiveis para diagnostico e refinamento.</p>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="kicker">Framework Harness2 · Google Research</p>
+    <h1 id="hero-title">Transforme melhoria de agentes em engenharia mensurável</h1>
+    <p class="hero-lede">Diagnóstico, refinamento protegido e avaliação cega. Rodadas auditáveis no lugar de tentativa e erro.</p>
+    <div class="hero-actions">
+      <a class="button-primary" href="/rounds">Iniciar uma rodada</a>
+      <a class="button-ghost" href="/workspace/agents">Configurar agentes</a>
+    </div>
+  </div>
+  <dl class="hero-metrics" aria-label="Estado atual da instância">
+    <div class="metric-card">
+      <dt>Agentes</dt>
+      <dd class="metric-number">{{ metrics.agents }}</dd>
+      <p class="metric-caption">{{ metrics.agents }} agente{{ '' if metrics.agents == 1 else 's' }} ativo{{ '' if metrics.agents == 1 else 's' }}</p>
+    </div>
+    <div class="metric-card">
+      <dt>Cases</dt>
+      <dd class="metric-number">{{ metrics.cases }}</dd>
+      <p class="metric-caption">{{ metrics.cases }} case{{ '' if metrics.cases == 1 else 's' }} em diagnóstico</p>
+    </div>
+    <div class="metric-card">
+      <dt>Rodadas</dt>
+      <dd class="metric-number">{{ metrics.rounds }}</dd>
+      <p class="metric-caption">{{ metrics.rounds }} rodada{{ '' if metrics.rounds == 1 else 's' }} executada{{ '' if metrics.rounds == 1 else 's' }}</p>
+    </div>
+    <div class="metric-card">
+      <dt>Conexões</dt>
+      <dd class="metric-number">{{ metrics.connections }}</dd>
+      <p class="metric-caption">{{ metrics.connections }} conexão{{ '' if metrics.connections == 1 else 'es' }} cifrada{{ '' if metrics.connections == 1 else 's' }}</p>
+    </div>
+  </dl>
 </section>
-<section aria-labelledby="agents-title">
-  <h2 id="agents-title">Ambientes configurados</h2>
-  {% if agents %}
-  <ul class="resource-list">
-    {% for agent in agents %}
-    <li class="resource-row">
-      <div>
-        <strong>{{ agent.name }}</strong>
-        <span>{{ agent.id }} · {{ agent.domainId }}</span>
-      </div>
-      <a class="text-link" href="/rounds?agentId={{ agent.id }}">Ver rodadas</a>
+
+<section class="flow-band" aria-labelledby="flow-title">
+  <h2 id="flow-title" class="section-title">Do dado bruto à decisão auditável</h2>
+  <ol class="flow-steps">
+    <li>
+      <span class="flow-index" aria-hidden="true">1</span>
+      <strong>Conecte</strong>
+      <span class="flow-note">Credenciais cifradas e cases reais por CSV ou histórico.</span>
     </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p class="empty-state">Nenhum agente configurado.</p>
-  {% endif %}
+    <li>
+      <span class="flow-index" aria-hidden="true">2</span>
+      <strong>Diagnostique</strong>
+      <span class="flow-note">Falhas classificadas, segredos redigidos nas evidências.</span>
+    </li>
+    <li>
+      <span class="flow-index" aria-hidden="true">3</span>
+      <strong>Refine</strong>
+      <span class="flow-note">Candidatos só veem o grupo de diagnóstico. Reservado selado.</span>
+    </li>
+    <li>
+      <span class="flow-index" aria-hidden="true">4</span>
+      <strong>Avalie</strong>
+      <span class="flow-note">Portões decidem. Você exporta, nunca publica sozinho.</span>
+    </li>
+  </ol>
 </section>
-<section class="workbench" aria-labelledby="create-agent-title">
-  <h2 id="create-agent-title">Novo agente</h2>
-  <form method="post" action="/agents" class="form-grid">
-    <label>ID <input name="agent_id" pattern="[a-z0-9][a-z0-9-]*" required></label>
-    <label>Dominio <input name="domain_id" required></label>
-    <label>Nome <input name="name" required></label>
-    <button type="submit">Criar agente</button>
-  </form>
+
+<section class="demo-grid" aria-labelledby="demo-title">
+  <h2 id="demo-title" class="section-title">O que a tela demonstra</h2>
+  <div class="demo-panels">
+    <article class="panel panel-taxonomy" aria-labelledby="taxonomy-title">
+      <header>
+        <h3 id="taxonomy-title">Diagnóstico determinista</h3>
+        <p class="panel-sub">Taxonomia estrita de <strong>11 tipos de falha</strong>. Infra separada do harness.</p>
+      </header>
+      <ul class="failure-chips">
+        {% for category, label in failure_taxonomy %}
+        <li class="chip chip-{{ category }}">{{ label }}</li>
+        {% endfor %}
+      </ul>
+      <a class="text-link" href="/cases">Ver cases diagnosticados &rarr;</a>
+    </article>
+
+    <article class="panel panel-split" aria-labelledby="split-title">
+      <header>
+        <h3 id="split-title">Anti-overfitting</h3>
+        <p class="panel-sub">Particionamento com seed. O refino nunca enxerga o reservado.</p>
+      </header>
+      <div class="split-viz" role="img" aria-label="Divisão entre diagnóstico e reservado selado">
+        <div class="split-row">
+          <span class="split-label">Diagnóstico</span>
+          <span class="split-track"><span class="split-fill split-fill-diag" style="width: 70%"></span></span>
+        </div>
+        <div class="split-row">
+          <span class="split-label">Reservado <span class="lock" aria-hidden="true">&#128274;</span></span>
+          <span class="split-track"><span class="split-fill split-fill-held" style="width: 30%"></span></span>
+        </div>
+      </div>
+      <a class="text-link" href="/rounds">Acompanhar rodadas &rarr;</a>
+    </article>
+
+    <article class="panel panel-gates" aria-labelledby="gates-title">
+      <header>
+        <h3 id="gates-title">Avaliação cega multi-gate</h3>
+        <p class="panel-sub">Nada é publicado sozinho. Decisão humana e auditável.</p>
+      </header>
+      <ul class="gate-list">
+        <li><span class="gate-check" aria-hidden="true">&#10003;</span> Amostra mínima</li>
+        <li><span class="gate-check" aria-hidden="true">&#10003;</span> Zero violações críticas</li>
+        <li><span class="gate-check" aria-hidden="true">&#10003;</span> Limite de regressão por caso</li>
+        <li><span class="gate-check" aria-hidden="true">&#10003;</span> Limiar agregado</li>
+      </ul>
+      <a class="text-link" href="/connections">Configurar conexões &rarr;</a>
+    </article>
+  </div>
+</section>
+
+<section class="live-band" aria-labelledby="live-agents-title">
+  <div class="live-column">
+    <h2 id="live-agents-title" class="section-title">Agentes nesta instância</h2>
+    {% if agents %}
+    <ul class="agent-cards">
+      {% for agent in agents %}
+      <li>
+        <a class="agent-card" href="/rounds?agentId={{ agent.id }}">
+          <span class="agent-avatar" aria-hidden="true">{{ agent.name[:2] | upper }}</span>
+          <span class="agent-meta">
+            <strong>{{ agent.name }}</strong>
+            <span>{{ agent.id }} · {{ agent.domainId }}</span>
+          </span>
+          <span class="agent-go" aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Nenhum agente ainda. <a class="text-link" href="/workspace/agents">Configure o primeiro</a> para começar.</p>
+    {% endif %}
+  </div>
+
+  <div class="live-column">
+    <h2 class="section-title">Rodadas recentes</h2>
+    {% if recent_rounds %}
+    <ul class="round-feed">
+      {% for round in recent_rounds %}
+      <li>
+        <a class="round-item" href="/rounds/{{ round.id }}">
+          <span class="state-badge state-{{ round.state | lower }}">{{ round.state }}</span>
+          <span class="round-meta">
+            <strong>{{ round.objective }}</strong>
+            <span>{{ round.agentName or round.id }} · {{ round.domainId }}</span>
+          </span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty-state">Ainda sem rodadas. <a class="text-link" href="/rounds">Inicie a primeira</a> e veja o fluxo completo.</p>
+    {% endif %}
+  </div>
 </section>
 {% endblock %}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:94895a01acf6c8cb27974bfdb9b2b0180cfc498d940af8ce6d6ddf295df1f645",
+  "claims": [
+    {
+      "id": "claim_c3a90fabbb7d4352ac661d50af5c3ae8",
+      "statement": "A suíte de testes do repositório é dividida em quatro camadas principais (unidade, contratos, integração e E2E) complementadas por análises estáticas executadas via Ruff e Mypy com tipagem rigorosa.",
+      "evidence": [
+        {
+          "resource": "repo://docs/desenvolvimento.md#L12-L24",
+          "version": "repo-lines-v1:sha256:02d6c2ae16802e6109f7843ab2d5678eda83bc4377bac6ee9c903ccec7d8e51b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MDBjNzM5YWM0MThhNDI2ZmJlMzBhYWMzOTg5YzUzNGQ2ZWNhNzM1Njc2YWZmYzRlMTc2ODNmYzcyNjY3MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkNTQ1ZTYxYzY3ODliMTcxZGI5Yjc3OTBjMjFmMjU1NmM5YWYzZjliZmI5MmM3YzYxMzc2OGYyNWJmYjc4YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4ZDI5ZWZjZmM0OGVkNDhmMjUzZjA1YjM0YjM4NTU5ZmQ3NjM1MmQwMTRlY2ZjMmU1ZDE3OGI3ZThmZTZjMmQifQ"
+        },
+        {
+          "resource": "repo://pyproject.toml#L27-L61",
+          "version": "repo-lines-v1:sha256:edfcc8e107039ac3320085d6f04a7e2bbb8f122d07289aa3bb389560c86d562a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiYjc0OTliMWNlMWM0ZjRiMjUyN2YzYTMyODRjYWM2YjZhMWUzYmY0OTg4YjU2Nzk4MmMzZGM4ZTlhMTdmMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzNGQ5YmVlYmIxZjdmYmU0NzMwNjg3ZWQ2NDdhMWI4ODQwYzRiNmM4ZWExNDhiNThhYWVmMmNlOGU1NTVjY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1ZDIzN2VjNjU2ZGZiNWE1NWVhNDg2MjZjMTZhZDJjMjZhNjlhYjIxMTdjMGFkMTFhMWRmM2M2YzNjYjNjZmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba582a3ba16343abb26f5d31d8bbbdc3",
+      "statement": "Os testes de contrato validam a estabilidade dos endpoints REST da API v1, o formato e retomada do streaming SSE via Last-Event-ID, e a imutabilidade das migrações SQL através de hashes SHA256.",
+      "evidence": [
+        {
+          "resource": "repo://tests/contracts/test_api_v1_contract.py#L14-L83",
+          "version": "repo-lines-v1:sha256:02d7fc4f5357f4072c3082eb454c1c4fdeb58ffd59554101b4f62fc32e794459:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMzRhZmRmZGQ1NzljYzYyMmUzYTVlNmM4YjE3MGQ5YmY2NzZhMjg1MTdlNjM2YzU5YmViMDYyMjJlYjJjNzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjYWU0MWY1NWQzMTc4ZmI4M2E1YTZjMzA3N2VlN2Q2ZmZjN2E0YzI4NWU0M2EyMWQwNjgxZmJlM2YzZTRjNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3NGIzZTVjNDEwNGE4YzQ2MmI1ZjhjNWVjYzE3NmRmYjgwOGU0NjJhMzYxMGJiNmNiZjY3MTk1YzgyNzJiNGUifQ"
+        },
+        {
+          "resource": "repo://tests/contracts/test_artifact_compatibility.py#L12-L32",
+          "version": "repo-lines-v1:sha256:6abd9f16d0cce38cf30adbf5448c4a6029137cae4477b70da9737b75d7a733ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwOGY5NGY3ZTE3Yjc3MmEyOWUxMDVkMWU1YjUwMTdmOTVhOTgxYWMyZGEzZjhjZmViZmZkMjQ0MGQyNjNhYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YmQzYjA4NzhlNDAwNzRlNjMxYTllNDM2NWU4MmQ0ZWE2ODQ2ZjhkM2IyMjljYTUzNWQxNGM5NjgxOTJkYmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViY2E2NjM5YmNkYzQyNWM1MDRlZGJjODYwODEzMDQwNTEyMzU1NzY1MzJhYmJmMGExZjJiMDcxOTEwNmVhZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/contracts/test_sse_contract.py#L10-L95",
+          "version": "repo-lines-v1:sha256:285299f7a84fdb2c44cb66126c7b847acdc33d593f6bd97b80e03b69ecb48175:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMjliMzc3OTI4ZTdjNjZiMTc0OTFiZjE0YTdlMmI1MDcwMDQyYzQ4ZGIzNDUwMDJjNjQ5YmYxYWVkYmRlOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMjRkZTgxNWY3ZGIxOWRlNDQwNDQyMmIyNThkNWI5OGY1YTgyOWIzMmMwNjliNTdjNjZkNGZmNGIyOWUzNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhNDQ2OWUzM2ExMjkwMjc3ZDZmMmUwYTNlY2FiYTJiYTdjZjBkYmYyOGU4NzYwYzVkYzBhZmI3NmFjMDMxYmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_73146344feae477b9056ed793abbe605",
+      "statement": "Os testes de integração simulam o processamento completo do pipeline de rodadas de otimização em banco SQLite em memória e verificam a recuperação durável de trabalhadores a partir de checkpoints salvos.",
+      "evidence": [
+        {
+          "resource": "repo://tests/integration/test_complete_round.py#L19-L100",
+          "version": "repo-lines-v1:sha256:d038dfdd8824574e27c00b3127624784a02db64f2e46a9560e01e7ebb054b0c0:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2N2U3ZjU3M2IzNjI1NmVhM2FkZmNiMWRhN2U0YzgzNzlmNTM3OGZjMGUzYWVkMmMwYzJlNDIwYjRmNTJmZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwOGY5YzU0MmYzY2JlODUwMjgyZDAyNjY4OGNlYTZhMTg5ZmFmYWM4ODgyZjMwZjc1NTYxMzA2MGE4NDlmMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjZWU0YjJlOGRkZDEwZjJhMWRjM2U2YzMyNzkyOTEwYWJkNmYxNzU4MWJkMGJiMjgzMTgzZDI2MGVhMzczN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkZjAxZjJiYjJiODA3MWRkODFlMzc2NzM2Yjc2MzVmYTc2NDVkMjhmOTQ2ZWZhYTY1OWQ0MzYxNzVmMDE5NjkifQ"
+        },
+        {
+          "resource": "repo://tests/integration/test_worker_recovery.py#L13-L77",
+          "version": "repo-lines-v1:sha256:5a232730417cd1c5ca9637939bf8dd4a5c452f2ebb6748b02a887584a0738ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhZTc5MjVmM2IyMDA2ZTdkOWQ0NzVjM2I3MGUzMDI0MDQ1ODhkOTQ1MTRiZTdjY2YxZTg5YzY1ZGJlZDZkMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzMjVlY2M4ZmQ2ZjY0NmRlZjdjYTJlYmI3MmM5OTUxMDFiYTA3MGQ3MmJiNGZkODU4NzBhYWFjZWE3YTg3NWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjZWU0YjJlOGRkZDEwZjJhMWRjM2U2YzMyNzkyOTEwYWJkNmYxNzU4MWJkMGJiMjgzMTgzZDI2MGVhMzczN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_41f88dad842947b7ab3e94b004ff87e8",
+      "statement": "Os testes E2E com Playwright sobem um servidor Uvicorn temporário em porta efêmera aleatória, utilizam banco SQLite isolado e bloqueiam qualquer requisição de rede externa ao servidor local durante a navegação.",
+      "evidence": [
+        {
+          "resource": "repo://tests/e2e/conftest.py#L15-L78",
+          "version": "repo-lines-v1:sha256:c1944ec0dca36e77f2d68eb7bbdec7f4fdb15fa03068d51cfcc83163ab4e1376:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMDM2NWQxNGM3ZGFiM2Q2NWIyMGVlYjNhZmU3ZTVkNGUzMGU4Zjc5OGU3OWFkMDZlNTk0MjI4Nzc0YTc0ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkNGE0MTEzMzNjNDU3OGJiMGM2MDZiYTA3ZGY1YmI4NWQ5YjliNmEyYzY1NWUxODZhNGMxMmYzMTFiOGMzNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyYWZhYWE5ZTQzZDU5NmIwZGQwZDRkMWI1ODQ2MWQyYTRjMmFkNWQyZGVlMzQ4OGM1NTNhOTUwNjc0NjY0YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/e2e/test_harness_lab_ui.py#L6-L41",
+          "version": "repo-lines-v1:sha256:935bbeaf32fc4bbdbaa63f320449375dd2479392c49191d87eff96b696a9b19f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3MGIyYzZiOGY5MWUzMmMxYmU0M2E2NzIzOTk2ZDE5YjM2MWNlODQ5ODVkMDRkOGFhNDUzYzc1N2YxYmJlNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4ZTVjZGFiYTliZDI5NzQzNTc3NDMxZWU5ZGI0ZjJkZTg4NTFmMWNkMzgwMDE3ZDEwMjM1ODE2NDczNGFkNzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlY2QzZjk2Y2U4ZGQ4YjM3NzNlMjAyMWE5YzZiZDVjNTM4MGQxNzIzNTA0ZGI5Y2MyNzlhYzBiMTM5ZmIzMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

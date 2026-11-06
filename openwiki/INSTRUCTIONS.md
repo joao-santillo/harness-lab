@@ -1,0 +1,1 @@
+A code wiki for this repository. Generate in PT-BR. Use the Harness2 article as reference for this implementation. The docs must be simple to understand. Please generate a doc that states the business value of this project.

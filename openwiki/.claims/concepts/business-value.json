@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:15a64670ed9ddcee0cbe6620f666f6a1ec399d860eb3c7457a60841acfede4e8",
+  "claims": [
+    {
+      "id": "claim_baf1978ee4b84aadb967a4c3408efd72",
+      "statement": "The Harness Lab diagnosis application categorizes agent execution failures into an 11-category taxonomy and blocks automated harness refinement proposals for non-harness categories such as infrastructure failures and tool failures.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/diagnosis/diagnose_executions.py#L186-L196",
+          "version": "repo-lines-v1:sha256:a69d601d44b52c366d0fe113670794ffb185300d15f05a28c387079de52b9f9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMzI3NWNkN2YyNGY4ZTY0ZWE5ODlkY2I4YTdhMjc5MDAzNDAwYWQzNmRkZTU0MzJmZmY2YzI5MGQ0ZWQ2MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3M2YwMWE1NTZlYmVlOTIyNzM3ZjI0MWUyMTE4MzY5MzYzOGEwNGQ2ZWMxOGYxMTNmZjBlNDAxY2Q2MmJhZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmYmI5MWQ5M2JmMDIyM2NiZjkyMDNiOWQ2YWJhY2I0YWE4NzQ4MTVlZDNkMjllZTAyMTQxNjhmMTQ0NjU1ZmUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/diagnosis/taxonomy.py#L5-L36",
+          "version": "repo-lines-v1:sha256:2f8dc6fa73e9af07ecb83a40853400ef8a8e1e4c120c49972eecd04068daf8d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiYWM0Nzk0YzE3YjJjMjZiMGRjYTBhY2EyNTliYzE0OWU2MDZhZTdlNDgyZGUzNzlkZDU2ZWQzOGY4MDcyMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNTBjNjM1YmQ2MTJhNTBlNWJiYjNiYmE4MjUzNzQ1MTVhMGYxYmU4ODQ5NTVlMTAxNDAzZjE4NzE5ODk5MmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ed93c936d054d67863f5eb2fdeac1a5",
+      "statement": "The case partitioning engine uses deterministic hashing and group clustering by session ID or similarity group to split test cases into visible diagnosis sets and sealed reserved validation sets, enforcing that reserved case evidence cannot be consumed by refinement processes.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L110-L116",
+          "version": "repo-lines-v1:sha256:a5b95ab41c29197b18dff8640dea21607f5f359109de4e86641d8d9cfa3fb5b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzU1OTg0MjdjODNkYmM0YjdjMjNiZDUzN2YzNTNjYjUyZWYxZTM3NjdjYjkzNTY5NTNmNDA4ODM4OWUyNTE4ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY3ZDBiMmRhMzlkNjFiMThiNjM3MzZmZmMyMTAyYTY0YmFmYWI5YWI3ODU3MDE4OTg2MmZlMmVmZGM5ODY5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDkxMTZiZTkyMGUwOTk1Y2EyMTAyMDNiZjIyZTY1YzQ4MWQ1NjU1NzgwNGRjNjQ2NDJlMWExYTNkOGE2NzkxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L19-L43",
+          "version": "repo-lines-v1:sha256:329e92d49c0b8642fa4ed5a9fe565a9f857d8cd576d1316be1e68dc70dfb8c06:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzOWFlYzFmZWMyNGJkOWIxMDA2ZTM0ZjRjY2JhNWMwNjAyZDZlNmNiYjk0Njc2MzQ4MmQ3Zjc4MWVkMDhmYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlODhkNDIyMzA5NWIwZTc4ZGJkMzU0OGYyZmFmMTgyOWNiOGM0OTU4NWFiMGE0MzljNjg5ZTMwNjlkOTIwODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MmVmZGNlZDliOTZjZDI3OTMzM2M5YWEzMDliNTQyMzYwNmIyMjI0MzJjZGZiZmM4MWZjYzA5MGM3NTJjNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_adb46508aba640b5a373f91ccd6a41aa",
+      "statement": "The recommendation policy enforces sequential multi-gate decision logic that rejects or deems inconclusive any candidate agent failing minimum sample size, critical safety violations, deterministic policies, run variability limits, or per-case regression rate thresholds.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/recommendation_policy.py#L28-L73",
+          "version": "repo-lines-v1:sha256:b9fbc02adf7d65026cee99f50220ab2331832fe9b30a7301c18aeebe62074afa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMmU0ODZhZTY2ODA2YjMzODI5NzI3OWU0YzQzOWY0ZWExNjE1ODQzYzYzZjk3OGI0ZDQyYWY2NzBmOWIxYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3ZGRkMjRmMTlmMjJkYTBmMTM0ZjBiNmYyMTAzZWI4ZjY3MThiN2FlZGQxN2NiZjYyNWVjODdlZGE1N2IxNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fcb3ddb5ddcf4c4a9076ba940f619221",
+      "statement": "The Harness Lab framework incorporates Google Research's Harness2 Propose-Probe-Compose methodology as a reference standard while decoupling candidate evaluation from refinement and prohibiting automatic production deployment.",
+      "evidence": [
+        {
+          "resource": "repo://docs/decisoes-tecnicas.md#L11-L29",
+          "version": "repo-lines-v1:sha256:693d97387006118df5c6d9e5b0bc81be98e382a96e77bf895c366dc6323ad422:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3OWQ0NmQzNWRiNTk1Y2JlY2ZhNjk1MzU4NzE2NGIxMWEyOGJlM2Q0OWI4ZTU4ZjY0ZDY3NmE5YWUzN2YxYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3OWE1Yjk2NWExY2NmMWM1MDE0NWY3ZjNmOTRlM2I5OTk1YWYzNDU4ZWQzZWQzZTI3NDhjNjEyMzNkMWZmMDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmOTRjOTI2M2ZlYTgwYjEwNmNkNDM5MjE5NGQxNTdlNjVjOGUzMTcwYmI0MDAyYjBiNTVkMDc5MmMyMTUyYWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://docs/referencias.md#L3-L8",
+          "version": "repo-lines-v1:sha256:67b16b404d0103bd929db344d433d7412f250ed7521c973cbba3ff1bf8ad8953:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDc0ZWM4MDk4ODNjYzc2MDkzOTkxZWZjZjUyOTQ1YTRlMWNlZTVjZDBiOTQ1NGRiZGIwYzI2NDU2YzI4NDhiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzM0YTBkOGU3NDhlMzcxNzYwMTllN2Q0NGQ2Mjk3MjRiZjdjZTQ5N2VmNzhiZmYxM2I3YTNlNzliYzZmYmYwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDk3OWZhYzllNGRmM2Q2MTdiOTgwZWRhZDBkNmIxOWRiZWY5YThjMDdiZGUwZDdkMTljNzJlZmYxMmQzYzQxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNhMGFiMmZjMTliZjNiNjVhODg4ZDc4ZGU5YTU1M2QwZDUwNjhhZDE3ODNlMTg1MjM1OWMxMDFiM2Y5YTk4ZiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

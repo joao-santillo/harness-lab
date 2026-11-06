@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Rodadas | Harness Lab{% endblock %}
 {% block content %}
-<section class="page-heading"><p class="eyebrow">Execucao</p><h1>Rodadas</h1><p class="lede">Inicie, acompanhe e interrompa refinamentos duraveis.</p></section>
+<section class="page-heading"><p class="eyebrow">Execução</p><h1>Rodadas</h1><p class="lede">Inicie, acompanhe e interrompa refinamentos duráveis.</p></section>
 <section class="workbench"><h2>Nova rodada</h2><form method="post" action="/rounds" class="form-grid">
   <label>ID <input name="round_id" required></label>
   <label>Agente <select name="agent_id" required>{% for agent in agents %}<option value="{{ agent.id }}">{{ agent.name }}</option>{% endfor %}</select></label>
-  <label>Dominio <input name="domain_id" required></label>
+  <label>Domínio <input name="domain_id" required></label>
   <label class="wide">Objetivo <textarea name="objective" rows="4" required></textarea></label>
   <button type="submit">Iniciar rodada</button>
 </form></section>
-<section><h2>Historico</h2><ul class="resource-list">{% for item in rounds %}<li class="resource-row"><div><strong>{{ item.objective }}</strong><span>{{ item.id }} · {{ item.state }}</span></div><a class="text-link" href="/rounds/{{ item.id }}">Acompanhar</a></li>{% else %}<li class="empty-state">Nenhuma rodada iniciada.</li>{% endfor %}</ul></section>
+<section><h2>Histórico</h2><ul class="resource-list">{% for item in rounds %}<li class="resource-row"><div><strong>{{ item.objective }}</strong><span>{{ item.id }} · {{ item.state }}</span></div><a class="text-link" href="/rounds/{{ item.id }}">Acompanhar</a></li>{% else %}<li class="empty-state">Nenhuma rodada iniciada.</li>{% endfor %}</ul></section>
 {% endblock %}

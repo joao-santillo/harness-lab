@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e2b311ad5c535d74848bba8b26a130265ab1df79432053cd29e81e65229576c1",
+  "claims": [
+    {
+      "id": "claim_977793f024574a2a8bb1cb0f87f5dc73",
+      "statement": "The CLI entrypoint harness-lab in src/harness_lab/cli.py parses subcommands 'api' and 'worker', delegating 'api' execution to harness_lab.main.main and 'worker' execution to harness_lab.worker.main.start_worker.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/cli.py#L9-L26",
+          "version": "repo-lines-v1:sha256:6c30dd16c5c9d3a2c419a61c9aebcb4dee0db61247e5cb20654c66f0968d38c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyN2QxYWJhMmQ5OGU3ZjZiZWEzMTI2NjljOTI3Yjg0OGRjMzNhMmJlOTVjYjIxY2NlZTRjYzNmMTQ2ZDBmYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMTVkMWE5NmM4OWFkYmM4YzRkNDRjZjljY2I5Yzk0MTVhNDMxNWRmZDY0NjVmNjQ4YTk1OWUwN2YyZWE5N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNmE2OGI3ZmViMDljOTFhYzBkODE0YjFkMDBhMjA5N2Q4YmIzZjZkYjNlY2UwMGI4YTFjZWVmZjdkNzNkMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9f04cb4400f44c28805f55e74caa832",
+      "statement": "The background worker in src/harness_lab/worker/main.py requires a valid WORKER_PROVIDER_MODULE environment configuration providing create_round_stage_dependencies, returning False or raising RuntimeError('WORKER_PROVIDER_MODULE_INVALID') when absent or invalid.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/worker/main.py#L26-L44",
+          "version": "repo-lines-v1:sha256:39a8460136e8a2ef6d7b8f2b85631f73237288e8896b968e13884ec9a2bd5a06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjOTI3ODUyYjEyYzgyYTE2YWZmM2FhZmY1NzQwYzc3ZmQ2MGY1NmZiZDZhNGQxOWJmYjQyMmE0NTVlZjFkMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NGRjYmVmMDA2YzYwMmZmNjViYTJkMTRjNzgzNmYyYTE1YjQzOGY5ZjE1MWU0YzMxNTRlODhkNThmMDQ1NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MTZhYWQwZGVhZGY0YjZjNzI2MTdjMGMxYzU5ZTliNzg5MDBiMWYxZDIxNTNiMTE5ODEyMGM5NWYzMzU1NjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6ef05a9405d4254ab914ebdbe333542",
+      "statement": "The default HTTP API server initializes application services connected to the SQLite database path specified by DATABASE_PATH, defaulting to data/harness.sqlite when unset.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/main.py#L11-L22",
+          "version": "repo-lines-v1:sha256:3aefd2c4de5c0a5beb167c43f3c8d8f461885da75277a0643aa8fbfa5c599394:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYzQ4NzllN2Q0ZTc5ZDUyMDkyMGZhNzE2ZGFkM2MzMWM4ZTYyZTEzYTQ5ZDc5OGVjZTg2NTkzMGZiZjBjNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2ZTljYTZmYmIwZWRhODExM2QzODYyYzE4OThkNGMxYjA2YzAzNWJlOGM0OTJkNWJjYmM0MTEzNDI0YTU5ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_64f5ff787c44412187f94268d72d159a",
+      "statement": "The database backup script scripts/backup_sqlite.py performs an online atomic backup using the SQLite Backup API, enforces read-only owner permissions (0600), validates database integrity via PRAGMA integrity_check, and outputs the resulting SHA-256 digest.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/backup_sqlite.py#L9-L27",
+          "version": "repo-lines-v1:sha256:868841967a2be5eefe2f234b8fe3de4b082f3871b093a437cfeec2b40ece8842:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZjhlNGNkYzhhYjMwYzQ1YTgxMWZhNjA4M2U4ZjRhYmY5ZjVkNGJmNDVjMzBkODZjZjVmZTc2N2JhNmFlMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5MWJmM2Q5NmYxYjExOTY4OGRlZWE5YTAwNGIyYjNmZWJiMTgwYmI4ZmIyMzQ0NjI1NjE0YWRjODU5NTYzYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlYjY5YjQxZmQ1OGJiYmJkYjIzZmVjYzE0YzI1NzJmYjZlYjY5NDYxYzgxZTlmZGY4ODAyZjk2OGRhNzlkNTIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

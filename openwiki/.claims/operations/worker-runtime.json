@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:902c9d0663c52cb96a10bae0fe87d2063e7a0e81464e48c4801333d1e8a2866c",
+  "claims": [
+    {
+      "id": "claim_1b7aa5afd5f2418f9748f8ffd398bf7c",
+      "statement": "DurableRoundWorker executes a polling loop via tick(), claiming one queued job at a time from SqliteRoundJobStore using worker identification and timestamps before delegating execution to ProcessRound.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/worker/main.py#L84-L88",
+          "version": "repo-lines-v1:sha256:61cc32bf5221bd930bb196123f6eddd76a76039d1999fd2e05801ff7d350db01:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWZlYWI4ODUzNzYzMjBkYjdhMDZjNzQ3NzRhNzk5YmNmOGE5MzEyZjQxNWMxZDAwNWYzZThmMDRmOWRlYmFmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwNDI0YmRlM2FkOTFmZjhkYWVhODFhNGFhNTA0YjJmZTlkMzc5MjNmNTkzNzkxNTJkNTQzZDdiNGRlYWY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGI4YzM1ZTFkZWE3Mjk1ZTQwYjFlYTY4NDU2YjRmMmQwMzAxYzQyOTkzODIwZjZkMzNhYmU3MzRiODE5MjU4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzNiMzM3NWIzZTdlMjhiNTY4NzJhMmQyZDlkNGQzZDI3MjMxYzRmZjIzMjBmODhmN2ZiM2I3NjJhZTMzN2JhMSJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/worker.py#L29-L34",
+          "version": "repo-lines-v1:sha256:285fa86eebb09b9d8583535c9f272eb7fac373fb3153dd45c589c97039b4a027:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ3ODA0NTRhOTA0ZTU0ZjM0Y2Y0YjAwMzU5MjY5NjllNjA2NGU1MTU3ZjlkYjA0ZTVhYjYxY2ExZTUwZmRjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwNDI0YmRlM2FkOTFmZjhkYWVhODFhNGFhNTA0YjJmZTlkMzc5MjNmNTkzNzkxNTJkNTQzZDdiNGRlYWY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIxYTdlYzdiMTNiOTU0OGNmN2ViZGE5NTNiOWIwNGNhMGRkNzEyN2JkMWEyODllOTRiY2U1Yzg4MjY4MDk0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_56245cb12e254784bb1be4020b597046",
+      "statement": "start_worker dynamically imports the external provider module specified by WORKER_PROVIDER_MODULE, invokes create_round_stage_dependencies with database and encryption credentials, and aborts without opening SQLite if no provider module is configured.",
+      "evidence": [
+        {
+          "resource": "repo://docs/provider-do-worker.md#L9-L28",
+          "version": "repo-lines-v1:sha256:9446b5442acc3965abf01a77f942f64154c630b498d67e71448c034a1e650fd6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZWFmNWZhNmQyZTZjOTE5NGE4Zjc5Nzk2MGE0MzAwNTkyMGU0ZTFiZmQ5OTdmODIxNmE1M2IzN2JiNTEzZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjZDEzZGYxMDNhOWQ0NGZlMWZhYmUyYmZkYmMzMTJjZDljMjhmMDQ3M2MzMTZhOTc2YTI5MzRjNmUzNjRjMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhZDI1NzUxOWYzOGRkZGI0MDJhNjA0ZGU5ZjZhOGFkMWZmYjM4ZjNlNjlhNTYzNTU1N2E5NTQ3YjBmMGYwZTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/main.py#L26-L53",
+          "version": "repo-lines-v1:sha256:a0d1dd3e7269e426883a160b78279d68d066fef64ea658e140c126424fddaa51:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjOTI3ODUyYjEyYzgyYTE2YWZmM2FhZmY1NzQwYzc3ZmQ2MGY1NmZiZDZhNGQxOWJmYjQyMmE0NTVlZjFkMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NGRjYmVmMDA2YzYwMmZmNjViYTJkMTRjNzgzNmYyYTE1YjQzOGY5ZjE1MWU0YzMxNTRlODhkNThmMDQ1NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwZWJhM2JmNDI0NzhjZDlmOWRhODIwNzQwMGNhNDVhM2Q2OWM5NzExMjExMjA3MTZiYjk2ZTUyYWQzMGRmZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c97a2fb027044f9a71a3047c07a853f",
+      "statement": "create_round_worker_runtime constructs the worker runtime and injects a fallback case collection dependency from SqliteCaseRepository when cases is not provided by the stage dependencies.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/worker/runtime.py#L38-L47",
+          "version": "repo-lines-v1:sha256:608a36b1c6eddfc983039296afb69cf525c6b6d98e5b6cec66a455c9ea96d6df:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwMThkNjE5Y2JiN2FiYzQxZjA1M2Q0ODViYTc2NWE4ZmUxNTcyNDhlZjM1NThmMjVlMjVmOGEwYmM3NzFiMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyM2JjNjE0OTVkNGY3ZDAwNDM0ZDA3NTM2Y2UzMzRiMmEyMzI2YTZjYWIxYWFjNjY5YWMwNjg4ZjBiYjQ2MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhYTkxZGM2MGFiMjA2NmIwNDcxMjAyNzA5OGQwZmFhN2Y3MDA0M2U1MTU0YTVjY2YyNTIzOWFiNTJkNTIxZGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_543ecfdad7c9489ea9a7e5c3db0316db",
+      "statement": "SqliteRoundJobStore enforces job ownership using a 30-second lease, allowing expired or unassigned claimed/cancel-requested jobs (claimed_at < lease_cutoff) to be re-claimed in an atomic SQLite transaction.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/round_job_store.py#L9-L52",
+          "version": "repo-lines-v1:sha256:d1af101516921bb23afb33c2cac7508797368537478798f19ef2ce2221d6bd88:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZDg1YjUxMGYyNGJhZTk0MTQ1NzhkMTdiZGExMTgyNjg2OWJhMzE0MjcxNzAwYmI2ZTdhMGUxY2FmOWI0NzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNzkwNzllMWQyYzZjNTU3YmJlMGE1MTA5MzhjM2MxY2ZiYWEzN2FkNjcwYWU4NWUyYmE4YTBkM2ZlN2Q5YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNjY2NzE5NGI0NGNkMWI4NTkxMDQxMjBjMzA4OGEzNGE1N2JhMDlhYzlkY2NlMTRjYmEyZmI1YjdlNDRhNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5Njc1ZjJlNTYwYTI5ZWRjZDI1MzA5ZjRmOTc3N2ZkOWQzYWU1MDNmYTEzMjY1Y2RjYzNlOTk0NDBkNjhkYWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5400e8052f34984942ec1105eb7be5a",
+      "statement": "ProcessRound validates worker lease ownership prior to and following stage transitions using _ensure_owned, raising ROUND_CLAIM_LOST to prevent corrupted state updates if another worker re-claims an expired job lease.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L149-L151",
+          "version": "repo-lines-v1:sha256:7f92a8e545ed488bcbf026e94f53bbe7fff31d7153b0717f61f3142e23461ddd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE2YWZkMmQ0NzY3YjAyNDRlNTk0NTIwNGQzMzUzNTk4MjhlNTEwZTU3NzU1NzM4ZDQxOWU5M2Y0NjA2N2M5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGFjY2ZkMDA4YTkxMzVhY2Q2MDY5NTRiZjhkYTJlMWVkYTU4ZDI0M2FmYTlmNDBjYzY2NjNkNDg0MDQwODc4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRlYzVkNjhhYTE1MTRhZTExZmViMDRiOGY3NDM4NzY2MDE4ZTEzZmU0OWY1Y2JkZjdmMzZhZWUzYzM2ZjU3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNkNmZmYTQ3ZmM5NzU5YzNkNmUxMmI2NWMwMDAyNGFiYjM3ZjE2NTgxZDgyNDZkZTE2YTg3MTIwM2YwNDlkYyJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L80-L105",
+          "version": "repo-lines-v1:sha256:9b608108c5ad622f8f1133e4ad717044899778c13620715a99ea4de0bd014215:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzY2ZiMzIxOThmNjdjZmRhZjEwMTA4OGY2NmQyNWUwMmMzNjFhN2ViYTRjY2E1NzVhZjRmN2Y2OTBlMWJkYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4NmE5ZTUwMWZiNjE2NzEzZTAyZmUyYjc1ZjgxYTIzMTFkMjZjNDU0MTRiM2RjOWU3ODA4MTc2NDgyMjc3MDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhZGViNzQ2ZDdkMjZjNDhlN2Y4NWE4M2Y4YWMzZDU5MjZhODRjZWEyZjk3MGUzZWRjZjQxMDgwZmE1ODYxNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhODQ0MjZlM2I4Yzc0MTVkZDQyZmZlMTYwMWUzNGNiZWRhNTQyMGYyYzQ3ZjE1NGVlNjk5ZDUwYTlkMWFmYWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_78deb3a8a6554ca884165772e338902a",
+      "statement": "The worker handles graceful shutdown via SIGINT and SIGTERM signal handlers that allow the current tick to complete before exiting the loop and closing the database connection.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/worker/main.py#L58-L64",
+          "version": "repo-lines-v1:sha256:a179d2bcb939fc3eeffe0d09ca9904ca14d67cc1fc365b1bac8df721758e1b4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGNmZmNhNDcyODgxNDY0MWYwYjY5YWM5Y2ExM2U5MmUxN2UxMjVmYjNkZWRiODM1Mjc5ODFiNGMwMGQ0MjRlNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzE1NjZiMjEwM2Y2M2ViNTk3MTFhMjczZTRlYmFjMTZjZTQzNGIwNjYxYTNiOTFmMjEwODZkMDBiMDhlY2ZkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjU5Yjg4MDM0MDljZmU0Y2ViYmZkMzYxZGEwMTQyYjFkYWNkMmE1YTU2MGI0ODdlOTczMTQ3NzIwNjdhZTA5NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGI0MGFhOTU5NTRmMjIyZmVlMGI0MjRmOGQzNTQ4MzcxYzllYzcxMTE0MTk4MjU2ZDlmN2FhZWVmOTAzNTNkNCJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/main.py#L84-L90",
+          "version": "repo-lines-v1:sha256:89599b785350aaa4832c7c652ef98aefbc365682238bc3084d31940eec048102:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWZlYWI4ODUzNzYzMjBkYjdhMDZjNzQ3NzRhNzk5YmNmOGE5MzEyZjQxNWMxZDAwNWYzZThmMDRmOWRlYmFmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODhhYzdhZGVlYjc4Nzc5NjAxZGFkYWQ1ZmM4ODViOGZjNDZjMDhhYzRjYzEyMzJlZDQzNWVhMGFjYzA1ZmZiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGI4YzM1ZTFkZWE3Mjk1ZTQwYjFlYTY4NDU2YjRmMmQwMzAxYzQyOTkzODIwZjZkMzNhYmU3MzRiODE5MjU4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTQ4ZDc0ODNkMDYwZjE3MjJlMjQ1MzY4ODgzMzQyNTZiNTQ5MGU4YmJlODY5ODIwNjc2Y2E5ZWFmMzUwOWNjOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2efdc9f5758844b7a314b6e5881b31eb",
+      "statement": "ProcessRound recovers crash-interrupted rounds from persisted SQLite checkpoints and, for rounds in the exporting state, infers the terminal decision via get_completion_event without re-running earlier stages.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L113-L134",
+          "version": "repo-lines-v1:sha256:c8c23e13566f3bd5a4780d3deba9cc1fd56e2162e40e595a36050cfa82d8a80b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhZWFmZThiZjA4OTI4NmZlYTBhMjFiNTE0MTVmYmQ1ZTNjZjI2NDVkZWYxYTM3NTg2Y2RiMDk0ZDI2N2MzNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMDUzNDhkNzZjMWY1MzAzZDhmZDFjNTBiNzQ5MDkwM2IyNWIzYjgxMTRhMzExNTZlNzM1NGM5OTAwYmUxYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MTE4MzlmZGQ3ODMwMTYwZDBiYWUzYjdmYTdlZjY4ZjE2YjdjODI1ZjdmNjRkMDA4YjM0Zjk4NWZiODBlN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3MTQwYThjZWQ1MTgyNGQwNDIzMjJkMzc4MWNjZDYxMzg4MThjYTczMDY3ZmUzMzE4ZjM2ZThkZGVhN2UyZTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f361e849d5da22fe8b84b15944a3e096d686554a7321ffd7a3cb619c55321cc9",
+  "claims": [
+    {
+      "id": "claim_040b9b1cd74b40e6a6c1a17303aa8eb6",
+      "statement": "AgentPlatformClient manages HTTP requests with Bearer token authorization, validates HTTP/HTTPS schemes, and converts HTTP transport errors into sanitized RuntimeError instances.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/agent_platform/client.py#L10-L41",
+          "version": "repo-lines-v1:sha256:b22982faab9c0b417ced1a428f71d7aa5e5eee6d4a725d24295c32b7bac3d4a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZDdhMDdhODNkZDE5OTZmYjUxNjg0YjQyYWVjYWY0ZTkwZmI3OGJhNzIzMGU1NDJlZDdiZDAxZDQyMzAxYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxMDkxZmM4YTQ3NjAwOTViNTVlYzVkMDIxOTlmMDNhODEyZWUxYjM5YTE5MTc2YmQwNjZiNGU3NDI1ZGQ5YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0M2JmOGM4NjViNjc2Yjg2N2QyMTZjMWIwNGU5OGE5MDU5NTk0OGEzMTg0NDEwMmJkNDA3Y2JhNTZkOWY1MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0112b08abb7d4df7a9133c28d773fa2f",
+      "statement": "AgentPlatformHarnessRepository fetches capabilities and agent harness snapshots, filtering editable components against a standard list and preserving raw payload structures in a deeply immutable opaque_payload without normalization loss.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/agent_platform/capabilities.py#L19-L41",
+          "version": "repo-lines-v1:sha256:3f509ed7a43265456f2b71e6151392957f4d62b1149e1a8dd9861b4bd38dfcc6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1Y2MwZGU5NGE5MzdhNDI1OThmNjJlZmUwMjVmYzc3MDVjN2RiYjY3MWJjMGM1MTRjZDllMjM3OTM0NzRjNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0OTlkZTdmN2ZlZTIxM2YzZjFmZmIwNGMwM2VlOTU4MTM4NTAzNjlkN2Q1ZjUwODYxZGU1NjQ4M2QwN2M2YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/agent_platform/harness_repository.py#L37-L79",
+          "version": "repo-lines-v1:sha256:9226e9f805facf81edc83f364f7dd03aa415c369ea6870c091d0ad7348162687:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZThjN2MyZTkyNmQ3MWE4YThhYmQ1ZDAyZTBhMDMwZWMwMjQ4YWIyMGUxZTg1ZjRlMTc1Y2JhODJiMzdhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzNmM0NDQ5OWVhYzk3ODc5NGJiYzY4NjJlMmQ4YmExMGFmY2E2NzYxNzEwNDE4OTJhZTI2NGFjMWM0NDc4MmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxNmQwNWQzZmViYTgxYWQ4M2MzOTFlNzQzY2JkNTQxNjBhYWY2YTQ5MjE4YzM4NGU0NmI5NDg2NzFhZDk1YjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fda4e84351874a80a05e20732139f4f9",
+      "statement": "AgentPlatformCandidateExecutor dispatches candidate and baseline execution requests to POST /api/test/executions without a publish field, handling synchronous 200 OK completions and asynchronous 202 Accepted polling loops to map remote status to ExecutionResult.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/agent_platform/candidate_executor.py#L36-L125",
+          "version": "repo-lines-v1:sha256:5a44444181384bb9c33996524e390873230cf9861f3aab5ca1305171afd4d0a1:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMzlmY2Y3MTA5MjE4YTc0NWUzNWY1MmRmYTAwMThhNzI1ZDdkYmY4YTY5NTI4NzRjYjVlMTI2ZDhmNTRmOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2YWY2OTdhODYxNjQwMGM3ODcxMGM4MzZmMDhlMjMyMTI2ZTMzZTk5NTk5NWM1MmFhYmM0MTkxZjNiM2UyYjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzZmQ0N2RhNDRiZDJkMjM0ODk3MmZhZWNjNDAxNzM5YzhjNGRjZTBlNGJhOTJiZDk5ZTQ2ZjViZDBkY2RiOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aaef05c16ded403d8b3b586b5866aa9e",
+      "statement": "Agent Platform network paths /api/agents/:id/capabilities, /api/agents/:id/harness, and /api/test/executions are hardcoded adapter paths tested only via hermetic mock fixtures and require OpenAPI validation prior to production deployment.",
+      "evidence": [
+        {
+          "resource": "repo://docs/integracoes.md#L17-L24",
+          "version": "repo-lines-v1:sha256:40524946709cebe70973ed960d5888449da1dba079e03371c041689bc8ad2eaf:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM3OTJiOGQyNzA4YjY4MDI1MzY5NGUzZmJlNGJhNmUwYjBhZDhlYmU5YzljNGIwMTQ1ODRjOGU5OTg2NGU1NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDY4MGRiZjUzOThhMWJjNTRjNTZjMGEzMjYyNzdiOGE0ZjYwMjA4OTIyYjhmYmI4ZTY1MDY1ZDc2OWU5NWEwZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzMwZDlhZWFmYjBkZGM4ODhkNTAxNWE1MWJmZGU5YWNmYTgwNzVjMzY5MDRjNzk5ZjA0MTM2NGU4YjY3YTM5OSJ9"
+        },
+        {
+          "resource": "repo://docs/limites.md#L3-L6",
+          "version": "repo-lines-v1:sha256:c459e362fff6cf76bcbee591abd43dd4abd20b6275cea0ce408cb797e2acc31e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ExZGFmZTFlOGU4M2M2ZjY4NDQyNGIyMjllNWY1ODQ0ZWNjNWZjOTdhZWEwZWZiN2MyMzBjNmU4OTRlY2Q1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWMyMzhlOWU4YjRmZGMzM2IyNWFhMWI4N2RhMzIxOGQ4NjM2ZmI1MmNiNWM5YmM3YjJhMjU4MTc5YjA1OTBiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGMwMjNkYjI4NjhhMDExYWQ3NjU2YjY4YmNhOGI1YTA3ZmE3MGRkN2IzMjViOGQ2NGQwOTk5OGExNDRkZGNjZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

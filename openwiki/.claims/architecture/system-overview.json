@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c1dff43a1259d2a3b4b113115e7365357d84dfb5afe43e4a3caaf356697ee8e9",
+  "claims": [
+    {
+      "id": "claim_02216192b0624ab08cb1f6a33f52887f",
+      "statement": "The harness_lab package is structured as a modular monolith in Python where API, worker, web interface, and adapters share a single codebase while separating business logic in domain and application modules from infrastructure.",
+      "evidence": [
+        {
+          "resource": "repo://docs/arquitetura.md#L3-L29",
+          "version": "repo-lines-v1:sha256:41634670a1ecccec9b2a1cda27d79207d51d442e2334f401c9a776b2454c497c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0YzY4ODQ2ZGRjY2ViMDAzMzVmNGE3OTc3NGExMmRlNmI1OWFmY2FhMDE0YjUxYjhkZTRlYzc0NmE1YmIyNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyYjQ2ODUxMDMzODM1M2QzM2I3Yzk3YjVmNDc5NzUxYzk0MDBlYmJkN2FlNDIwNWJhNDFlMjZhOTU0ZTk3NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxZGZjNmQ1OWUyNTI4NGFiODg2NGU1ZDAyNWRmZWUzM2Y1NmViNzY5OWM3NDhjYTg3Yzc3NGRkNmViYzU2MzQifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/cli.py#L1-L29",
+          "version": "repo-lines-v1:sha256:a7b4fb56692088a926876f17b229aae7794fab70a8696227ea8efdfcec573da8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjNzllYTFkZThmNWNmN2M0ZjAyZTdiNDNjNDk0YjFhZTc4MjQxNmIxMzhjMjA5Y2Q2ZjdiNWZmMzQ3ZmM0OGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/ports.py#L1-L241",
+          "version": "repo-lines-v1:sha256:6072795d3e3dc73c03829c49b2f0a3dc61c26cd89eb80cfeaad9c650345b1505:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1Mzg0YmZkYjJkZjM4MGI2NTU3Y2M3YTcxZDE2ODkxNDE1YmNjYWE4NzY5OTQwNmUyMzZmNzUyYzY0MTUzODlmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmOTQxNmUwOWY3OGJhMzE2YzAzMjU2ODIxM2I4NTVlZTc1NmU0MTU2NWQ5MThmMDk1MTljODFmZDYyMGY0MDYwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://src/harness_lab/main.py#L1-L26",
+          "version": "repo-lines-v1:sha256:e780a51105ee30688d4623040f069ac0c356e35273f2370f459e99d4541149cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYTE2ODg0YzNiMjJmMmRlZWNiZTQ4NGY5MWJmYTk3NmY1ZWY4NGJiMzVmNWFhOTU5MDYwYWEzM2FlYmUzNjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69aad475917345b48b344fea115285bc",
+      "statement": "The domain layer defines immutable models derived from DomainModel with frozen=True, branded NewType identifiers, state machine transitions, and infrastructure-decoupled Protocol ports.",
+      "evidence": [
+        {
+          "resource": "repo://docs/arquitetura.md#L21-L29",
+          "version": "repo-lines-v1:sha256:a9d16e73a6014e60a0b2e657c8396f3640b278f465c9811f8c08c0d5d170ad8e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZjNjU3MTQ0NmNmNThkMTRlZTVhN2EyNzNiZGE1OWMyOTk1ZTdlNTI4ZDNiMzAwMGU4ZDNmY2EwNGI5ZGNlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmE1N2NiYzdiNWM1ZDY1MDg2NTEyMWNiOGNjNjZjOGQzMzkwYzFhZmExOTY1NjYxOWE1MjZjMjE5NjMxYzJjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjFkZmM2ZDU5ZTI1Mjg0YWI4ODY0ZTVkMDI1ZGZlZTMzZjU2ZWI3Njk5Yzc0OGNhODdjNzc0ZGQ2ZWJjNTYzNCJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/ports.py#L46-L212",
+          "version": "repo-lines-v1:sha256:49ff423edade6ba3c18495457f9425c67ec4a402a85e20103df86d976dde7add:eyJzZWxlY3RlZExpbmVDb3VudCI6MTY3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0Y2NhODcxYjIwMjJhM2JkNmM0YzY4NmFlN2ZhOWUyY2E1ZTUyNmUxOTA4MWY0NTFhZTQwMDBkODY3MzZiMjBhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4NmY0ZDcxMTNkOWNkMDhlZDU0MDBjOGM1YjdmNGQ1Mzk3MTdhNDBkODY0YmIyN2RjYWVjYjYxYzMwYjJkMzA2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNTFhYmJlODY4ZDU0MDJlNDM1ZmYxNjMzNjNkOWNiZjE5NjA0YmE4MTFmNTY2OGJjZTUzMjdmMjdlOTlkZmQ1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6c8802633324cc99ce22e78ed790db6",
+      "statement": "ProcessRound orchestrates round stage transitions by validating job lease ownership before and after each phase and recovering terminal decisions or marking integration_failed on exporter crashes.",
+      "evidence": [
+        {
+          "resource": "repo://docs/arquitetura.md#L30-L42",
+          "version": "repo-lines-v1:sha256:16510ed0f0274f481683f084dbc044b5a77274a3a67605d035ae27853d7de76c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4MDUxMjZkMDQ3ZTU5OWVjMmRiNzdmYTdjNWY4ZmVhYjEwN2UyNTdjY2Q2ZDgzZTdhMWE0ODllOTdkYjI4YTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3OTczMDFjMGFmMjBlZjZlOWI1NTMxYzNjMGM5YzI3ZTc3YzQ4MDRhNDdiNGUzMGY4NDE1ZWU2MzNhNjFjOWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyODlhZjMxZGE0NmRiZTE2Y2EwMDM3NjE0MzQ3MzY1MmJhYjcxMDE1YzRmMTZmZjgzYzU3ZGQxZGJhODM1ZGIifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L59-L147",
+          "version": "repo-lines-v1:sha256:461b6d0c6a08de2cce47da8f14c661479290febe93e0c1c86cdf3e9d2cd19b6e:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZjNhMjk5YWYwNTYwMzBmMTRjZjk2MzI3MDdiNzNmNDVkNDI0NDA1NTRkMzJiOWNhZTQwYTJkNmIwZWUxNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlM2IwNDg0YTZmYTRiYjY5NjBjYjc5Njk2ZDBiYmE0YjdhNzllZDhjZGU0MDE5YTkzMzYwNDI1OTE1MjY4YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzNTk1YTk4MDRkNWE0MGMyNGYyNDM1N2I4ZTQyODdmMDMwOGY1MmMwMGJhODE0ZDk3ZjZlOGJmMDRiNDUxZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NjFhNzJkODY1ODBjZjVkMzRjZTIzMDVjN2Y1NmYyNjdmZThlMzMwMTczYzg0MDNjZTdiNzVmNmE3NDMwZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b881cfb063e84651b5d32848246ac72e",
+      "statement": "DurableRoundWorker polls the SQLite job queue and claims round executions using optimistic worker leases, executing stages through injected provider dependencies loaded via WORKER_PROVIDER_MODULE.",
+      "evidence": [
+        {
+          "resource": "repo://docs/arquitetura.md#L50-L56",
+          "version": "repo-lines-v1:sha256:7035b72eda4d3ad120c9ed15adb0395bae87a65a9e670afbf6e88601d6f1541b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjViOTAzMzViOTJlODZjODkxNDAyODhjOGUwNmE3NzlhYWEwYzMzOTNmNDEzNzJiMzUyOGZjZGQyZTc4MmQ0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzM2YzhjNDJiYzZlMDU2OTg1N2M0YWRkYzlmNDE0Y2M1ZWQzZjlhMmZhNjI5NjdmZWExODhkYzRhMDUyZDc2NiJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/main.py#L23-L88",
+          "version": "repo-lines-v1:sha256:326501ce8bfb091643574b298312dec5022326bc7cc4e2da88832a2bc19932cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYzdkNjQ0ZWJkY2RmYzRkZTBkYjJmNzJmNWU1NGFmMTczZDA4OWZkMzU3ZWNkNjRhMGU5MjNiMzFjOGZjNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMDQyNGJkZTNhZDkxZmY4ZGFlYTgxYTRhYTUwNGIyZmU5ZDM3OTIzZjU5Mzc5MTUyZDU0M2Q3YjRkZWFmNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZWUxOTMyODRlODJmYjc2YWY0ZjRmNTgzZTQzZjA1MDdiNWYxMzJiMTY0ZTZkMzUyM2JhZmI5NGMwYzdiMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczYjMzNzViM2U3ZTI4YjU2ODcyYTJkMmQ5ZDRkM2QyNzIzMWM0ZmYyMzIwZjg4ZjdmYjNiNzYyYWUzMzdiYTEifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/runtime.py#L31-L76",
+          "version": "repo-lines-v1:sha256:8823c6ea4249bf1e4ce0be6fd419a400a10e10d76a574d21e7c13c2105ec8772:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzNTBhODMzMjNlMjZiNzc2NmZmYWVhYjU0YzA5YjlhMjMwZTZiZTExODNjNDBkYjc4ODljYmFlNjJjYzczYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0MjY3NTc3ZjJhMzI1NjE2YWJlOTk5NmNiMzAzNDA4YTk2OTQwMmYzN2I2OTQ5OGMyYTU1MDI4MjJiMmVmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/worker.py#L15-L34",
+          "version": "repo-lines-v1:sha256:5d3333652e7d251188070a0a3f6e769d21a1b6ab15710dca00915ce3c0868403:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNTgwOGIzZTIzYWI2Y2JlZDVhNDJlMzgxMWIxYzYxODU4OTJmOGFjYzNlNjViMDBmYTE1OTU3N2Q2MmNlZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMDQyNGJkZTNhZDkxZmY4ZGFlYTgxYTRhYTUwNGIyZmU5ZDM3OTIzZjU5Mzc5MTUyZDU0M2Q3YjRkZWFmNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxN2Q5NzZjYTZlOGNiYTYwOWI3MWQ4ZTg1ZjZlZmJhOTlkZWQwYTlkYWFmZjY5MjEwM2NlYzM2Mzg1MmU2MzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_284a47eed6194434b5288e34df391594",
+      "statement": "The FastAPI application in harness_lab.api injects database repositories and stores via ApiServices, registering REST endpoints for agents, cases, connections, and rounds alongside SSE real-time progress event streaming.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/api/app.py#L30-L96",
+          "version": "repo-lines-v1:sha256:154f6ee8787f425a8711a203d15eca217ad2a1a803dfad95debf7eed4dee5d0e:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMmRiN2YxNzNiNzUzMDJkOTUwZjAwNDcyMjU2ZmVlMjM2Zjc0YTA0MDg2NDNjNDliOWQ4NjNjZTlmMTI2NWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3Y2E1YmRkYzE3NDM0YjE0Njk3Y2Q2ZmRhNzI1MDI3NTBmOGRjYThmYTliMjA3MzA0NDMwYTNhZGJkZDE1NzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1ZjIyYzAzZWZkMjQ2MmNhMjc2OGFhMjYzZDE2ZjBkYTEzNzI0ZDNjMjFlYTMyYjY0YzRmYjUxOWJkMGYzOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/api/services.py#L1-L25",
+          "version": "repo-lines-v1:sha256:104ea6280683af9644e4caeb6a34bc225f6c95a553969df19211416ce7dd8b41:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxYzlhZDgzODU3NzY1ZmFiY2NkYjRjOTQyM2M0ZTNmYmE4MGNhYWVhNDAyZTFlYzAzZjQxM2ZjNzRiZGUzOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ddd134cae56f45d5a0a026f6aaaf575e",
+      "statement": "The web layer in harness_lab.web provides server-rendered HTML pages using Jinja2 templates and static CSS, interacting directly with ApiServices database queries.",
+      "evidence": [
+        {
+          "resource": "repo://docs/arquitetura.md#L28-L28",
+          "version": "repo-lines-v1:sha256:984b352006071676046bcee1a11ddcd1751cf7b01ef51f240c0cdf377bf13bdd:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg0YjM1MjAwNjA3MTY3NjA0NmJjZWUxYTExZGRjZDE3NTFjZjdiMDFlZjUxZjI0MGMwY2RmMzc3YmYxM2JkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg0YjM1MjAwNjA3MTY3NjA0NmJjZWUxYTExZGRjZDE3NTFjZjdiMDFlZjUxZjI0MGMwY2RmMzc3YmYxM2JkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDM5YjdmYjQ3NzE4MmY2NWU1NWFmZDM4ZTk0NjMzM2M1MDQxOWZiNGYxMTZhM2Q1ODQxYmZhZmQ1MzNhZDg5MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQ0YjA3OTQ4NGE0MzQwNTdlMjYxZTFiYmZkOWMyMDczNGU5NzQxYmUyNGMwNjA2ZmI0NDgyMmU4ZTBhZDQ0MiJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/web/app.py#L13-L50",
+          "version": "repo-lines-v1:sha256:5a0c72968c3f6c7ff10ad0cf337784bfebade7b526fa59167e6ef47e3f9204ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMTg0MGM0NjNjM2YwYmZhOTM2YmRjOWUzMWY1OTVlOTNkZDAwMWE1MDVhMjExMDA2NDQ0N2QwZDg2MjdhOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkM2M2ODEyNTcxN2M4YTM1NzUyMzc0NTIzOTNkMjQ0YWMxMDM0YzNmNjM5NGFhNTQ0MTQzODYwOGNiZTQ5YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1NTk1OThhNjZkOTIyMzAzNmUxMzhmZTI2M2FkZDQzZjVmYzA2OGE5NzdmNzcyZjY5MzQ5YjM1MGVmMDJjZmIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

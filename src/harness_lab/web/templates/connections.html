@@ -1,6 +1,60 @@
 {% extends "base.html" %}
-{% block title %}Conexoes | Harness Lab{% endblock %}
+{% block title %}Conexões | Harness Lab{% endblock %}
 {% block content %}
-<section class="page-heading"><p class="eyebrow">Integracoes</p><h1>Conexoes</h1><p class="lede">Status das integracoes configuradas. Credenciais nunca sao exibidas.</p></section>
-<section><h2>Conexoes configuradas</h2><ul class="resource-list">{% for connection in connections %}<li class="resource-row"><div><strong>{{ connection.name }}</strong><span>{{ connection.id }} · {{ connection.kind }}</span></div><span class="status">Configurada</span></li>{% else %}<li class="empty-state">Nenhuma conexao configurada.</li>{% endfor %}</ul></section>
+<section class="page-heading"><p class="eyebrow">Integrações</p><h1>Conexões</h1><p class="lede">Registre integrações com credenciais cifradas. As credenciais nunca são exibidas depois de salvas.</p></section>
+
+<section class="workbench" aria-labelledby="new-connection-title">
+  <h2 id="new-connection-title">Nova conexão</h2>
+  <form method="post" action="/connections" class="form-grid">
+    <label>ID <input name="connection_id" pattern="[a-z0-9][a-z0-9-]*" placeholder="langfuse-main" required></label>
+    <label>Tipo
+      <select name="kind" required>
+        <option value="langfuse">langfuse</option>
+        <option value="agent-platform">agent-platform</option>
+      </select>
+    </label>
+    <label>Nome <input name="name" placeholder="Nome legível da integração" required></label>
+    <label class="wide">Credenciais (JSON)
+      <textarea name="credentials_json" rows="5" required>{&#10;  "baseUrl": "https://langfuse.example",&#10;  "publicKey": "pk_...",&#10;  "secretKey": "sk_..."&#10;}</textarea>
+    </label>
+    <button type="submit">Salvar conexão</button>
+  </form>
+  <p class="form-hint">As credenciais são cifradas com SecretBox e redigidas nos logs e relatórios.</p>
+</section>
+
+<section aria-labelledby="connections-title">
+  <h2 id="connections-title">Conexões configuradas</h2>
+  {% if connections %}
+  <table class="data-table">
+    <thead>
+      <tr><th scope="col">Nome</th><th scope="col">ID</th><th scope="col">Tipo</th><th scope="col">Status</th><th scope="col" class="actions-col">Ações</th></tr>
+    </thead>
+    <tbody>
+      {% for connection in connections %}
+      <tr>
+        <td data-label="Nome">
+          <form method="post" action="/connections/{{ connection.id }}/update" class="row-form">
+            <input name="name" value="{{ connection.name }}" aria-label="Nome da conexão {{ connection.id }}" required>
+            <button type="submit" class="button-small">Renomear</button>
+          </form>
+        </td>
+        <td data-label="ID"><code>{{ connection.id }}</code></td>
+        <td data-label="Tipo">{{ connection.kind }}</td>
+        <td data-label="Status">
+          {% if connection.configured %}<span class="status status-ok">Credenciais ativas</span>
+          {% else %}<span class="status status-warn">Sem credenciais</span>{% endif %}
+        </td>
+        <td data-label="Ações" class="actions-col">
+          <form method="post" action="/connections/{{ connection.id }}/delete" onsubmit="return confirm('Remover a conexão {{ connection.id }} e seus segredos?');">
+            <button type="submit" class="button-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">Nenhuma conexão configurada. Registre a primeira acima.</p>
+  {% endif %}
+</section>
 {% endblock %}

@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: harness-lab
+Version: 0.1.0
+Summary: Harness Lab Python migration adapters
+Author: TOTVS
+License: Proprietary
+Requires-Python: <3.14,>=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi<1.0.0,>=0.115.0
+Requires-Dist: pydantic<3.0.0,>=2.9.0
+Requires-Dist: jinja2<4.0.0,>=3.1.0
+Requires-Dist: python-multipart<1.0.0,>=0.0.20
+Requires-Dist: uvicorn<1.0.0,>=0.34.0
+Requires-Dist: httpx<1.0.0,>=0.27.0
+Requires-Dist: pynacl<2.0.0,>=1.5.0
+Requires-Dist: harness2 @ git+https://github.com/google-research/harness2@1cfe254e8d25b15f37048c3730134686abe60335
+
+# Harness Lab
+
+Aplicacao Python para diagnostico, refinamento e avaliacao de agentes usando o Harness2 upstream fixado no lockfile.
+
+## Requisitos
+
+- Python 3.12 ou 3.13;
+- `uv` 0.12 ou superior;
+- Chromium para a suite E2E.
+
+## Inicio rapido
+
+```bash
+uv sync --frozen
+cp .env.example .env
+uv run harness-lab api
+```
+
+A interface e a API ficam em `http://127.0.0.1:8000`. Em outro terminal, inicie o worker somente depois de configurar um provider:
+
+```bash
+uv run harness-lab worker
+```
+
+O banco padrao e `data/harness.sqlite`; altere `DATABASE_PATH` para usar outro arquivo. Testes e smokes nunca devem apontar para o banco ativo.
+
+## Qualidade
+
+```bash
+uv run pytest -q
+uv run ruff check .
+uv run mypy src/harness_lab
+```
+
+Instale o Chromium gerenciado com `uv run playwright install chromium` ou defina `PLAYWRIGHT_CHROMIUM_EXECUTABLE`.
+
+## Backup
+
+```bash
+uv run python scripts/backup_sqlite.py data/harness.sqlite backups/harness-$(date +%Y%m%d-%H%M%S).sqlite
+```
+
+O comando usa a SQLite Backup API, valida integridade, grava atomicamente, aplica modo `0600` e imprime o SHA-256. Veja [operacao](docs/operacao.md) para cutover e rollback.

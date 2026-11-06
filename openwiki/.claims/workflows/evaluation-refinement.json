@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a744a89494fefbf1e427338944284f16609d774dcf45f88bbaea539cd87daf38",
+  "claims": [
+    {
+      "id": "claim_009d225b24ad43edb4404cb0144a5384",
+      "statement": "A função validate_proposal valida propostas de refinamento rejeitando alterações em componentes não suportados ou ausentes no baseline com UNSUPPORTED_COMPONENT, e alterações que contenham substrings de restrições imutáveis do snapshot baseline com IMMUTABLE_CONSTRAINT.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/refinement/change_policy.py#L19-L34",
+          "version": "repo-lines-v1:sha256:d54a49ec29796d631dc291c657e9ea82c4a7b2d5ac12b99768ad71849ae3a2a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2N2ZjYzVjMDJlZjg2ZGI2ODc5ZmJiZGEwZTc4N2U2M2I0ZWMyOWU5ZjRmYTE4YzIwODcxZDE2NWEyNWU3YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjZmU1OTYyM2I5MTdlNzc2MzFkY2JjMWUzZTBkN2MyMmU2OWI1YzlmNTUyOWMzOTE2ZDk1ZmUzYTczMmViZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_74c26c93a023440d8a0e7c56bb5a0676",
+      "statement": "A função evaluate_candidate exige que todos os casos em CandidateEvaluationInput pertençam ao conjunto reservado (reserved_case_ids), lançando um erro EVALUATION_CASE_NOT_RESERVED em caso de divergência para garantir o isolamento estrito de dados.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/evaluate_candidate.py#L58-L60",
+          "version": "repo-lines-v1:sha256:452e52b1a92e44fc67dc161675ba99e9192ba8c9c6478473ad2bf89f463c4677:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJiMDUzYjU4MTgwMzI0NjQ4OTJiNTAwYTgxY2QwYTY2NWU5YzQ5NjYyNjZkMmZhNWIyNzEzODA3ZmU3MzNhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkxMGFkNzUxZjFkZTRmZjYxMjE0ZGVmMzg3Mjc2NTdmZWM1NjkwY2I4MGI0MWY4OWIwNjVkY2ZmM2UzODJiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjRkMWJkNWJhYzI3ZTNmM2VhOTA1MzM5NDU3YTk2ZWYzYWE3ZjQ3NmU2YzBjZWNiYTY0YmQ4N2RkYzk2ZTMxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTQzNzM2MTc0NmY2YTgxMzUyYmExNWVjOWE1YTEyMDY3NmIxNjUxYWQzMDgwMmIwYjMxYWZmMGNhYjkxOTI5MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_21d67ae9a4c84275b77354c58e2d4546",
+      "statement": "A avaliação individual de cada caso em evaluate_candidate considera como regressão qualquer queda de completude (completion_change < 0), falha no teste determinístico, rejeição na revisão humana ou presença de violações críticas.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/evaluate_candidate.py#L71-L87",
+          "version": "repo-lines-v1:sha256:2b6d46f057e2ce0bf3b5ec138e67e78b8c2a1b13eb5bd7defa588f346ca45192:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4M2M2YjE0NGUyNGY5NzQwYjcwOGUzNjhjMTg5ZWY5NmM2MjMwOTA5NTc5ZTcyOTc1OTRhNDQwYzNlZDhjMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2ZGQ0ZWZjOTYyNmQ4N2Y4NTM3NDBmNWJkMDhhOWJlMzZhZTYyZTlkNzMyZjBjZDUyZTBjZWM3YzVlNTY5MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwNzZhMjhjYjdjOGI2ODIwYTM1MTlhY2YzYzYwOTA3ZjI2NTJiNzFhNmYwMzI4NjdmOTZiM2FiYzEyMmZhMzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c5a312bf6674cfc8adcd697d10bdbf2",
+      "statement": "O motor de avaliação calcula o score agregador combinando a média de completude com 10% da média das pontuações do judge LLM, ajustando a confiança conforme o tamanho da amostra e a presença de limitações.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/evaluate_candidate.py#L94-L140",
+          "version": "repo-lines-v1:sha256:b5c29012dd56b05b33a5d2a32fb13c9eafd44f808d74cb1bafa26bd20b9026f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOTAyMWM0Nzg0NzdkNDRjNDFmNTc0YjZmN2NiMmMyNmRkZTI1ZGMwM2M0NmI3NmVkZTYzOWFlY2MwOTEwNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiMDFiZGZlYWViYmRiYTBkNWM2M2JjNGNhZTI4NTJlYTQxNjAwZDEyYjFkOWVmZTIwNWYzNmQyMThlMGM0ZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMTBjMjEzYzcyNTVlN2E4OGM5ODZiODJmMzQxNmU5Yjk5MThjNTEyZmVkMjI0MjhmYmJiMmNkYzYzMjZjOWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e471cbeb1d2420a9f271cea31052853",
+      "statement": "A função decide_recommendation aplica uma política de decisão em cascata avaliando o estado do ciclo de vida, amostra mínima, falhas críticas, falhas determinísticas/humanas, alta variabilidade e taxa de regressão para decidir por recomendação, rejeição ou inconclusão.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/recommendation_policy.py#L28-L73",
+          "version": "repo-lines-v1:sha256:b9fbc02adf7d65026cee99f50220ab2331832fe9b30a7301c18aeebe62074afa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMmU0ODZhZTY2ODA2YjMzODI5NzI3OWU0YzQzOWY0ZWExNjE1ODQzYzYzZjk3OGI0ZDQyYWY2NzBmOWIxYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3ZGRkMjRmMTlmMjJkYTBmMTM0ZjBiNmYyMTAzZWI4ZjY3MThiN2FlZGQxN2NiZjYyNWVjODdlZGE1N2IxNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0c307b51cc34e9aa2b016ceee1bcc8c",
+      "statement": "A função export_candidate gera os artefatos candidate.json, diff.technical.json e diff.txt com redação de segredos, registrando-os de forma atômica com permissões 0o600 e digest SHA-256.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/export/candidate_exporter.py#L11-L49",
+          "version": "repo-lines-v1:sha256:6c519869913bce801e1b15e20a0b5d928d5368cd3ed362dbafd002af1d7196a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMjBhODU0ZTI0NzQ4NmIxZGY4Njc0MmJkM2YwNmQ2Mzg2MDJlOWMwNmIzZjkwZGIyMDBjYjAyZjQ5NDc1YzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5YTY5M2JhMzUwNGVmOWE2NzlhNmI5YWU0MGI5NDU5N2FiM2M1YTg2YzBkZDc5MTg0MGMyOWE1MTIxYjBjNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/export/write_artifact.py#L9-L35",
+          "version": "repo-lines-v1:sha256:b462236f052d868d9fff7f49f4c0e1955beac513d36fe54706957dfa4cf5840a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4NTJmNzdmMjFkMzk0MTBlMjZjY2VmOTAyNzNiNTRlM2FhM2VhZWQxNWEyZTVhNTlhMzlkNTI2NTQ1YWZiOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5MWJmM2Q5NmYxYjExOTY4OGRlZWE5YTAwNGIyYjNmZWJiMTgwYmI4ZmIyMzQ0NjI1NjE0YWRjODU5NTYzYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

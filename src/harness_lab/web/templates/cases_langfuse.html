@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Importar do Langfuse | Harness Lab{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <p class="eyebrow">Dados</p>
+  <h1>Importar do Langfuse</h1>
+  <p class="lede">Recupere traces históricos como cases de avaliação. Pré-visualize, revise o que será descartado e confirme apenas o que interessa.</p>
+</section>
+
+{% if error %}
+<p class="flash flash-error" role="alert">Não foi possível concluir a importação ({{ error }}). Verifique a conexão e o intervalo informado.</p>
+{% endif %}
+
+<section class="workbench" aria-labelledby="langfuse-filter-title">
+  <h2 id="langfuse-filter-title">Buscar traces</h2>
+  {% if connections %}
+  <form method="post" action="/cases/langfuse/preview" class="form-grid">
+    <label>Agente
+      <select name="agent_id" required>
+        {% for agent in agents %}<option value="{{ agent.id }}"{% if form and form.agentId == agent.id %} selected{% endif %}>{{ agent.name }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Domínio <input name="domain_id" placeholder="retail" value="{{ form.domainId if form else '' }}" required></label>
+    <label>Conexão
+      <select name="connection_id" required>
+        {% for connection in connections %}<option value="{{ connection.id }}"{% if form and form.connectionId == connection.id %} selected{% endif %}>{{ connection.name }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Início (ISO) <input name="from_start_time" placeholder="2026-01-01T00:00:00Z" value="{{ form.fromStartTime if form else '' }}" required></label>
+    <label>Fim (ISO) <input name="to_start_time" placeholder="2026-12-31T23:59:59Z" value="{{ form.toStartTime if form else '' }}" required></label>
+    <label>Limite <input name="limit" type="number" min="1" max="40" value="{{ form.limit if form else 20 }}" required></label>
+    <button type="submit">Pré-visualizar</button>
+  </form>
+  {% else %}
+  <p class="empty-state">Nenhuma conexão Langfuse cadastrada. Cadastre uma em <a href="/connections">Conexões</a> antes de importar.</p>
+  {% endif %}
+</section>
+
+{% if preview %}
+<section class="workbench" aria-labelledby="langfuse-preview-title">
+  <h2 id="langfuse-preview-title">Pré-visualização</h2>
+  <dl class="preview-summary">
+    <div><dt>Total</dt><dd>{{ preview.summary.total }}</dd></div>
+    <div><dt>Prontos</dt><dd>{{ preview.summary.ready }}</dd></div>
+    <div><dt>Já existentes</dt><dd>{{ preview.summary.existing }}</dd></div>
+    <div><dt>Descartados</dt><dd>{{ preview.summary.discarded }}</dd></div>
+  </dl>
+
+  {% if preview.limitations %}
+  <ul class="limitations">
+    {% for note in preview.limitations %}<li>{{ note }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+
+  {% set ready_items = preview['items'] | selectattr('status', 'equalto', 'ready') | rejectattr('existing') | list %}
+  {% if ready_items %}
+  <form method="post" action="/cases/langfuse/confirm">
+    <input type="hidden" name="preview_id" value="{{ preview.previewId }}">
+    <table class="data-table">
+      <thead>
+        <tr><th scope="col" class="actions-col">Importar</th><th scope="col">Trace</th><th scope="col">Início</th></tr>
+      </thead>
+      <tbody>
+        {% for item in ready_items %}
+        <tr>
+          <td data-label="Importar" class="actions-col"><input type="checkbox" name="trace_ids" value="{{ item.traceId }}" checked aria-label="Importar trace {{ item.traceId }}"></td>
+          <td data-label="Trace"><code>{{ item.traceId }}</code></td>
+          <td data-label="Início">{{ item.startTime }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit">Importar selecionados</button>
+  </form>
+  {% else %}
+  <p class="empty-state">Nenhum trace novo disponível neste intervalo. Ajuste as datas ou o limite.</p>
+  {% endif %}
+
+  {% set discarded_items = preview['items'] | selectattr('status', 'equalto', 'discarded') | list %}
+  {% if discarded_items %}
+  <details class="row-editor">
+    <summary>Descartados ({{ discarded_items | length }})</summary>
+    <table class="data-table">
+      <thead>
+        <tr><th scope="col">Trace</th><th scope="col">Motivo</th></tr>
+      </thead>
+      <tbody>
+        {% for item in discarded_items %}
+        <tr><td data-label="Trace"><code>{{ item.traceId }}</code></td><td data-label="Motivo">{{ item.reason }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </details>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:344bf0b5d5b3ce28f4f9c05914806afc1d8139a882671d5b6b79c57554241905",
+  "claims": [
+    {
+      "id": "claim_f201f0f2ba804cb381312498ef70c2e0",
+      "statement": "open_sqlite_database configura PRAGMA foreign_keys = ON, busy_timeout = 5000 e ativa o modo WAL (journal_mode = WAL) com synchronous = FULL para bancos baseados em arquivo.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/client.py#L242-L250",
+          "version": "repo-lines-v1:sha256:060a06f6cf3408b886587d06f9915d127783912370126e10e7c6383807f0c9c9:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM4MjI0ZTBiMWUyY2JkZmEzYWVjMjEzOGVlYTdkOWViNDU0MDgwYjk0OTYyMGE5Zjk3MjgzYzg0ZDRlMGM0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjgwYmQwZTA2MWZmZDhkZjg5Y2E1ZjQ1OTkzYzMzYzAwMzc0ZGI1NmM4ZDgwOGU3YzE3MjY3MWM5YjhjNWY0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTY0MTdiZDU4YWI2YTBkY2VhYjk2MTg2YmU2ZDkxYzU5ZjA2ZWQ0ODgwNmE3OGE3NTNhYWFhZmNmNWMyMWMwYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_baa433268d6548cfa2421e174ade5513",
+      "statement": "O método transaction da classe SqliteDatabase utiliza BEGIN IMMEDIATE para adquirir o lock de escrita preventivamente e suporta reentrância através de um contador de profundidade (_transaction_depth) protegido por threading.RLock.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/client.py#L93-L117",
+          "version": "repo-lines-v1:sha256:60fe8ed3c79445f99acbfbf47680b0d486905cba298de3f6c01653aaebabbe2a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmY2U5ZWQzMTFlNmJiODAxZDc2YTM1NTI1OWIzOWNmMWZkOTA2NzQ0ODk4ZTExOTIwZjRhZTRkMzNmNzllY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ZmM4NTVkNTgzNTg0NDc1NmQ2ODljNzYyMjYzODcwN2IxZWQyYjU1ZDMzOGVlNTdiMTIzNzE2MTA0YjdmMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwNjM4NjgxMTI4YWUxNmJiMDFkZDM1ZmI5MmU0NGFlNjJlNTBlNzEwMmJlMjdiZTg4ZjA1ZGQyNjk3MGYxNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmNmM5NDA2NmNkN2RiYzdlMTZiMGY1MjFhNGVlNDlhYzIzMmIyZjE2M2NiMTY4NWU0MzUwYTk0NDU4MTIwMWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d15942eb082a4d409930e9eb7924321d",
+      "statement": "A aplicação de migrações (_migrate) calcula somas de verificação SHA-256 para cada script SQL, valida migrações legadas sem checksum e verifica a integridade de escopo relacional retroativa antes de aplicar alterações.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/client.py#L129-L130",
+          "version": "repo-lines-v1:sha256:0d080dd64248cd3aa2b5f459fe78e1b2fe9c9c30b6d645717e665378777f8f91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M1ZDU2ZWIzMTA2ZWVkYjAxM2RjMGQzN2IyMGI2NjI0ZDA2YWE1MTM4YzBlYzlkNThhZDY4MjE2YTRhOGUwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzE3YTYzMjM3MjMzYWNhNzg2NzY0MGZkZDZlNjM0Y2EzZTVjMDRkODExMGU4YTk4ZjllZjdiOWQ4MGY4N2JjMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY2OWM0MTk1ZjBlZmY2ZjFhZmJlMWIzODZkMGZjZjRmZTEyMjEyMDk2MzlhMjY3ZWI5M2ZiODk3YmVkYmMyNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTc3MjM2Mzg3YmM0ZTIxNDRlYjQxOTUxYTU4ZjU4NWRlYTZlM2MzMWE0YWIwMjVlOTE4MTM5YzUzNDIyOGFlNCJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/client.py#L200-L239",
+          "version": "repo-lines-v1:sha256:a0162749c2aac852d69f0bc819a5505df3a87a1ec8ff4ed2dd78a1f5f8d9fc63:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlYTQ1YWZjZmMyYzhkY2E5OGIxYWZhODJjZmE4ZDg3MWU3MGI5YTMwYzI0Nzg0ZjkzMTliZmIwZWI4MjQwNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NTg1ZGYyODJhNWNkNTU5ZGYyZTY5YjMwOGMyZDdmZmEyZDM3YmE4NzQwNTdhZGQ4NDE2MDBkMjlkZWU5OTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4OWM1Y2RhNDBlZGJhYmRjZWY4ZjVmMWM4N2VkNTg2ZWZjYzdjODdjNTk1ZGE0OWQ5ZWY3MTMzZWYxZGNiODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1NWI1NTUxNTlmMTRhMDRiZjYyMzlkOWYxNTNhYmIzYzYyYTM3OWQ0NmEwNmQzMGUxNTgzMGZlOGRhNDgwMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_952103482a984f46ba4f7b84a315ac70",
+      "statement": "Triggers em SQLite garantem a imutabilidade dos snapshots do harness (harness_versions) e abortam inserções ou atualizações que violem o alinhamento de escopo (agent_id, domain_id) entre entidades relacionadas.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/migrations/0002_immutable_harness.sql#L1-L11",
+          "version": "repo-lines-v1:sha256:f59fc3ddd78018b66d53e15a4db388bc5aeded5aaae514a64e07ac342043fa19:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlYjA4MDc3NjVjNzQ2ODM4NzZjMDQ3YTRlM2U3ODA2M2IzMjNiMzJmYTZlNTJlY2Q2ZWE3MjkwMjkzNWQ1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/migrations/0003_scope_integrity.sql#L3-L95",
+          "version": "repo-lines-v1:sha256:312a4455c352dfd367e1af0963ee1b477e9bbe2a67916c21bf453b4d323240d7:eyJzZWxlY3RlZExpbmVDb3VudCI6OTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0OWU4NWNhMzYzNmIwODMzZjg1ODRiMjk0YTYzYjM0MWVlZTY2NTNkZTY3MmRiOWNlYmM0MTNiNjQ5OWU1ZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMzM5Yzg3M2I3YTM2NDg1OWZkNDBjYjBiZmE5NzM4MWI3Zjg3MTU0MzkwZmQxYWMzNzFlM2FhYTEwNTZjMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ODU5NmViZWI3M2Y0NWMzMDlhZGY3NTk5ZDBhMjBmMTkyYjM5ZTk5ODFmYjE1YzA5ZmI1MDA3NWUxMWIzN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_91c87937813142beaa10bfad0c79b97a",
+      "statement": "SqliteRoundArtifactStore gerencia a tabela round_artifacts, validando a estrutura do payload de sessão com o modelo Pydantic _Session e exigindo que payload_version seja exatamente 1 ao ler artefatos.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/round_artifact_store.py#L79-L110",
+          "version": "repo-lines-v1:sha256:ff8d34f2613750075256f0511fd51988f03a3c723839e86add504b3a67580e96:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3NDI0MTMzZjI3NjdlOTRmNDM2ZDg1ZmI4NDQ1MjQ1YTg5ODgwZmNhMGMyYzkxMmQyODQyYmUyMDliYTM0YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMjgzYTM0YTI1YTlmNTY0NWI4M2UxMjA3MWJiNzQ1MjBkNDA4NjIwOWRmY2IzMTFkZDAyNzM5NWZiZDVlYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiMmFmM2ZhNWVjMmU4MWZiMTFmZDY4Y2FhNTliMjBlMjc5M2EzZDU1YzJiYTk2YTYxMWIxYjExOWQ1NmM0YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxMTliZjQwNTM1ZjcxYmY4ODM3Y2FlM2RiMWIyNzExMGUyY2M5Y2JlN2ZkMDBiZTY4ZDE0YWQ4ZGE3YTExZTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_038f177dcab24a05b26140449c5ee29d",
+      "statement": "SqliteRoundJobStore controla a fila de processamento de rodadas com suporte a leases temporizados (lease_ms), preservando o status cancel_requested durante a reatribuição de tarefas expiradas.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/migrations/0008_round_job_cancellation_leases.sql#L1-L23",
+          "version": "repo-lines-v1:sha256:d91be146d210e5135b95d58f9cd91be3fd70e9e3df025c94afe138ef56938c8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YmEzZDU0YjI5ZTgwYWZiZjc2MzQzZDIwOGFkYWI3MDA3YjczMmQ2NmM1NzRlMmZhYmNkM2E4MWExNDI2YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNjRlOTBiNzYxZGJkN2NiMzUzNTg3ZmZiYTgyNTEwNWM1MmM5N2M0MmUyODdiYmE2OTQ4OWJhNzg2N2M0NGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/round_job_store.py#L20-L52",
+          "version": "repo-lines-v1:sha256:5e330c627d1921b38edd1883632eb6b874a9bc82a2ec2026d6f129906ffb47f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NWEwZGU5NWE4NTE5MDVjMjM3MjA4NjU5ZjIxZmUyZWU2YWM3YmQxNmExYTNlZmJhY2UwZDA4NDMyN2Q2NDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNzkwNzllMWQyYzZjNTU3YmJlMGE1MTA5MzhjM2MxY2ZiYWEzN2FkNjcwYWU4NWUyYmE4YTBkM2ZlN2Q5YmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4YjM5MzFjNTE4Yzg5NzVhMDlhZTM3ZDRiZTA2ZDNkZmY5YTI2MjU0NTE0ZGRlMDgyNWZmOTA0YjAxN2Q1NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5Njc1ZjJlNTYwYTI5ZWRjZDI1MzA5ZjRmOTc3N2ZkOWQzYWU1MDNmYTEzMjY1Y2RjYzNlOTk0NDBkNjhkYWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bf8bf6a2c50349c3b8c8fa414f71f7b3",
+      "statement": "SqliteRunRepository garante a atomicidade no registro de progresso de rodadas através de commit_progress, atualizando a rodada, inserindo o checkpoint e registrando o evento de progresso dentro de uma única transação SQLite.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/sqlite/run_repository.py#L88-L104",
+          "version": "repo-lines-v1:sha256:9ce22ebc38e5cc0275ff40d7fbbc551a47343407ff9522ef596d97cefe4616f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDhlZWY1MDMxMzNlYmM0NDg5NzQwNTk0ZjZlMzcwMzc3YWI0YTI5MWEwN2ViOWYxNjQ3OTZiMmRlOTM0MDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMTliZjQwNTM1ZjcxYmY4ODM3Y2FlM2RiMWIyNzExMGUyY2M5Y2JlN2ZkMDBiZTY4ZDE0YWQ4ZGE3YTExZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwNWVmOTRmOGY0YWYxMGQxMDg3YTEwM2U3N2Y4ZGQxMGJmMGFlOTE3MDBlZTNkN2U5MmYzZjI0YzkxNzFlNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyMDI3NjQ5OTQzZjBkMTczNzFiZGJiZWU4NGE4YjdkNGRjODA5MWRjYzlhZTQ2NWFlMDMwN2QwMjYyNGI3NWYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

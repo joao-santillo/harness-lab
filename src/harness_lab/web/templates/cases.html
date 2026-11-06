@@ -1,14 +1,81 @@
 {% extends "base.html" %}
 {% block title %}Cases | Harness Lab{% endblock %}
 {% block content %}
-<section class="page-heading"><p class="eyebrow">Dados</p><h1>Cases</h1><p class="lede">Importe exemplos historicos para compor a avaliacao.</p></section>
-<section class="workbench"><h2>Importar CSV</h2>
-  <form method="post" action="/cases/csv" class="form-grid">
-    <label>Agente <select name="agent_id" required>{% for agent in agents %}<option value="{{ agent.id }}">{{ agent.name }}</option>{% endfor %}</select></label>
-    <label>Dominio <input name="domain_id" required></label>
-    <label class="wide">CSV <textarea name="csv_content" rows="7" required>id,sessionId,similarityGroup,content</textarea></label>
-    <button type="submit">Importar cases</button>
-  </form>
+<section class="page-heading"><p class="eyebrow">Dados</p><h1>Cases</h1><p class="lede">Componha a base de avaliação manualmente, por importação em lote ou a partir de traces do Langfuse.</p><p class="page-actions"><a class="button-link" href="/cases/langfuse">Importar do Langfuse</a></p></section>
+
+<div class="workbench-split">
+  <section class="workbench" aria-labelledby="new-case-title">
+    <h2 id="new-case-title">Novo case</h2>
+    <form method="post" action="/cases" class="form-grid">
+      <label>ID <input name="case_id" placeholder="case-001" required></label>
+      <label>Agente
+        <select name="agent_id" required>
+          {% for agent in agents %}<option value="{{ agent.id }}">{{ agent.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Domínio <input name="domain_id" placeholder="retail" required></label>
+      <label>Sessão <input name="session_id" placeholder="session-1"></label>
+      <label>Grupo de similaridade <input name="similarity_group" placeholder="access"></label>
+      <label class="wide">Conteúdo <textarea name="content" rows="4" placeholder="Descreva a interação do usuário" required></textarea></label>
+      <button type="submit">Criar case</button>
+    </form>
+  </section>
+
+  <section class="workbench" aria-labelledby="csv-title">
+    <h2 id="csv-title">Importar CSV</h2>
+    <form method="post" action="/cases/csv" class="form-grid">
+      <label>Agente
+        <select name="agent_id" required>
+          {% for agent in agents %}<option value="{{ agent.id }}">{{ agent.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Domínio <input name="domain_id" required></label>
+      <label class="wide">CSV <textarea name="csv_content" rows="6" required>id,sessionId,similarityGroup,content</textarea></label>
+      <button type="submit">Importar lote</button>
+    </form>
+  </section>
+</div>
+
+<section aria-labelledby="cases-title">
+  <h2 id="cases-title">Cases registrados</h2>
+  {% if cases %}
+  <table class="data-table">
+    <thead>
+      <tr><th scope="col">ID</th><th scope="col">Conteúdo</th><th scope="col">Agente</th><th scope="col">Domínio</th><th scope="col" class="actions-col">Ações</th></tr>
+    </thead>
+    <tbody>
+      {% for case in cases %}
+      <tr>
+        <td data-label="ID"><code>{{ case.id }}</code></td>
+        <td data-label="Conteúdo" class="content-cell">{{ case.content }}</td>
+        <td data-label="Agente">{{ case.agentId }}</td>
+        <td data-label="Domínio">{{ case.domainId }}</td>
+        <td data-label="Ações" class="actions-col">
+          <details class="row-editor">
+            <summary>Editar</summary>
+            <form method="post" action="/cases/{{ case.id }}/update" class="form-grid">
+              <label>Agente
+                <select name="agent_id" required>
+                  {% for agent in agents %}<option value="{{ agent.id }}"{% if agent.id == case.agentId %} selected{% endif %}>{{ agent.name }}</option>{% endfor %}
+                </select>
+              </label>
+              <label>Domínio <input name="domain_id" value="{{ case.domainId }}" required></label>
+              <label>Sessão <input name="session_id" value="{{ case.sessionId }}"></label>
+              <label>Grupo de similaridade <input name="similarity_group" value="{{ case.similarityGroup }}"></label>
+              <label class="wide">Conteúdo <textarea name="content" rows="3" required>{{ case.content }}</textarea></label>
+              <button type="submit">Salvar case</button>
+            </form>
+          </details>
+          <form method="post" action="/cases/{{ case.id }}/delete" onsubmit="return confirm('Remover o case {{ case.id }}?');">
+            <button type="submit" class="button-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">Nenhum case importado. Crie um case ou importe um CSV acima.</p>
+  {% endif %}
 </section>
-<section><h2>Cases registrados</h2><ul class="resource-list">{% for case in cases %}<li class="resource-row"><div><strong>{{ case.id }}</strong><span>{{ case.agentId }} · {{ case.domainId }}</span></div></li>{% else %}<li class="empty-state">Nenhum case importado.</li>{% endfor %}</ul></section>
 {% endblock %}

@@ -1,0 +1,2 @@
+[console_scripts]
+harness-lab = harness_lab.cli:main

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:982a764e0572f49884682f9ccf72e2b543493350a9b12bcac9020a354a911fa8",
+  "claims": [
+    {
+      "id": "claim_626594317d53420d8d461553f95b2840",
+      "statement": "O Harness Lab integra o framework upstream Harness2 no commit 1cfe254e8d25b15f37048c3730134686abe60335 para fornecer a infraestrutura de benchmark, definição de superfícies de agentes e armazenamento de biblioteca de experiências.",
+      "evidence": [
+        {
+          "resource": "repo://docs/referencias.md#L4-L8",
+          "version": "repo-lines-v1:sha256:dc7a1a5816255b2249dd950b0ed4756d8b9784406f5218986e82156416dc0196:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzM0YTBkOGU3NDhlMzcxNzYwMTllN2Q0NGQ2Mjk3MjRiZjdjZTQ5N2VmNzhiZmYxM2I3YTNlNzliYzZmYmYwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODczMDcyZWI3NzhkNjkxOTg4NzM5MzVjMDM1OGE0NmU3ZTNiY2E1YTU0NTA1MDBmMTlkY2IyNTVjOTIyNDEyOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNhMGFiMmZjMTliZjNiNjVhODg4ZDc4ZGU5YTU1M2QwZDUwNjhhZDE3ODNlMTg1MjM1OWMxMDFiM2Y5YTk4ZiJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/harness2/benchmark.py#L24-L36",
+          "version": "repo-lines-v1:sha256:df44d3bf2970cf27f2242df99257c9e30778d9d96142b6ce41675761a48295f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxOTMzMWViNDQ3MjA5OWI1YmFhYzYxMDJjYmUyM2QzNTJkYTJhNWRjY2U3NjkyMmRhZmU5MTBlMjhhZWEwNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxYjk3YjI5MzQ2ODFlNTA4NWRjODNlYzIzYzcwZjJhZDdmM2I5YzAyOWU4ZDI4MjIzMGFiZWI0ZjRkODg5ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyMzU2YTYyYzVjOTY2Yzc0ZGQ0OTg4ODM2NTg1MTM5ZmE2OTVhZjA3ZDU3ZDQ5ODkxNTAwM2Y2MTM4MjU1M2YifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/adapters/harness2/substrate.py#L12-L29",
+          "version": "repo-lines-v1:sha256:c570fe9a094f528685a581f86891cd93ecc7462b852e963f0e4350234f1327c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0NmI0OWUzZmJkZmU2MDJlYzQ4MTI0ZjNiYTIyYzA3YTliOWI4ZTg1YTY3ZjI5MjY2ZTE5MzgyMTJjNzc4ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZGUzZTFmOTJhNTc1MDhiMWMzNjdhNWUzYTEwYjAyMmM2N2Q1NTcxOGM4MmQ1MGRmZTM5NGMzNTlkN2I4MmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjMWYwMmZkN2VjMWQ0NjJjMGNiODE4Yjk0OGZmZTRmNzE1YjJjMmM0MzI2MzBjMjMyZGZlMzRkNDI3NDNmYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_85499d9d926f41ebbc375798ea97ee30",
+      "statement": "O adaptador de benchmark InMemoryBenchmarkAdapter encapsula a especificação BenchSpec, a criação de diretórios de execução e a captura de trajetórias e entregáveis para testes de contrato do agendador Harness2.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/adapters/harness2/benchmark.py#L13-L95",
+          "version": "repo-lines-v1:sha256:2f341cdfaf7be560e8a93100a60534949d051557d1aead0513e43d7c15c05272:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0YTczMjdjMjM0M2E1Y2ViZjk3YWYxMjQ5ZDE0ZWIyZmM2MjAxMzI4OGY2ZTg2ODU3OWU1MmViYTgxYjYzOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjMWYwMmZkN2VjMWQ0NjJjMGNiODE4Yjk0OGZmZTRmNzE1YjJjMmM0MzI2MzBjMjMyZGZlMzRkNDI3NDNmYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliMTVjYzkyNmRhNmE3NTkxNjAyODI1NjFiMDdiODA5NDI1NGIzOWRhMjc3MzY2YTBkNjJjMThkZTc3Mjk5MTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_feb7b2f79c544f6ba3fbdfa4e5eab901",
+      "statement": "A política de alteração validate_proposal rejeita propostas de refinamento caso alterem componentes não suportados ou ausentes no baseline, ou incluam fragmentos definidos nas restrições imutáveis do modelo.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/refinement/change_policy.py#L19-L34",
+          "version": "repo-lines-v1:sha256:d54a49ec29796d631dc291c657e9ea82c4a7b2d5ac12b99768ad71849ae3a2a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2N2ZjYzVjMDJlZjg2ZGI2ODc5ZmJiZGEwZTc4N2U2M2I0ZWMyOWU5ZjRmYTE4YzIwODcxZDE2NWEyNWU3YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTYwMGE3M2QyZTAyZjM1MmI5MGZlZjFkOGQ2MzgxMWJhNGE4ZWUwYzFiZWFhN2FlNDY1OGYzNmFhMmUxOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjZmU1OTYyM2I5MTdlNzc2MzFkY2JjMWUzZTBkN2MyMmU2OWI1YzlmNTUyOWMzOTE2ZDk1ZmUzYTczMmViZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3503aa3718ae45309a31d2dd807c4d7d",
+      "statement": "O método partition_cases agrupa transitivamente testes compartilhando session_id ou similarity_group e utiliza ordenação estável por hash SHA-256 com seed para dividir deterministicamente o corpus em IDs de diagnóstico e IDs reservados.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L14-L83",
+          "version": "repo-lines-v1:sha256:f5001b899442263d1439484bb835de9e3eca843d6a9c0cc385df3e16488c35c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyZDFjYzQ0Njg1MjczYTFiZGUzZGI4NDUxNDJiMGJlOWMyZjYyNzg1ZmE0ZmYxZTcwZWY2YTBmOWVjZWY5YzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhYmNiYzAwNGY5NjU1OGFhMjdmNzNiNWRhMzc4YmEzOGFkZjhmYzk0M2Y4Y2VmZDc5YzdiMmQ2N2NiMjAxZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxN2ZmMTQyZTZmODg5MjU1NGNhZjhhNzg3YjgwZDE5YzE4MDMyYjZlMjdjZjY0YWRiZmY1ZGQ5NjFkOGEzNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d8671f3c3a0447eda75ef9e9778b9fbc",
+      "statement": "O mecanismo de projeção run_refinement_with_diagnosis_cases restringe a visibilidade do motor de refinamento exclusivamente aos IDs de diagnóstico, mantendo os casos reservados isolados.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L96-L107",
+          "version": "repo-lines-v1:sha256:bd18dd736c809ccd5b0b7f14faeb6f0994f6a3fb109e3209a2581800c3e36a4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMDlmNTUxN2RjOTE3NTJlYTk0OTE3OGE2MGMzZjQ4ODc3NzYzODg4ZWE2YjRiNDlmYWE5MGVhMWI3Y2ZjMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNTc2ZTcxZTk0NTE4NGU1NjIxMjFiZTQyYjQ3OTUyYjRmZjI2MGU3MWQxMzVhZWNjMWQ0NDE1ZTYwZGJiMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4MzQ1NTcxODQ5MzVhN2U5NDc4MDI4Yjg2MmZhZmVkMTg1OTVlYWE5N2E0NjA3MGRlNjkxMDAzNzc5OTUxZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_697dbf2eb5ae43f1add6f8a54baf923a",
+      "statement": "A função assert_learning_sources bloqueia a geração de lições ou evidências derivadas de casos pertencentes ao grupo reservado, lançando o erro RESERVED_CASE_EVIDENCE_FORBIDDEN.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L110-L116",
+          "version": "repo-lines-v1:sha256:a5b95ab41c29197b18dff8640dea21607f5f359109de4e86641d8d9cfa3fb5b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzU1OTg0MjdjODNkYmM0YjdjMjNiZDUzN2YzNTNjYjUyZWYxZTM3NjdjYjkzNTY5NTNmNDA4ODM4OWUyNTE4ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY3ZDBiMmRhMzlkNjFiMThiNjM3MzZmZmMyMTAyYTY0YmFmYWI5YWI3ODU3MDE4OTg2MmZlMmVmZGM5ODY5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDkxMTZiZTkyMGUwOTk1Y2EyMTAyMDNiZjIyZTY1YzQ4MWQ1NjU1NzgwNGRjNjQ2NDJlMWExYTNkOGE2NzkxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d76197287ef4cd981c322f6708bd33f",
+      "statement": "A avaliação de candidatos em evaluate_candidate exige que todos os sinais avaliados venham exclusivamente do conjunto reservado, rejeitando a operação com EVALUATION_CASE_NOT_RESERVED caso contrário.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/evaluate_candidate.py#L58-L60",
+          "version": "repo-lines-v1:sha256:452e52b1a92e44fc67dc161675ba99e9192ba8c9c6478473ad2bf89f463c4677:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJiMDUzYjU4MTgwMzI0NjQ4OTJiNTAwYTgxY2QwYTY2NWU5YzQ5NjYyNjZkMmZhNWIyNzEzODA3ZmU3MzNhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkxMGFkNzUxZjFkZTRmZjYxMjE0ZGVmMzg3Mjc2NTdmZWM1NjkwY2I4MGI0MWY4OWIwNjVkY2ZmM2UzODJiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjRkMWJkNWJhYzI3ZTNmM2VhOTA1MzM5NDU3YTk2ZWYzYWE3ZjQ3NmU2YzBjZWNiYTY0YmQ4N2RkYzk2ZTMxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTQzNzM2MTc0NmY2YTgxMzUyYmExNWVjOWE1YTEyMDY3NmIxNjUxYWQzMDgwMmIwYjMxYWZmMGNhYjkxOTI5MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0d6a0709c95547ec94e0fb7582684557",
+      "statement": "A política de recomendação decide_recommendation avalia candidatos através de uma cascata de portões contendo verificação de ciclo, tamanho mínimo de amostra reservada, violações críticas, asserções determinísticas ou humanas, variabilidade de execução e taxa máxima de regressão.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/evaluation/recommendation_policy.py#L28-L72",
+          "version": "repo-lines-v1:sha256:a841546ad97b1586ad41527dfcb588707054bc7486f1f23f24e0dc8ae7fcc629:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMmU0ODZhZTY2ODA2YjMzODI5NzI3OWU0YzQzOWY0ZWExNjE1ODQzYzYzZjk3OGI0ZDQyYWY2NzBmOWIxYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0ZWEwZDhjYTJkZjYzOTE3OGFjYzg5MGMyNWNmZjU2ZGJjODA2NjY2ZjkxZTgyYTM4YTVlNmE1MmI0NmY3YjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3ZGRkMjRmMTlmMjJkYTBmMTM0ZjBiNmYyMTAzZWI4ZjY3MThiN2FlZGQxN2NiZjYyNWVjODdlZGE1N2IxNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

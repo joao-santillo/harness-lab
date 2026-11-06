@@ -1,8 +1,67 @@
 {% extends "base.html" %}
 {% block title %}{{ round.id }} | Harness Lab{% endblock %}
 {% block content %}
-<section class="page-heading"><p class="eyebrow">{{ round.state }}</p><h1>{{ round.id }}</h1><p class="lede">{{ round.objective }}</p></section>
-<section class="workbench"><h2>Controle</h2><form method="post" action="/rounds/{{ round.id }}/cancel"><button class="danger" type="submit">Solicitar cancelamento</button></form></section>
-<section><h2>Progresso</h2><ol class="timeline">{% for event in events %}<li><strong>{{ event.message_code }}</strong><span>{{ event.occurred_at }}</span></li>{% else %}<li>Aguardando o worker.</li>{% endfor %}</ol></section>
-{% if artifact and artifact.evaluation %}<section><h2>Resultado</h2><pre>{{ artifact.evaluation }}</pre></section>{% endif %}
+<section class="page-heading">
+  <p class="eyebrow"><span class="state-badge state-{{ round.state | lower }}" data-round-state>{{ round.state }}</span></p>
+  <h1>{{ round.id }}</h1>
+  <p class="lede">{{ round.objective }}</p>
+</section>
+
+<section class="workbench">
+  <h2>Controle</h2>
+  <form method="post" action="/rounds/{{ round.id }}/cancel">
+    <button class="button-danger" type="submit">Solicitar cancelamento</button>
+  </form>
+</section>
+
+{% if result and result.decision %}
+<section class="workbench" aria-labelledby="result-title">
+  <h2 id="result-title">Resultado</h2>
+  <p class="decision-badge decision-{{ result.decision | lower }}">{{ result.decision }}</p>
+  <dl class="result-metrics">
+    <div><dt>Amostra</dt><dd>{{ result.sampleSize if result.sampleSize is not none else '-' }}</dd></div>
+    <div><dt>Confiança</dt><dd>{{ result.confidence if result.confidence is not none else '-' }}</dd></div>
+    <div><dt>Δ Score agregado</dt><dd>{{ result.aggregateScoreChange if result.aggregateScoreChange is not none else '-' }}</dd></div>
+    <div><dt>Δ Custo</dt><dd>{{ result.costChange if result.costChange is not none else '-' }}</dd></div>
+    <div><dt>Δ Latência</dt><dd>{{ result.latencyChange if result.latencyChange is not none else '-' }}</dd></div>
+  </dl>
+  {% if result.rationale %}<p class="result-rationale">{{ result.rationale }}</p>{% endif %}
+
+  {% if result.cases %}
+  <h3>Por caso</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th scope="col">Caso</th><th scope="col">Δ Score</th><th scope="col">Status</th></tr>
+    </thead>
+    <tbody>
+      {% for case in result.cases %}
+      <tr>
+        <td data-label="Caso"><code>{{ case.get('caseId', '') }}</code></td>
+        <td data-label="Δ Score">{{ case.get('scoreChange', '-') }}</td>
+        <td data-label="Status">{{ case.get('status', '-') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  {% if result.limitations %}
+  <ul class="limitations">
+    {% for note in result.limitations %}<li>{{ note }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endif %}
+
+<section aria-labelledby="progress-title">
+  <h2 id="progress-title">Progresso</h2>
+  <ol class="timeline" data-round-timeline data-round-id="{{ round.id }}" data-last-sequence="{{ events[-1].sequence if events else -1 }}">
+    {% for event in events %}
+    <li data-sequence="{{ event.sequence }}"><strong>{{ event.message_code }}</strong><span>{{ event.occurred_at }}</span></li>
+    {% else %}
+    <li data-empty>Aguardando o worker.</li>
+    {% endfor %}
+  </ol>
+</section>
+<script src="/static/round_live.js" defer></script>
 {% endblock %}

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:97b789f2d1b5fdc0e9b929474a42ffb5f24fce3f6261fe0836cca44d91aa1be6",
+  "claims": [
+    {
+      "id": "claim_7ea26f682d754b6eab0d10b287d855fe",
+      "statement": "ProcessRound drives the sequential state transitions of a round through a defined mapping from active states to corresponding pipeline stages and progress events, committing checkpoints and events via RunRepository.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L70-L106",
+          "version": "repo-lines-v1:sha256:d34f5b83f499792e520141b042b0b71734194e216a8b01fa6f1d68a947c5f66a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMWJhOThlOTI2NWM3NDBkY2YzMjAzYjBhZjI0NGEzY2JmZjJlOTI2ZTU5ODA5NjFmOWY2MmE4NDhhZDEyNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2MzM2NjViODM4MmJmNzlmZjYxMDJhMTI5YWExNzQ0YmI5YmYzYjJhYWZjNTIzN2VmYTkwYTU0MGY4YTI4MGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiNWRmOWJlN2JkNTBlM2UzYmYwNmZhMTNmNDQzOGJlNGIyZWE2MjMwNjI0NDU2ZTRiYjgyNWU1MWI1MTUwOWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8551742fcb7e4928ab2571f11536f7ba",
+      "statement": "create_round_stages constructs execution stages (_CollectStage, _DiagnoseStage, _RefineStage, _ExecuteStage, _EvaluateStage, _ExportStage) that read and update round artifacts and session state within an ArtifactStore.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/create_round_stages.py#L178-L405",
+          "version": "repo-lines-v1:sha256:02083ddece5d1c7b574946f97d29edf3294cb99de03fc7c3a259c4104113f679:eyJzZWxlY3RlZExpbmVDb3VudCI6MjI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2MTAxMjg2Mzg3NzNlMTYwZTk1YTE3MDQ1NjVjMDVlZmNlN2I0ZjIxOTk5MWJkYTA2Y2ZjOTIyNWY2NDgxMDlmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlZjUzNjc4MGQ2MTlkMTNlNGY4ZTRkMjgyNjVkYjU4NTI4OWU3NDM0NGQzNDZlN2RmZjMwODRkNzAxNTIwMTliIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f67cf0184d0417597ef19885f1dfa07",
+      "statement": "ProcessRound enforces worker lease ownership before stage execution and progress commits by invoking _ensure_owned, raising ROUND_CLAIM_LOST to abort execution without committing progress if lease ownership is lost.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L149-L151",
+          "version": "repo-lines-v1:sha256:7f92a8e545ed488bcbf026e94f53bbe7fff31d7153b0717f61f3142e23461ddd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE2YWZkMmQ0NzY3YjAyNDRlNTk0NTIwNGQzMzUzNTk4MjhlNTEwZTU3NzU1NzM4ZDQxOWU5M2Y0NjA2N2M5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGFjY2ZkMDA4YTkxMzVhY2Q2MDY5NTRiZjhkYTJlMWVkYTU4ZDI0M2FmYTlmNDBjYzY2NjNkNDg0MDQwODc4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRlYzVkNjhhYTE1MTRhZTExZmViMDRiOGY3NDM4NzY2MDE4ZTEzZmU0OWY1Y2JkZjdmMzZhZWUzYzM2ZjU3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNkNmZmYTQ3ZmM5NzU5YzNkNmUxMmI2NWMwMDAyNGFiYjM3ZjE2NTgxZDgyNDZkZTE2YTg3MTIwM2YwNDlkYyJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L80-L103",
+          "version": "repo-lines-v1:sha256:1b4ffcaeb2425d03da3e86a886c98ae05af0a2fcd92e01fbfa4851eea32fae57:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzY2ZiMzIxOThmNjdjZmRhZjEwMTA4OGY2NmQyNWUwMmMzNjFhN2ViYTRjY2E1NzVhZjRmN2Y2OTBlMWJkYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzY2ZiMzIxOThmNjdjZmRhZjEwMTA4OGY2NmQyNWUwMmMzNjFhN2ViYTRjY2E1NzVhZjRmN2Y2OTBlMWJkYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhZGViNzQ2ZDdkMjZjNDhlN2Y4NWE4M2Y4YWMzZDU5MjZhODRjZWEyZjk3MGUzZWRjZjQxMDgwZmE1ODYxNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjNjYwMTkxZjQzYTIwMjMxOGVjYzg3MWRhMTlmODY2M2FkNWFlYzFkYmIxZDU2ODUwN2U0NGVlNzhkNTQxZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77899767b01e46caa9fddfd6cfc753f9",
+      "statement": "_RefineStage verifies data leakage prevention before generating candidate proposals by calling assert_learning_sources to ensure no evidence originated from reserved case IDs.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/create_round_stages.py#L251-L255",
+          "version": "repo-lines-v1:sha256:3202a5adfe616e5cd36e3d7acf78f4ad616eda23ddb711bd56fd124b8998bd46:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY2NTcxMDk1NGIyMzM0ZmI4YWQ4ZWI1NTYwMGMzNTJhOWYyZDMxOGEzMmQzMWJkMWJkNmMzZWQ2OTA0NmJlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDIyYjFjN2ZmNmZlYmVmZWU3OGNlYzNjM2Q0MjY3NThkMGFhZWQ0ODFjYzMwM2M4ZDZmNDVjYzc5ZmEwM2Q5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJhYzQzNjgyNzUxYjE0ZmJkOGE3MmJmMjZkZjRmM2RiMDgxM2EyYjcwOTIzZjFhMmNjMjRmNDYwZDFiY2QyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTUwOTVjYjJkNWFlZjllY2NmODg2ZWNmYzI0YTBiMmJkYzkxOGYyOTY0NmU4YjUwYmJlM2M1YTZkM2MxMTNkNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9db9ed102cc445f595249fe85a1c35fa",
+      "statement": "_ExecuteStage executes baseline and candidate probes exclusively against reserved case IDs defined in the sealed partition manifest.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/create_round_stages.py#L295-L325",
+          "version": "repo-lines-v1:sha256:1f9ac5161d914628347269b2d6498891cf9454bc7c1b75a35e7fa5ed84dab657:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMWEzNjMxODJlMDg5MTllMjM3ZjEzYzMwNTBlYWMyNjIwMWVlYmIzY2NiZDA4NGExNTZlYmUzMzA1OWU2N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMDM0ODFjNTdkMGYwZGMwZjc2Y2QyY2M4YjM2MDRjNGU4Mjk2ZGE0MTIyYWRkMTllODE3NDVkYzdlMzMxYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjYzY2ZTg1YjIyYzY5ZDcwZjE2ODQ0OGVlOTgyMjIyZDQ4MDc5NjU5NTNkMDI0M2MzNmE3OGM0MGRiYjY1YTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5ZmNlYTcwMGU4ZTY2MTgyMGZlMTBiYzM2Nzg1MzcxNzQ0ZGU3YmJjMmFiMjIzZWYxODM5OTk0OTMyY2ViNmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa6ef25c403e48d4a9042058b4e09f91",
+      "statement": "When recovering a round in exporting state, ProcessRound calls _ExportStage.get_completion_event to determine the terminal decision event from stored evaluation artifacts without re-running earlier pipeline stages.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/rounds/create_round_stages.py#L383-L388",
+          "version": "repo-lines-v1:sha256:7183543d31bb6b2c7f2bae104d8b563634ca340e3ed36e7b5b2a865ea3e4567c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY1ZTYyZTVkMTU4N2RmYTM5Y2RkMzYyNTIzNmIxMjQ5ZjkyZTUwYmM1NjQwMDU0YmM1MGFiZjJkZTdmMzRlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzI1ZjAxNDI0YTlmNTU4MWE3ZGFhOWMyYTM1YTI2ZjJlMjNlYWE0YTgwYzFiZmExNWJjNTZiOTk4NjVjNzY1NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGE2YTM4MDRkZWU2NTUzNTBkZDU0MTk4YTFiZGU1MTViYTg0OWI3MTZlN2VmZDU2NTQ2MWNhZjk3OGE5ZGE2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWE3NzZiZDgxMmUzZTk3NjdjNDUxM2M2MmU2OGJlMzdmNGU4YTcxODU4MjQxNzRkOTJiY2ZkOTk5NGYxMWYxOCJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/rounds/process_round.py#L113-L144",
+          "version": "repo-lines-v1:sha256:a202ad1ecc34b515e5a788fbc062ca36fb5818ccf9280d7c6bc3a39150530eae:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhZWFmZThiZjA4OTI4NmZlYTBhMjFiNTE0MTVmYmQ1ZTNjZjI2NDVkZWYxYTM3NTg2Y2RiMDk0ZDI2N2MzNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjZDRiMTBmNWNhNTE5ZjAzZjU5YjNhMGIwYjdiM2ZhNzVjNTgxYjIyNjk4NmY3M2Q3N2IxMmU3NzdmYjQ1MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MTE4MzlmZGQ3ODMwMTYwZDBiYWUzYjdmYTdlZjY4ZjE2YjdjODI1ZjdmNjRkMDA4YjM0Zjk4NWZiODBlN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwM2JjNWE3ZjAxNGY0YzRiOTc4YzdiYjM2MDU5ZmE4YmMzNmUyODMyMmQ4MzhjNGRmOTBmMGM1ZTgwYWU5Y2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7b66950aab94db6b349e4264e56d290",
+      "statement": "DurableRoundWorker polls and claims jobs from RoundJobStore using a worker ID before executing ProcessRound.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/worker/runtime.py#L57-L69",
+          "version": "repo-lines-v1:sha256:b243080e6e57faeba9054a219b2877ddd14eb6a69ceaf0bd9ef269df834044e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNzIxZmU5N2Y1MWQ2OTAwYjc2ODIzOGRjOGMzZTYzY2FkY2VkZWNkZGVmZWY2NjA4MWUzODEwNDA5Y2NlMTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlYTIzMzRlOTg5NzU5YWNlN2MwMWYzYzVjOTVhMTUyMzZkYjA2NTFhYTNkZjFkMjdkOWY5YzFkY2Q2ZWMwZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNWE3N2MwZDY1NDhiYmU2NzcxNGVkYmQyOTgxZWI5NGFkYjU1NGUyNGEzNTgzYjgyYmEyYTU0MDlhZmE1YmIifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/worker/worker.py#L29-L34",
+          "version": "repo-lines-v1:sha256:285fa86eebb09b9d8583535c9f272eb7fac373fb3153dd45c589c97039b4a027:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ3ODA0NTRhOTA0ZTU0ZjM0Y2Y0YjAwMzU5MjY5NjllNjA2NGU1MTU3ZjlkYjA0ZTVhYjYxY2ExZTUwZmRjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwNDI0YmRlM2FkOTFmZjhkYWVhODFhNGFhNTA0YjJmZTlkMzc5MjNmNTkzNzkxNTJkNTQzZDdiNGRlYWY3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIxYTdlYzdiMTNiOTU0OGNmN2ViZGE5NTNiOWIwNGNhMGRkNzEyN2JkMWEyODllOTRiY2U1Yzg4MjY4MDk0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

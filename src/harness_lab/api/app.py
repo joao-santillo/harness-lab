@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from harness_lab.adapters.langfuse import LangfuseImportPreviewStore
+from harness_lab.adapters.langfuse.recovery import build_recover_langfuse_cases
 from harness_lab.adapters.sqlite import (
     SqliteCaseRepository,
     SqliteRoundArtifactStore,
@@ -36,6 +37,7 @@ def create_default_services(database_path: str = ":memory:") -> ApiServices:
         jobs=SqliteRoundJobStore(database),
         artifacts=SqliteRoundArtifactStore(database),
         langfuse_previews=LangfuseImportPreviewStore(),
+        recover_langfuse_cases=build_recover_langfuse_cases(database),
     )
 
 

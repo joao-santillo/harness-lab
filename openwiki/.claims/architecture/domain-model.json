@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:81772ab4f03932b2a0311b9a79aeba78a7dbc6387fa29acad138a6acafa23288",
+  "claims": [
+    {
+      "id": "claim_ed3b7676b5c94099b59329680f6eb839",
+      "statement": "In Harness Lab, all domain models inherit from DomainModel, which enforces immutability via frozen=True, forbids extra fields (extra='forbid'), automatically generates camelCase aliases for serialization, and rejects explicit None values on omissible optional fields.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/__init__.py#L13-L19",
+          "version": "repo-lines-v1:sha256:564cf28d24cca064e091843dec88ba0b93a486f8b2443cb69a3c181c0a08602c:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ3ZDVmZTA2NGQyM2Y4Zjc5MzhmN2RiZjY4NjYxY2I3NmI5ZThmMzM4N2ZjNzU3MTAzNDZkMzA3YTU2MzQ3MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBjMWYxODhmMTQyZWQ3YTgyNDY4MGIyMDcxNzJjNTUxOWJjNjE0YTQ4ZmRhN2NmMTY3ZWRiOGRkZjc5OTU2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDk2MWY2YWI3ODI3YmNlNTMzNGVlMTJkNGQ0MWM0MzVhMWRkZmNlNWE1NjllNzA1MDk5Yjk0YjAxYmU2OWQ4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzA5NTc4NWQ1NTM3ZDE1ODM5NTY2NzczMzAzYWIyMjIwZDVhYjU0NDc3ZTUxZDk1NjkxOTA2OTNkMTQ2NzFhZSJ9"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_models.py#L136-L150",
+          "version": "repo-lines-v1:sha256:6a4481a62f56f07ff7f3c2f0b23155e70725b64e4bcd2009938bd48deb8f4fa4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjOGM4ZmU0M2VlYjFkMTg1NzMyYTNkMmFhZmVkNTI2NTkxYmZkYmMwODMxOWNhNjQ2ZDc0ZDA5MGI3M2Y2NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkNjZjZWU3ZTkxYmZmYTE4YmUwMGI4ZDUxM2YxNjQyYjc0NDJhNGJlYTVmOWI5NDU0NDgxZGI2YTYwMTRhZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3MDUzYzFiMWU4ZDRmNjc2OGM3NzllZDE5N2JhYjMzNjMwYWIyNjhhNzc5NTYwMWQxNmY0YTRjYjQ2NTFhODkifQ"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_models.py#L239-L300",
+          "version": "repo-lines-v1:sha256:f73a23aa048bd5861f2492ef8b35b2685a5b96fb4eb5b2088b6318b02a46b556:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMzQ1ODNhNTk4NzY3YmY1NmFlZmViNjVlMjAzM2ExNjUxY2M0YzhkN2U2ZjBhZjNlNWNmZDMyOTNmOTMzYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwZWY0ZDE1ODU3OTc0MDc4Y2YzYTBhNDY4M2M4N2Y1ZDMzZjc5YmMyYThjYWViZjk4NTg4NTM1NDJiMmJkNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZTBjYTNiZTU4MzdkMTgxNjgzYzgxYmM1MGYxMGMyYjljOWE3NDVjYThjMjNmYTdkNDNmZTE2NTBlNjNlYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3MzllNzA3ZTNmZjcxNjEzODZjMWYzMmVlYjY3ZDM0MDQ2NWI0ZGJhY2FmOWEwY2M4ZDExZTE2YjVhZjI3OGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_75ca3e174d4d4edc9b5bd2d7e1dd370f",
+      "statement": "The domain lifecycle of a Round transitions across defined active and terminal states through transition_round, rejecting transitions from terminal states or invalid intermediate events, and produces updated round copies via apply_round_event without mutating the original model.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L142-L146",
+          "version": "repo-lines-v1:sha256:2e5d05fe0f30ad4a053773f86fbd582d08a55f0a7e6dcaa9612e120b6c5e503a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkzNDRkZDhkN2FkYmRhZDU2Y2QyZjMzYmMyNjhkZjE4Mzk5OTQ4MjUxY2FjYjA5OWRmMmIwMTIxOTA3NzQxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYxNWViMzdhNTYyNzA2ZmJjYzMxYjY4Mjc5ZWNmYzgzNmRmM2E2OTQ2NzI2YzMwNjg1OGEyMzU5NzhlMmQ5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTk4YjA2M2Q5YjQ3ZTY1Mzc5NjI1NTcyY2NlMTk3NjY5ZDU3NjdlMTJjMThiZTA3NTY1MmI4Y2Q5ODFjZThkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjEzZTU5ZDQ0Yzg3ZjhiNWFlMDY3N2M3ZjVkN2M0ZTRhMWQyOTQ5ODE4Y2M0Njc0YzY4NTQ2ZDhmZTY2ODY0MiJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L177-L183",
+          "version": "repo-lines-v1:sha256:7e2c312f45ba009e9e9bae1cc9e826b51988914d4f4aa0eca7b0723e0edb0301:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGIwZDE3N2RlMmQ3YzQ4NzIyZjQyNzg2ZjdkNjQ3MDljNzc5NGI0OGIzN2IyOGRkODc4NjA0NGE0MDg2OWY2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBjMWYxODhmMTQyZWQ3YTgyNDY4MGIyMDcxNzJjNTUxOWJjNjE0YTQ4ZmRhN2NmMTY3ZWRiOGRkZjc5OTU2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzdkOTEyN2M4ZDhlZmU2YmFlZWEzNmJiMDE3YmRmMDg3ZWY5Nzc5ZjBlNzAyY2MwZWJjNjllOTU3ODJmM2NkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L28-L38",
+          "version": "repo-lines-v1:sha256:c17e2a4e39f53673a040d197a2e5c7cdd68dd80d095deb5b46e568cadd4c6f06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4ODVhMDk3MmQ1ODY2YTQyMTQ0YmM0YmNhYTBmNzFmMWM1NWU4YzkzNTU1MGQxNWM0OWY3MzBlZjNhZDVlMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3MDFmZTUzYTkyMTFmOWFkZDE2MWE5ZGVmZWYxOTcwYjhlZjBiZTZjMDU1ZTRlMmU1NGJhNTdlMDY5ZDA1MTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlN2QyNGNhMDgzNmE5ZWYzNDg0OTBjNGY0Yzk3OGQyMjliZmVmZWQ1ODU1NDdlMWZlMTgxMzBmZWI4NGNjMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzZDhhOTAyN2U0OGM5YzNmNGE2MmFkMjIzYTI4MDgwZWY3YzMxZTkzYjA3NDZlYTJlZTNlZDBlNTgzMTRlYmEifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/round.py#L57-L118",
+          "version": "repo-lines-v1:sha256:8b942603c126098c245f3493f730aa5682462239b20a6798e72243c6f74e5f12:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4MWUyMDNhMWNlM2FhN2Q0N2YwMDRkOGUyYjE5OTZmYWU1YTlkYTcxMjdlYzczZTk1Mjg5MjQyZjk4ODVkYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlN2QyNGNhMDgzNmE5ZWYzNDg0OTBjNGY0Yzk3OGQyMjliZmVmZWQ1ODU1NDdlMWZlMTgxMzBmZWI4NGNjMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjZjY2MDVjOThmZDQ3OGNiNDc4ZDlmZTgxZGU3MjM5Zjc5OGQ2YWE2Yzk2YzM0OWNkODA0YjYwYWNiMDhjNzEifQ"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_round.py#L71-L100",
+          "version": "repo-lines-v1:sha256:468983e02bfd2de9fc6e32b8aca8913d3b4d4d3cf6f158b6fb242a0f42d88489:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTQ4ZjRkZjg3YWMzOWQ1MDA5ODU3NTY4NTk0Y2E4MDEwZmRjZmI2ODY4ZjdiMmMwNGU5Mzc1NzA1MThiOTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3ZTdkNzg0OTY1NDhkNWYzMDc0NGFjMmM3YzY3ZGI2MjAxYTkxMjM4NGY2M2EwZjc2YzQxZmUxOTRjODU4MDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4ZDMzYjhkOTE2OTVlZTEzYmMyN2M0ZTI1MzQwNjQxMjZlN2ViMGE4MTQzMDBhZmFiYTM5NTg3OWRiODQzYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2ZWUxZjVjZGY4YmVhMzZkOWU0M2VjZWE5OWJjMjBlYmJlMmE1YmU1YzNjOWIwMWI5Mjk3NTEzMWE2OThkODQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9fa9d902c6c476a8ac0eab42a5814de",
+      "statement": "Execution requests for the CandidateExecutor port use a discriminated union (CandidateExecutionRequest) that distinguishes between BaselineExecutionRequest (kind='baseline') and CandidateVersionExecutionRequest (kind='candidate'), parsed via parse_candidate_execution_request.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/ports.py#L78-L97",
+          "version": "repo-lines-v1:sha256:384b75271b4787646a7c3b696de31614dd161d93729d42e3c073784da9a6fc38:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlZmIxYWVjZjM0OTZiZWFkZGIxYjg0ZjNjMmYzZjg3NjVhM2JiMjAyMWM4ZmM0NTk5NGI1MTJkOWZhMGY1OTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MzRlNTFjZjBmZWViOTllYzhjZTVkZjQyY2QyYzdmYzJkMmJiZjAzMDcyYjhlNWY1Nzk2NThhYmUwYTdkMDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4M2Y5ODg5MWFkYjYxOWJlOTFmZmNiNDAzZjNlMjk3NzhhNTFjYWQ3ODQ1YTcyYWEzODk1OTJhYzJiMWI0MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjYTM2ZDA0NjFiODRjOThhNzU3M2JhMWE5ZDRkODE4NjIzNDZiZDFmZDVjMjk5OWJhNTRmZGFlMzY1NTM5ZmUifQ"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_ports.py#L53-L81",
+          "version": "repo-lines-v1:sha256:37fc1ec7dae93ef5e6ad3fbd85e5b2706b72328e2a3177a15cc26039fcd43727:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTgxMGM2YjRiYTRhZTg3YTcxMDliZGFhN2VjOTc1ZmVjNDFiN2U1YzQ0MTZmZDM5YzQ3MzhmNzg3NzQ1ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0YjlmNWJmMDk2ZjgxMDUxYjkwNmM5ZjRmYzlmNDNlZjAwMDM2NTBlMmEyMDZjYzY1NjkzOTNkMTI5OTdhMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NzcxNWE5ZTI1ZDkyYTM2NDg3NGIzOGNhMzU1MWQyMGRjYzRiZDBjYmU5YzMyM2Y0MmE2OGRlZTNjNmM5YjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_20ece380914e4b878b2eaf714c42f523",
+      "statement": "Artifact export requests for the ArtifactExporter port use a discriminated union (ArtifactExportRequest) separating candidate exports (CandidateArtifactExportRequest) from report exports (ReportArtifactExportRequest), parsed via parse_artifact_export_request.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/ports.py#L177-L200",
+          "version": "repo-lines-v1:sha256:b1f58f983928eed545197228f8e8353d7918e5ed6e204b916eac5c7442546d95:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4Yjc4ZDE5NDE1YTc2Y2RhYjIyYmYzZGU2MjkxZmY4MGFkODU1NDQyNjcxMzk4OGI2Yzc1M2EwMjFhODgwNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4YjM3NTU4NWU3NDZiYjg4YzFhODNkZjA0ZTRkZmMzZGUxNTk0Y2FkZjBkNTE0YmE2ZDI0ZGZjNjI3MjY4ZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkYzdkNmJiMzhlOWM1ZTNlNzI1M2M2NjVkZjRhYzVjYTcwOGRmNzViYTQ1NjIxZGJjZDNjZDBjNWE2NzIxZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyM2VlM2Y2NWE1ZWQ5MTdmYjg4MDQyNzBmNGEzMDRiMGZhZTBhZTNlMGQ5YjNmNWI5MzMyNjRlOGRiZjc4NDMifQ"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_ports.py#L83-L143",
+          "version": "repo-lines-v1:sha256:1860825fb9da08dbca4f678fde883404597ab4e25aa507d4c28780a5d0083c32:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YjRjZDZhZTNiNDExMzA0M2I3MGMxMDkxYjI0ZDk0OTcxNzQzNWM5ZWQ2ZGY0NTM5ZTI5YzM3YThiYTE2NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwZDNjNGRjYmI3NDc0Y2MwNWE2NTNhNTE0MTU5OWEzMWM4OGM3NDQ3ZGM4YTBjYzk3NmQwYWZhNzllMWMwMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwYmM2MTA0MTZlOTQzNzUwMDI1ZWNhYzA5OGU4NTQ1ZGMxZWJjZDhhMWY2YTg2ZjE1ZWFkZDM0ZjhiMGJlOTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b4cc8a9c71294b3e9520293a5a93982e",
+      "statement": "The SecretValue domain model hides sensitive credentials from string representations by setting repr=False on its value field.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/ports.py#L148-L149",
+          "version": "repo-lines-v1:sha256:96584316931aaea2ec2d21bae194dae6ab577e2a12d0c8006651c6b84a543a8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdjZDUwM2FkYmYzMWIyYWI4NzM0ZWFiZDQxYmY3ZjliMWMzNTBkNWRmMzZjZTZlNjcxMmJmZmRhYTVkNDJkYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmNiYjM1ZDhiNTljNWVmNDllZDUxNWQ3MGFiM2U3NTM2MzY2YTk0OWZiZjk0NTM5YTBjMmYyYTYxYjQ5NzRkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzE1MTkzY2VlNTY0MjAxOTk3M2VhZTZlMTM5M2Y4Y2ZhZGYxODUwNDExNjc0YzY2NjdjZDIwMjJmNTIzMDE4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWMzZGIwMjJiZjMxNzk0MTU4Y2VlZDZkY2U3ZjZhZmMyNzVlMjEyNDY5OTRlY2RmZGE3MmFmOGQ5ZGVjNTg3OCJ9"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_ports.py#L145-L148",
+          "version": "repo-lines-v1:sha256:8d612fa7f1b69d8eb3a4491e0782f8e30c5f645bb1b04ba3b4b14434f97fc881:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQxNWFlMmQyYWYyZTUzYjYxZDRiNTJkNDgwNTNkNGVjMmI5ZDhhMzBjOTE2MjFmYjdhNThiZWQ3MDIzYTMwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWVkZTE5ZjdlNTEwZmFmMWJiNmRiNjE5NGZlMzMxYWY4NWM4ODI3NDA1ODVlYzJlODVkYzZmZmExZTM3YjU5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGMyZTQ2NmUxY2MzYzU5NjA3NTUzOTI4ZjNjN2Q5ZmE1ZWZjZTc1YmEyNWYxYWRkZDRhMjhkNDc1YzdkYjYwMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e5ff0b82ccb461d87ab3f76665c48e2",
+      "statement": "The domain package (src/harness_lab/domain) maintains complete architectural isolation with zero imports of FastAPI, SQLite, adapters, or HTTP client libraries.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/domain/ports.py#L1-L241",
+          "version": "repo-lines-v1:sha256:6072795d3e3dc73c03829c49b2f0a3dc61c26cd89eb80cfeaad9c650345b1505:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1Mzg0YmZkYjJkZjM4MGI2NTU3Y2M3YTcxZDE2ODkxNDE1YmNjYWE4NzY5OTQwNmUyMzZmNzUyYzY0MTUzODlmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmOTQxNmUwOWY3OGJhMzE2YzAzMjU2ODIxM2I4NTVlZTc1NmU0MTU2NWQ5MThmMDk1MTljODFmZDYyMGY0MDYwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://tests/unit/domain/test_ports.py#L150-L163",
+          "version": "repo-lines-v1:sha256:d15d2fda40ff2c2dd728cb900fa56a2f7f0da84610c31e75057ede523a70c650:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNDFlOTY4NGMzYWU3NzcyMmU5YWY4MGRmNTZiMDQ4YWEyZjE5YzMxYTRmYzllYjhlNzkzY2ZkNTcxMzA2YjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTQ0YjYyMTZkMTMxODY2ODc4NDNkZWU0ZDZkZGU4ZjZiODBhNGYwNDM0NDE5MTliNGM1MjBmNGUzMTJiYmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkZmNmNzA3YzE5Y2QwOTdjMGMxOTI0ODgxYjk5N2JhZmU4ZDgyNzhlNzUwNjkwNGMwOWQyNjY5NzU5OWNkZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

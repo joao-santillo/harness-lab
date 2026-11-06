@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:57c8565db86b984717c6cf69d132c71b530c1010c1bf1cbaef93285ffc6082ef",
+  "claims": [
+    {
+      "id": "claim_542f3b6075494d77b650ba7824844f08",
+      "statement": "scripts/backup_sqlite.py utiliza a SQLite Online Backup API (sqlite3.Connection.backup()) com o banco de origem aberto em modo leitura (file:path?mode=ro, uri=True) para criar cópias atômicas e consistentes de bancos SQLite sem bloquear ou corromper transações WAL em andamento.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/backup_sqlite.py#L16-L18",
+          "version": "repo-lines-v1:sha256:4553afa5c164c0cd8a80a7674118d78439520d2480a7db3984a066328bc3786e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQ1MGVjYmEzZTBjZTRjMjZjMmY3ZDE1YTE0NWQxYjJiODJiYzdhMWViZTdjOTk2NjUzY2E1MmRmYjcyNTUzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdkODI0NTMzNTcwOTkwNTU2NjM2NDRjZmUxOGE4OTlkOTFkY2E3ZjU3MjdlZTFkODM3ZGI0NGIwZTlmNzI3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTAxN2EyOGU1ZWI2Njk4ZDVmMzZiYjhhNzY4NDZmZTFiNjJhMzRlMGUzYzljMDM3YjcxOWNhMzllMTRjY2ZlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjRiNzIyYjIzNWY4MzgxYTc0NTZjYmExZTBmMGM4MGE1ZTRlZDZiMDA5ODc5NTMwYzIyYmQ3YmExMThhNjdiMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c82859f2fa34ffcaf10d280ae6ab05e",
+      "statement": "O procedimento de backup em backup_database valida a integridade do banco resultante via PRAGMA integrity_check, ajusta permissões POSIX para 0o600 no arquivo temporário, e realiza a substituição atômica no destino final antes de retornar o digest SHA-256 de 64 caracteres.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/backup_sqlite.py#L19-L26",
+          "version": "repo-lines-v1:sha256:232722ff432d9c4ae53a23e72a5d673fde276fca4c2ba8842432dd763bffa6b6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWVkMGQ5YzcxYzg1NjM3MjE5NzkxN2M4MWIwOTI3YzU4YWRhZDE1YWU0OGVkZTQzMWI1MjM5ODA1YzYyMWQ4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQzMDQyOWZiMWIyYzEzZjNlOTliODQyN2I4MmVkMGQwMTNmYjk2NDgzODUzOWYwY2QzNDQ2YjEyZDExZmE2OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDU1M2FmYTVjMTY0YzBjZDhhODBhNzY3NDExOGQ3ODQzOTUyMGQyNDgwYTdkYjM5ODRhMDY2MzI4YmMzNzg2ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg3OGViNDI5NzgwMWNlMWVjYjQ4YmY2YjFjOTdhNmY0NDllMjgzZjk4NDFhNTFlMmUyM2MyZDQ2MTI4Njk2MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd7c7289075e48c18b6e424e14cd8a33",
+      "statement": "O teste de integração test_backup_is_consistent_private_and_writable_copy valida a execução do script backup_sqlite.py via CLI, confirmando o formato do hash SHA-256, as permissões de arquivo 0600, a integridade dos dados e a capacidade da cópia de backup aceitar novas operações de escrita.",
+      "evidence": [
+        {
+          "resource": "repo://tests/integration/test_sqlite_backup.py#L8-L30",
+          "version": "repo-lines-v1:sha256:ff6654d1c63efa55e3d9925ee3ed28be8082c831de1f134179bd03653349d238:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwOTkzMDdlYzY3ZjAxNmE4OWM2NWRkZThlODk2Yjg1ZDI0MzU4MmE3MGNhN2Q1NGFiMzM3ODdmNzZlODc4NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYzlmNTcxZTJiOWY3Mjc0NDQwZWFmM2JlYTE5MzY2MWE0NGQzNDMxMGMxNGE3Y2MzNGM3NTE1NTVlMDVlMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5MWJmM2Q5NmYxYjExOTY4OGRlZWE5YTAwNGIyYjNmZWJiMTgwYmI4ZmIyMzQ0NjI1NjE0YWRjODU5NTYzYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb70acdcc05e456196f674420f434a05",
+      "statement": "O procedimento de ensaio e cutover exige a interrupção prévia de escritores (API e Worker), a validação de integridade do backup PRAGMA integrity_check = ok, o teste da API no endpoint /api/v1/health e a verificação de escrita/leitura antes de liberar o novo stack para produção.",
+      "evidence": [
+        {
+          "resource": "repo://docs/operacao.md#L33-L41",
+          "version": "repo-lines-v1:sha256:5a5455fe0bbfb1777d254b2cc17c9b129c0895db22558bc6bba1506bc28d837b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFkZDgyODc0MGY4MDY4MzI5NzIzOWZjZjc5NjQ2ZTdjMzBhODhjZThkNDE4NTA1NjhmMmMwZmQxM2MzNDdlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWViYWNhZDg5OGM2Y2JjNjk1NWUxNzQzY2QyNWI0NTU2MGM0OTJiYzAxZjY1OGU1NzQ2NDVmZjJkNzg3YWRmOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWZiZWM0M2U5MjViZTMzZWI0ZjJiNGViOThjOTBmNmE4NjM1NDYxNWQ3M2JiOTZkZjA2MGQ2YWMyZjA1YjcyNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7044b88531a84a4da8a2d12dfe5032bb",
+      "statement": "A estratégia de rollback exige a paralisação imediata dos processos gravadores, a preservação do banco falho com sufixo de timestamp sem sobrescrevê-lo, a restauração da cópia de backup ensaiada mantendo a chave de criptografia APP_ENCRYPTION_KEY, e a reabertura exclusiva do runtime homologado anterior.",
+      "evidence": [
+        {
+          "resource": "repo://docs/operacao.md#L44-L58",
+          "version": "repo-lines-v1:sha256:4594fd6ded5cf48f31a48b28e3e5e434f7f2adc7591b0a9203936ccc5af52b1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1Nzg5YjA3ZDA2MzgxNjhhOTg2NjdlNDgzZmZkMDJkZTYyMTQ0MmE2ZjIyNGZkYjA5NWI0ZDhiM2ZjZDBhMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZGM5NjYzZGFkZGY1YzYzZWU2MzVmZWJkYmUwNDRkZjVmMWIyMzUzMDQ0ZDg3NDAzMTE4YmZlYjdlZDU3NTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4YWRmMzQ3NzExZjM1ZmQ5MTY5ZmE3YmJmZmNlMjZiMjE3NDQ5NGVjNGM5NjNkYTI0ZDhkYjUwODU4Y2ZkN2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzMmJiZTlkMWNjOTJkMDM3MjJiZjIzNzU0N2Q0NjQyOWU2OGU4MGFlZmE5OGQ4N2RhMmFhZDIxNWU1NWQ4MDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_98512565e90b40f6aa9797c85c721ee3",
+      "statement": "O rollback para o stack anterior é permitido apenas se o novo runtime não tiver gravado alterações de esquema incompatíveis; caso alterações incompatíveis já tenham sido aplicadas, deve-se manter o banco migrado e efetuar a correção em avanço (forward fix).",
+      "evidence": [
+        {
+          "resource": "repo://docs/operacao.md#L46-L46",
+          "version": "repo-lines-v1:sha256:0f00f38c75c0313e961cecd23f62505e3292570a2139a4b23abc0e948dda560e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGYwMGYzOGM3NWMwMzEzZTk2MWNlY2QyM2Y2MjUwNWUzMjkyNTcwYTIxMzlhNGIyM2FiYzBlOTQ4ZGRhNTYwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGYwMGYzOGM3NWMwMzEzZTk2MWNlY2QyM2Y2MjUwNWUzMjkyNTcwYTIxMzlhNGIyM2FiYzBlOTQ4ZGRhNTYwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWJiMzQ5MTIzZTI1ZGY2ZTY4ZTM4YWYzNjliMzAzMjliYTBlOGExZGY1OTIwOWU5YTUwOTczMTIzMWI5ODk2ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDZjMDlkNDlhMTNlNzYyNzM5NjU5Y2VkODcwODBjMmNmYjFmYzRhMDczMmNiMGEzNjkwZDFiZTllMmQwOTYyMiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

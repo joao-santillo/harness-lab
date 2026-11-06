@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c4621520663430497015ffa5d8de7348a7dbeecc131f81c04b6fad9530daf066",
+  "claims": [
+    {
+      "id": "claim_bdd075fc95474053b77ea54e20f93f1f",
+      "statement": "The partition_cases function performs transitive grouping on test cases sharing a session_id or similarity_group before ordering groups with SHA-256 hash hashing of the seed and case IDs to partition cases deterministically into disjoint diagnosis and reserved ID sets.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L14-L83",
+          "version": "repo-lines-v1:sha256:f5001b899442263d1439484bb835de9e3eca843d6a9c0cc385df3e16488c35c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyZDFjYzQ0Njg1MjczYTFiZGUzZGI4NDUxNDJiMGJlOWMyZjYyNzg1ZmE0ZmYxZTcwZWY2YTBmOWVjZWY5YzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhYmNiYzAwNGY5NjU1OGFhMjdmNzNiNWRhMzc4YmEzOGFkZjhmYzk0M2Y4Y2VmZDc5YzdiMmQ2N2NiMjAxZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxN2ZmMTQyZTZmODg5MjU1NGNhZjhhNzg3YjgwZDE5YzE4MDMyYjZlMjdjZjY0YWRiZmY1ZGQ5NjFkOGEzNGEifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/domain/models/partition.py#L10-L36",
+          "version": "repo-lines-v1:sha256:2998d530be92c1d245da6dd5451cef3cc1c1dba165653348f172538a27eb5004:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzU0OWNlNTE4MTNiYTdkZDc2NWJmZWQ4OGMyZWI1MDQ2MjMxZTljZjEyNGFiZWMwYzA4NTExNGY1NjljMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlM2NmY2ViMzNlMDExZjliNjk1MDg4ZTBiM2FhODNiMTYwM2Q2OWRiNGRjNjU4MDNhYTgzNjM1M2U4MWIwZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1YWM3ZTQ2YTFiMDk2NTE5NTUyZjNmNmRlYzk5MzU3OTAwMzJhMWMyNTczMGU2ZjRlYThkZjFkNGQ1OTBmNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/unit/application/cases/test_partition.py#L25-L41",
+          "version": "repo-lines-v1:sha256:5c0b3e245cef76cff7bde5e247f8ae0a30d5c830537ad85b0f3c5b3184ad46d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjZWQ5NTY2MDM2MjBiZjdhNzYyNTI0NDYzNTExZDZhMjg1MWJlNDBkMDAyMGZkNGNjNGRhMTBkODk0Zjk4NjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNjg4MTExOTFkYzFhMmQ3MDdiNDY3ZDFhMGMyNTYxODA4ZjE5NzUwNjdlMGY3ZGM0MDE4MTA1ZjJmYmRhMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b2e5c3a2a744271b33d3aa9e9757029",
+      "statement": "The partition_cases algorithm enforces constraints on minimum reserved cases and ratio, raising specific ValueError exceptions for invalid configurations, duplicate IDs, or unsatisfiable minimum reserved sizes due to transitive grouping boundaries.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L51-L75",
+          "version": "repo-lines-v1:sha256:c4abab50d7385b0996ad2b039dfabdb8a67141c702340f298fba211700cb1016:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1NDRhYTk1ZTRjMTkyZjQ4MzE4ZDI2YTFkODc0M2Q4MWM3ZDI5M2MzYjcxMmRhYzU3ZmUzODJkZTRiMGM2MDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4OThmOTE0YjZjZTkwYjA1NjdjNmE1MjM5ZDE0ZThiNWIzYTNiYTg0ZjQ4YjE1NmM1NTNiODM1YjQ3Zjk1OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjQzZDY4ZWJmNTEzYzQ1MzJmN2YwNzA1ZjE3ZGVkN2JhMDZkNmIxMGQ2ZDA0MWI1ZTBiNTY5YTkxZDNjMDMifQ"
+        },
+        {
+          "resource": "repo://tests/unit/application/cases/test_partition.py#L87-L144",
+          "version": "repo-lines-v1:sha256:e1924d0d2d05a4255a56ee767f1c4730be0a0feb395cb3b50d25c80bef10a94e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMzQ1ODNhNTk4NzY3YmY1NmFlZmViNjVlMjAzM2ExNjUxY2M0YzhkN2U2ZjBhZjNlNWNmZDMyOTNmOTMzYjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMzhlOGQ2Njg5ZDQ1MmIxMTUwNzI4ZmUxNDBlOTYwMzcyZDVhODdhNzY4OGNmNTFiMDNmMDk5NjYwOGI4NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzOGIwYTBhNWQ4ZDE3ZjNlMzc0YjIyZjVhMzNlYTY2OWYyOTVmNjJlM2Q0ZDU5YjdlZTMyNTQ0YjkzOWNkMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_50239e17de624566be9a6c103d82707b",
+      "statement": "Data isolation between diagnosis and reserved sets is enforced by sealing PartitionManifest fields as tuples, projecting diagnosis cases into refinement callbacks using MappingProxyType without metadata, and raising ValueError('RESERVED_CASE_EVIDENCE_FORBIDDEN') via assert_learning_sources if reserved cases are referenced as evidence.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/cases/partition_cases.py#L86-L116",
+          "version": "repo-lines-v1:sha256:77dc2ebf48f241b0e285b48fa99ef45ac2f6915b2127ee73fd6b0315d6b6e700:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMjg4NjllYTllNzM0M2FkZjExYzk2Nzk3NmJlOTc5OGZkN2UxMTNiMDdmNjNhYWI1MDU0N2IxYjhiODZhMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmN2QwYjJkYTM5ZDYxYjE4YjYzNzM2ZmZjMjEwMmE2NGJhZmFiOWFiNzg1NzAxODk4NjJmZTJlZmRjOTg2OWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://tests/unit/application/cases/test_partition.py#L43-L85",
+          "version": "repo-lines-v1:sha256:cebbef75c35daaf2c876b4e9e18f771fcc7dca2393f31d48f53c9a3ae7de8e1b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhOGVhNjk0MGM5NzM5ZWFhYjQ1YjNiOTY2ODEyMGE0OGRiY2YzMmI3ZDk3N2MzNjcwY2Q1OTliOGRkYThjNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0ODIyMDExNDAxMjBhYmRlM2ZlYjJhMjA0YjVlMTg1NWI2MzNkZjExZDQ4ZjY3NmRjNTJmMGI4MDllNjY1NGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5OTk4NmM1OWYxYjliNjU4ODU3N2I3ZGZkZmQ0MDhjOGFhYjEyZjlmYzNhNTRlYzU5ZDAwNjM0ZWI3NWEwYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d03ab993b72e4bd98be60cb0f768607c",
+      "statement": "The diagnose_executions function categorizes execution traces deterministically across 11 ordered taxonomy categories in DIAGNOSIS_CATEGORIES, sanitizing sensitive credentials from output excerpts using regular expressions.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/diagnosis/diagnose_executions.py#L49-L184",
+          "version": "repo-lines-v1:sha256:291ef0cc8daedc1a4707569cc3930eb36bffbb7594f4b18005bb0761ae4e3a5a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlOTQ3ZjdhYTA2ZTBmMjc1OTg2NWQ1ZTAyMGRjNDdiODcwNzkzNzY2YmExMjk0MjdiNjkyNmY0ODMwNjg1YWMxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJiNzNhMzhlZDA2MDA1YmUwODlhYWZhNTE3OWU3MGRmNGJlZmE0NTI3MWEzMjY5MDUyYTE0Y2IxYzIwNDUyOTk3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2YjViMWI1NzJjMzgxOWEzZDU4NTM1YmRlOTNhM2U4ZWUwYmRjZTM4Mjk2ZjdiZjc3ZjY5NzE5ODlmODdlZmQwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5ODdhZTkxZmFhNzY2MTU0ODFhZjYwZGIzMmJjOWI1YjUwOGE0ZWQ2MjUyNzYyMjRkNmJmZjNiYzA1NWQ1NDc4In0"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/diagnosis/taxonomy.py#L19-L31",
+          "version": "repo-lines-v1:sha256:99d3ab604d9ddc1a8f15325df52112a7626c36b02f1d93278d2462b30e81a51c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmZjVkYWM5ZjNjNmQ2NTM5M2VhMmZlYzIzYTg5ZWRlZDM5ZTIzZTBkMmU2ZjAzYWRiODcyN2JjZDE1MmRjMWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJhMDUyN2MzOTUzYzRiNmUwZTViNTczOWJhODM2MTJmODA1M2JjZGM5NDY2NzMwMTkzY2QxZDU5MGI0MDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwNGY0NzgyYWM5YzhhMTRkYjZhYzg4MmQzOTI0YWE3Nzk5ZWIzMjhjNTVjYjBmZmEwZjM0ZTcyYjA0NDM3NDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiZWVlMGMwOWVhY2M2MWRhZDgwNTIxZjU2MzIzNmI0M2FlMTE0ZDk0MzgxMzMyMmRiYmE3OGJhNWY1NzZjMGQifQ"
+        },
+        {
+          "resource": "repo://tests/unit/application/diagnosis/test_diagnosis.py#L40-L73",
+          "version": "repo-lines-v1:sha256:ac51c46319ce2af00100e891719b8c080e9f5f74866d2a4352ab208f45e5134c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3MTJmNGU0ZDI0Y2JmZTMzZDQ2MTE2YTVhOWM5NTZhMmZjM2YwNzBjOGY4YmE1Y2JiODYyMWU5MTVlNmYzZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MGU0Yjc5YWU2NGUxYzEyMzlhYWYzZDMzNGFlZTM1MzNjNDI2Yjc4MzY2NmRiOGU5Mjk2ODc3MmE5ODM5MGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_55a31e58bb204745b2cac442be500df8",
+      "statement": "Non-harness failures categorized under INFRASTRUCTURE_FAILURE and TOOL_FAILURE are assigned proposed_change=False in actionability and emit no harness hypotheses, directing operators to repair integration before altering harness definitions.",
+      "evidence": [
+        {
+          "resource": "repo://src/harness_lab/application/diagnosis/diagnose_executions.py#L186-L208",
+          "version": "repo-lines-v1:sha256:60db704168b3528e22ec4f8ba73f37914eff68e124dfd13170160506afbefe26:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMzI3NWNkN2YyNGY4ZTY0ZWE5ODlkY2I4YTdhMjc5MDAzNDAwYWQzNmRkZTU0MzJmZmY2YzI5MGQ0ZWQ2MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3M2YwMWE1NTZlYmVlOTIyNzM3ZjI0MWUyMTE4MzY5MzYzOGEwNGQ2ZWMxOGYxMTNmZjBlNDAxY2Q2MmJhZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NzE5YjdiM2YwMzE1YmQ2NWRiNmExZTQzN2NmZGIwZjUyZWJjMzBjOTdkMGUwMWM1NDgzNDNjYjIwN2Y1YjcifQ"
+        },
+        {
+          "resource": "repo://src/harness_lab/application/diagnosis/taxonomy.py#L33-L36",
+          "version": "repo-lines-v1:sha256:05a260c38c417daf5bd4b965c514d79375ad1a8668749c9341729bde433a978c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZlZDNiOTM3MDU3ODNmMGJiYjg4OTY5YjE1YzU0ZjYxZTRkNWFjYjY0NWRhZWU0NGI4OTE3NWE3MDk1ZDI3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ3MTAwN2QyYjdjNjgzNWYyNzQxNzY2YjBhYWQxNzFjZWJhNWFkOWNlNDhjNDNhOGI2ZDBkZTYxYWYwOWQyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://tests/unit/application/diagnosis/test_diagnosis.py#L75-L90",
+          "version": "repo-lines-v1:sha256:f2c24ed93acf21a5c8e685c1ca631156592f85e6317b08e95aa44218685d0dab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlN2IyYjM2MzU3MjU2ZWIwZGQ4MzVhNDMxZWZkYzBkZGUwYTIzZjU5OWZlMjM0ZGQ3YTYxZDgxZjRkZmM1OTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlMDNhYjM3YjU1MDk1MTlkODVmN2I5MTc4YmU5NzEwMTQyNjk3ODVjNzk5MmM5YmZjMTI1NGZjNjYwMWY4YWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNGEzMzM5ZTA1NGU0YWIxMDNkZmMyODM3YmVkOTVlNDQzZGE0YjU5MzEyN2YzZGI0NDAyY2YyOTVlYTFjNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljZTIwMzJjNzNlOTM0ODg0YTk5YWMyMDExMzZlYjM4ZDQyYWE3MDIxNTlkMjM1MzdhYTIxOGY3NTBmZDg0NjMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T14:17:17.542Z"
+  }
+}

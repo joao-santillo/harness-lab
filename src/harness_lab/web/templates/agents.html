@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Agentes | Harness Lab{% endblock %}
+{% block content %}
+<section class="page-heading" aria-labelledby="page-title">
+  <p class="eyebrow">Operação</p>
+  <h1 id="page-title">Agentes</h1>
+  <p class="lede">Ambientes disponíveis para diagnóstico e refinamento. Crie, edite ou remova.</p>
+</section>
+
+<section class="workbench" aria-labelledby="create-agent-title">
+  <h2 id="create-agent-title">Novo agente</h2>
+  <form method="post" action="/agents" class="form-grid">
+    <label>ID <input name="agent_id" pattern="[a-z0-9][a-z0-9-]*" placeholder="support-agent" required></label>
+    <label>Domínio <input name="domain_id" placeholder="retail" required></label>
+    <label class="wide">Nome <input name="name" placeholder="Suporte N1" required></label>
+    <button type="submit">Criar agente</button>
+  </form>
+</section>
+
+<section aria-labelledby="agents-title">
+  <h2 id="agents-title">Agentes configurados</h2>
+  {% if agents %}
+  <table class="data-table">
+    <thead>
+      <tr><th scope="col">Nome</th><th scope="col">ID</th><th scope="col">Domínio</th><th scope="col" class="actions-col">Ações</th></tr>
+    </thead>
+    <tbody>
+      {% for agent in agents %}
+      <tr>
+        <td data-label="Nome">
+          <form method="post" action="/agents/{{ agent.id }}/update" class="row-form">
+            <input name="name" value="{{ agent.name }}" aria-label="Nome do agente {{ agent.id }}" required>
+            <input name="domain_id" value="{{ agent.domainId }}" aria-label="Domínio do agente {{ agent.id }}" required class="only-row-form">
+            <button type="submit" class="button-small">Salvar</button>
+          </form>
+        </td>
+        <td data-label="ID"><code>{{ agent.id }}</code></td>
+        <td data-label="Domínio">{{ agent.domainId }}</td>
+        <td data-label="Ações" class="actions-col">
+          <a class="text-link" href="/rounds?agentId={{ agent.id }}">Rodadas</a>
+          <form method="post" action="/agents/{{ agent.id }}/delete" onsubmit="return confirm('Remover o agente {{ agent.id }} e seus cases?');">
+            <button type="submit" class="button-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">Nenhum agente configurado ainda. Crie o primeiro acima.</p>
+  {% endif %}
+</section>
+{% endblock %}
