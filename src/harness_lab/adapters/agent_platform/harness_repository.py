@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+from collections.abc import Callable
 from datetime import UTC, datetime
 from types import MappingProxyType
 from typing import Any
@@ -28,7 +29,7 @@ def _now_iso() -> str:
 
 
 class AgentPlatformHarnessRepository(AgentHarnessRepository):
-    def __init__(self, client: AgentPlatformClient, now: callable = _now_iso) -> None:
+    def __init__(self, client: AgentPlatformClient, now: Callable[[], str] = _now_iso) -> None:
         self._client = client
         self._now = now
         self._snapshots: dict[HarnessSnapshotId, HarnessSnapshot] = {}

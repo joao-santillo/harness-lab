@@ -9,7 +9,8 @@ from .client import SqliteDatabase
 
 
 def _parse_payload(row: object) -> dict[str, object]:
-    return json.loads(str(row))
+    parsed: dict[str, object] = json.loads(str(row))
+    return parsed
 
 
 class SqliteRunRepository:
@@ -65,6 +66,23 @@ class SqliteRunRepository:
     async def save_round(self, round_obj: Round) -> None:
         self._database.assert_open()
         self._upsert_round(Round.model_validate(round_obj))
+        await self._database.flush()
+
+    async def create_round_with_job(self, round_obj: Round, now: str) -> None:
+        self._database.assert_open()
+        valid_round = Round.model_validate(round_obj)
+
+        def operation() -> None:
+            if self._database.prepare("SELECT 1 FROM rounds WHERE id = ?").get(valid_round.id) is not None:
+                raise ValueError("ROUND_ALREADY_EXISTS")
+            self._upsert_round(valid_round)
+            self._database.prepare(
+                """INSERT INTO round_jobs
+                (round_id, status, claimed_by, claimed_at, created_at, updated_at)
+                VALUES (?, 'queued', NULL, NULL, ?, ?)"""
+            ).run(valid_round.id, now, now)
+
+        self._database.transaction(operation)()
         await self._database.flush()
 
     async def commit_progress(

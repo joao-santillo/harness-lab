@@ -51,7 +51,7 @@ class SecretBoxCodec:
         except Exception as error:
             raise ValueError("SECRET_STORE_CORRUPT") from error
 
-        if int(key_version) != 1:
+        if not isinstance(key_version, (int, str)) or int(key_version) != 1:
             raise ValueError("SECRET_STORE_CORRUPT")
         if not isinstance(nonce_encoded, str) or not isinstance(ciphertext_encoded, str):
             raise ValueError("SECRET_STORE_CORRUPT")

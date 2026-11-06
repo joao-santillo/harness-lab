@@ -40,9 +40,8 @@ class EvidenceMissingData(DomainModel):
     source_reference: str
 
 
-Evidence = AnnotatedEvidence = (
-    EvidenceTrace | EvidenceExecution | EvidenceMissingData
-)
+Evidence: TypeAlias = EvidenceTrace | EvidenceExecution | EvidenceMissingData
+AnnotatedEvidence: TypeAlias = Evidence
 
 FindingSeverity = Literal["low", "medium", "high", "critical"]
 

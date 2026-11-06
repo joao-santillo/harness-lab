@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import inspect
 from collections.abc import Mapping
+from typing import Any, Protocol, TypedDict, cast
 
 from harness_lab.application import (
     assert_learning_sources,
@@ -27,8 +28,58 @@ from harness_lab.domain import (
 )
 from harness_lab.domain.models.evaluation import VersionedEvaluationResult
 
+JsonObject = dict[str, Any]
+Session = dict[str, Any]
 
-async def _await_maybe(value: object) -> object:
+
+class ArtifactStore(Protocol):
+    async def get(self, round_id: str) -> Session | None: ...
+
+    async def save(self, round_id: str, session: Session) -> None: ...
+
+
+class CasesDependency(TypedDict):
+    collect: Any
+
+
+class TracesDependency(TypedDict):
+    collect: Any
+
+
+class HarnessesDependency(TypedDict):
+    get_capabilities: Any
+    fetch_snapshot: Any
+
+
+class RefinementEngineDependency(TypedDict):
+    refine: Any
+
+
+class ExecutorDependency(TypedDict):
+    execute: Any
+
+
+class StageOptions(TypedDict, total=False):
+    partition_seed: str
+    minimum_reserved: int
+    reserved_ratio: float
+    max_proposals: int
+
+
+class CreateRoundStagesInput(TypedDict, total=False):
+    artifacts: ArtifactStore
+    cases: CasesDependency
+    traces: TracesDependency
+    harnesses: HarnessesDependency
+    refinement_engine: RefinementEngineDependency
+    executor: ExecutorDependency
+    evaluator: Any
+    export_round: Any
+    options: StageOptions
+    on_evaluate_input: Any
+
+
+async def _await_maybe(value: object) -> Any:
     if inspect.isawaitable(value):
         return await value
     return value
@@ -36,13 +87,13 @@ async def _await_maybe(value: object) -> object:
 
 class InMemoryRoundArtifactStore:
     def __init__(self) -> None:
-        self._sessions: dict[str, dict[str, object]] = {}
+        self._sessions: dict[str, Session] = {}
 
-    async def get(self, round_id: str) -> dict[str, object] | None:
+    async def get(self, round_id: str) -> Session | None:
         session = self._sessions.get(round_id)
         return None if session is None else copy.deepcopy(session)
 
-    async def save(self, round_id: str, session: dict[str, object]) -> None:
+    async def save(self, round_id: str, session: Session) -> None:
         self._sessions[round_id] = copy.deepcopy(session)
 
 
@@ -62,7 +113,7 @@ def terminal_event_for_decision(decision: TerminalDecision) -> RoundEvent:
     return _TERMINAL_EVENTS[decision]
 
 
-def _require_session(session: dict[str, object] | None, stage: str) -> dict[str, object]:
+def _require_session(session: Session | None, stage: str) -> Session:
     if session is None:
         raise RuntimeError(f"ROUND_ARTIFACTS_MISSING:{stage}")
     return session
@@ -74,7 +125,7 @@ def _empty_session(
     partition: PartitionManifest,
     baseline: HarnessSnapshot,
     capabilities: AgentCapabilities,
-) -> dict[str, object]:
+) -> Session:
     return {
         "cases": [item.model_dump(by_alias=True) for item in cases],
         "partition": partition.model_dump(by_alias=True),
@@ -98,19 +149,19 @@ def _empty_session(
     }
 
 
-def _session_cases(session: Mapping[str, object]) -> tuple[PartitionCase, ...]:
+def _session_cases(session: Mapping[str, Any]) -> tuple[PartitionCase, ...]:
     return tuple(PartitionCase.model_validate(item) for item in session["cases"])
 
 
-def _session_partition(session: Mapping[str, object]) -> PartitionManifest:
+def _session_partition(session: Mapping[str, Any]) -> PartitionManifest:
     return PartitionManifest.model_validate(session["partition"])
 
 
-def _session_baseline(session: Mapping[str, object]) -> HarnessSnapshot:
+def _session_baseline(session: Mapping[str, Any]) -> HarnessSnapshot:
     return HarnessSnapshot.model_validate(session["baseline"])
 
 
-def _candidate_from_session(session: Mapping[str, object]) -> Candidate:
+def _candidate_from_session(session: Mapping[str, Any]) -> Candidate:
     refinement = session["refinement"]
     if not isinstance(refinement, Mapping):
         raise RuntimeError("ROUND_CANDIDATE_MISSING")
@@ -124,8 +175,8 @@ def _candidate_from_session(session: Mapping[str, object]) -> Candidate:
     return Candidate.model_validate(candidate_payload)
 
 
-def create_round_stages(input_data: Mapping[str, object]) -> dict[str, object]:
-    artifacts = input_data["artifacts"]
+def create_round_stages(input_data: CreateRoundStagesInput) -> dict[str, Any]:
+    artifacts: ArtifactStore = input_data["artifacts"]
     cases = input_data["cases"]
     traces = input_data["traces"]
     harnesses = input_data["harnesses"]
@@ -196,7 +247,7 @@ def create_round_stages(input_data: Mapping[str, object]) -> dict[str, object]:
                 raise RuntimeError("ROUND_DIAGNOSIS_MISSING")
             cases_input = _session_cases(session)
 
-            async def _run_refine_with_projection(_visible_cases: tuple[dict[str, str], ...]) -> tuple[Candidate, ...]:
+            async def _run_refine_with_projection(_visible_cases: tuple[Mapping[str, str], ...]) -> tuple[Candidate, ...]:
                 evidence_case_ids = tuple(
                     str(item["caseId"])
                     for item in diagnosis.get("evidence", [])
@@ -334,7 +385,7 @@ def create_round_stages(input_data: Mapping[str, object]) -> dict[str, object]:
             evaluation = session.get("evaluation")
             if evaluation is None:
                 raise RuntimeError("ROUND_EVALUATION_MISSING")
-            return terminal_event_for_decision(str(evaluation["decision"]))
+            return terminal_event_for_decision(cast(TerminalDecision, str(evaluation["decision"])))
 
         async def run(self, round_obj: Round) -> RoundEvent:
             session = _require_session(await _await_maybe(artifacts.get(round_obj.id)), "export")
@@ -342,7 +393,7 @@ def create_round_stages(input_data: Mapping[str, object]) -> dict[str, object]:
             if evaluation is None:
                 raise RuntimeError("ROUND_EVALUATION_MISSING")
             await _await_maybe(export_round(round_obj, session))
-            return terminal_event_for_decision(str(evaluation["decision"]))
+            return terminal_event_for_decision(cast(TerminalDecision, str(evaluation["decision"])))
 
     return {
         "collect": _CollectStage(),

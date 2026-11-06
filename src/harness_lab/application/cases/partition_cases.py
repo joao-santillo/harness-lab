@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import math
-from collections.abc import Awaitable, Callable, Iterable
+from collections.abc import Awaitable, Callable, Iterable, Mapping
 from types import MappingProxyType
 from typing import TypeVar
 
@@ -96,7 +96,7 @@ def seal_partition_manifest(manifest: PartitionManifest) -> PartitionManifest:
 async def run_refinement_with_diagnosis_cases(
     cases: tuple[PartitionCase, ...] | list[PartitionCase],
     manifest: PartitionManifest,
-    refine: Callable[[tuple[dict[str, str], ...]], Awaitable[TResult]],
+    refine: Callable[[tuple[Mapping[str, str], ...]], Awaitable[TResult]],
 ) -> TResult:
     diagnosis_ids = set(manifest.diagnosis_ids)
     visible_cases = tuple(

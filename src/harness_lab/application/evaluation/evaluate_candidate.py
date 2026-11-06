@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, cast
 
 from harness_lab.domain import CaseEvaluation, EvaluatorDefinition, VersionedEvaluationResult
 from harness_lab.domain.models import DomainModel
+from harness_lab.domain.models.evaluation import EvaluationId
+from harness_lab.domain.models.harness import CandidateId, ExecutionId
+from harness_lab.domain.models.round import CaseId, RoundId, TerminalDecision
 
 from .recommendation_policy import decide_recommendation
 
@@ -73,9 +76,9 @@ def evaluate_candidate(
         )
         case_results.append(
             CaseEvaluation(
-                case_id=signal.case_id,
-                baseline_execution_id=signal.baseline_execution_id,
-                candidate_execution_id=signal.candidate_execution_id,
+                case_id=CaseId(signal.case_id),
+                baseline_execution_id=ExecutionId(signal.baseline_execution_id),
+                candidate_execution_id=ExecutionId(signal.candidate_execution_id),
                 passed=not regression,
                 regression=regression,
                 score_change=signal.completion_change,
@@ -136,10 +139,10 @@ def evaluate_candidate(
     ) * (1 if len(limitations) == 0 else 0.75)
 
     return VersionedEvaluationResult(
-        id=input_value.evaluation_id,
-        round_id=input_value.round_id,
-        candidate_id=input_value.candidate_id,
-        decision=policy["decision"],
+        id=EvaluationId(input_value.evaluation_id),
+        round_id=RoundId(input_value.round_id),
+        candidate_id=CandidateId(input_value.candidate_id),
+        decision=cast(TerminalDecision, policy["decision"]),
         sample_size=len(input_value.cases),
         confidence=confidence,
         aggregate_score_change=aggregate_score,

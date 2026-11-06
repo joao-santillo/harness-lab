@@ -2,20 +2,6 @@ from __future__ import annotations
 
 from typing import Literal
 
-DIAGNOSIS_CATEGORIES = (
-    "RULE_VIOLATION",
-    "MISSING_TOOL",
-    "UNNECESSARY_TOOL",
-    "INVALID_TOOL_PARAMETERS",
-    "UNSUPPORTED_ANSWER",
-    "CONTEXT_FAILURE",
-    "REPETITION",
-    "COST_LIMIT_EXCEEDED",
-    "LATENCY_LIMIT_EXCEEDED",
-    "INFRASTRUCTURE_FAILURE",
-    "TOOL_FAILURE",
-)
-
 DiagnosisCategory = Literal[
     "RULE_VIOLATION",
     "MISSING_TOOL",
@@ -29,6 +15,20 @@ DiagnosisCategory = Literal[
     "INFRASTRUCTURE_FAILURE",
     "TOOL_FAILURE",
 ]
+
+DIAGNOSIS_CATEGORIES: tuple[DiagnosisCategory, ...] = (
+    "RULE_VIOLATION",
+    "MISSING_TOOL",
+    "UNNECESSARY_TOOL",
+    "INVALID_TOOL_PARAMETERS",
+    "UNSUPPORTED_ANSWER",
+    "CONTEXT_FAILURE",
+    "REPETITION",
+    "COST_LIMIT_EXCEEDED",
+    "LATENCY_LIMIT_EXCEEDED",
+    "INFRASTRUCTURE_FAILURE",
+    "TOOL_FAILURE",
+)
 
 NON_HARNESS_CATEGORIES: set[DiagnosisCategory] = {
     "INFRASTRUCTURE_FAILURE",

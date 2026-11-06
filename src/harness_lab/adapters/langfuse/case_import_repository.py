@@ -160,7 +160,7 @@ class LangfuseCaseImportRepository:
 
     async def _get(self, path: str) -> httpx.Response:
         try:
-            response = await self._client.get(path)
+            response: httpx.Response = await self._client.get(path)
             if response.status_code == 429:
                 await self._delay(_retry_after_milliseconds(response.headers.get("retry-after")))
                 response = await self._client.get(path)
@@ -347,12 +347,15 @@ class LangfuseCaseImportRepository:
             "SOURCE_REFERENCE_TOO_LARGE",
             "INVALID_SESSION_ID",
         )
-        reason = next((candidate for candidate in priority if candidate in failures), "MISSING_USABLE_INPUT")
+        selected_reason: LangfuseTraceDiscardReason = next(
+            (candidate for candidate in priority if candidate in failures),
+            "MISSING_USABLE_INPUT",
+        )
         return LangfuseTraceRecoveryItem(
             status="discarded",
             trace_id=trace_id,
-            start_time=failures.get(reason),
-            reason=reason,
+            start_time=failures.get(selected_reason),
+            reason=selected_reason,
         )
 
     async def import_cases(
@@ -480,7 +483,7 @@ class LangfuseCaseImportRepository:
             page = 1
             total_pages = 1
             while page <= total_pages:
-                parameters: dict[str, str] = {
+                parameters = {
                     "page": str(page),
                     "limit": str(limit),
                     "fromTimestamp": from_start_time,

@@ -6,7 +6,8 @@ from collections.abc import Awaitable, Callable
 
 import httpx
 
-from harness_lab.domain.models.evidence import EvidenceTrace
+from harness_lab.domain.models.evidence import EvidenceId, EvidenceTrace
+from harness_lab.domain.models.round import CaseId
 from harness_lab.domain.ports import TracePage, TraceQuery, TraceRepository
 
 from .client import LangfuseClient
@@ -71,9 +72,9 @@ class LangfuseTraceRepository(TraceRepository):
                 evidence.extend(
                     EvidenceTrace(
                         kind="trace",
-                        id=f"{self._project_id}:{observation.id}",
+                        id=EvidenceId(f"{self._project_id}:{observation.id}"),
                         round_id=query.round_id,
-                        case_id=observation.trace_id,
+                        case_id=CaseId(observation.trace_id),
                         trace_id=observation.trace_id,
                         observation_id=observation.id,
                         excerpt=json.dumps(
@@ -109,9 +110,9 @@ class LangfuseTraceRepository(TraceRepository):
                     evidence.append(
                         EvidenceTrace(
                             kind="trace",
-                            id=f"{self._project_id}:{trace_id}",
+                            id=EvidenceId(f"{self._project_id}:{trace_id}"),
                             round_id=query.round_id,
-                            case_id=trace_id,
+                            case_id=CaseId(trace_id),
                             trace_id=trace_id,
                             observation_id=None,
                             excerpt=json.dumps(

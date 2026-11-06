@@ -89,7 +89,7 @@ class InMemoryBenchmarkAdapter:
         if "AGENTS.md" not in tree:
             raise ValueError("AGENTS.md is required")
 
-    def score(self, run_dir: Path, task_id: str) -> dict | None:
+    def score(self, run_dir: Path, task_id: str) -> dict[str, object] | None:
         del run_dir, task_id
         return None
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 
 import httpx
@@ -27,7 +28,7 @@ def _now_iso() -> str:
 
 async def negotiate_langfuse_capabilities(
     client: LangfuseClient,
-    now: callable = _now_iso,
+    now: Callable[[], str] = _now_iso,
 ) -> LangfuseCapabilities:
     response = await client.get("/api/public/v2/observations?limit=1")
     if response.status_code in {401, 403}:

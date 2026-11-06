@@ -4,7 +4,12 @@ import asyncio
 from collections.abc import Awaitable, Callable
 from typing import Any
 
-from harness_lab.domain.models.harness import ExecutionId, ExecutionMetrics, ExecutionResult
+from harness_lab.domain.models.harness import (
+    ExecutionId,
+    ExecutionMetrics,
+    ExecutionResult,
+    ExecutionStatus,
+)
 from harness_lab.domain.ports import (
     BaselineExecutionRequest,
     CandidateExecutor,
@@ -88,14 +93,22 @@ class AgentPlatformCandidateExecutor(CandidateExecutor):
             return self._failure(request, "integration_failed", "AGENT_PLATFORM_REQUEST_FAILED")
 
         status_value = remote.get("status")
-        trace_id = remote.get("traceId") if isinstance(remote.get("traceId"), str) or remote.get("traceId") is None else None
-        output = remote.get("output") if isinstance(remote.get("output"), str) or remote.get("output") is None else None
-        metrics = remote.get("metrics") if isinstance(remote.get("metrics"), dict) else {}
-        latency_ms = metrics.get("latencyMs") if isinstance(metrics.get("latencyMs"), int) else 0
-        input_tokens = metrics.get("inputTokens") if isinstance(metrics.get("inputTokens"), int) else None
-        output_tokens = metrics.get("outputTokens") if isinstance(metrics.get("outputTokens"), int) else None
-        cost = metrics.get("cost") if isinstance(metrics.get("cost"), (int, float)) else None
+        raw_trace_id = remote.get("traceId")
+        trace_id = raw_trace_id if isinstance(raw_trace_id, str) else None
+        raw_output = remote.get("output")
+        output = raw_output if isinstance(raw_output, str) else None
+        raw_metrics = remote.get("metrics")
+        metrics: dict[str, Any] = raw_metrics if isinstance(raw_metrics, dict) else {}
+        raw_latency = metrics.get("latencyMs")
+        latency_ms = raw_latency if isinstance(raw_latency, int) else 0
+        raw_input_tokens = metrics.get("inputTokens")
+        input_tokens = raw_input_tokens if isinstance(raw_input_tokens, int) else None
+        raw_output_tokens = metrics.get("outputTokens")
+        output_tokens = raw_output_tokens if isinstance(raw_output_tokens, int) else None
+        raw_cost = metrics.get("cost")
+        cost = raw_cost if isinstance(raw_cost, (int, float)) else None
 
+        status: ExecutionStatus
         if status_value == "completed":
             status = "trace_missing" if trace_id is None else "succeeded"
         elif status_value == "failed":
@@ -134,7 +147,7 @@ class AgentPlatformCandidateExecutor(CandidateExecutor):
     def _failure(
         self,
         request: BaselineExecutionRequest | CandidateVersionExecutionRequest,
-        status: str,
+        status: ExecutionStatus,
         limitation: str,
     ) -> ExecutionResult:
         return ExecutionResult(

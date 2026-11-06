@@ -1,14 +1,23 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any, Protocol
+
+
+class _JobClaimer(Protocol):
+    def claim_next(self, worker_id: str, now: str) -> dict[str, str] | None: ...
+
+
+class _RoundProcessor(Protocol):
+    async def execute(self, round_id: str, worker_id: str) -> Any: ...
 
 
 class DurableRoundWorker:
     def __init__(
         self,
         *,
-        jobs: object,
-        processor: object,
+        jobs: _JobClaimer,
+        processor: _RoundProcessor,
         worker_id: str,
         now: Callable[[], str],
     ) -> None:

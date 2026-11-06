@@ -46,7 +46,9 @@ def resolve_worker_config(env: dict[str, str] | os._Environ[str], base_dir: str 
     encryption_key = _valid_key(env.get("APP_ENCRYPTION_KEY"))
     resolved_base_dir = Path(base_dir or Path.cwd())
     provider = env.get("WORKER_PROVIDER_MODULE")
-    provider_module = None if provider in (None, "") else str((resolved_base_dir / provider).resolve())
+    provider_module = (
+        None if not provider else str((resolved_base_dir / provider).resolve())
+    )
 
     data_dir_raw = env.get("APP_DATA_DIR", "./data")
     data_dir = Path(data_dir_raw)

@@ -98,9 +98,9 @@ def normalize_observations(project_id: str, input_items: tuple[object, ...] | li
 
     roots_by_trace: dict[str, int] = {}
     root_ids = set(roots)
-    for observation in observations:
-        if observation.id in root_ids:
-            roots_by_trace[observation.trace_id] = roots_by_trace.get(observation.trace_id, 0) + 1
+    for normalized in observations:
+        if normalized.id in root_ids:
+            roots_by_trace[normalized.trace_id] = roots_by_trace.get(normalized.trace_id, 0) + 1
 
     for trace_id, count in roots_by_trace.items():
         if count > 1:

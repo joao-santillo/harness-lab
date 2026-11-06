@@ -5,6 +5,8 @@ from collections.abc import Callable
 
 from harness_lab.domain import EvidenceTrace, Finding, Hypothesis
 from harness_lab.domain.models import DomainModel
+from harness_lab.domain.models.evidence import EvidenceId, FindingId, HypothesisId
+from harness_lab.domain.models.round import CaseId, RoundId
 
 from .taxonomy import DIAGNOSIS_CATEGORIES, NON_HARNESS_CATEGORIES, DiagnosisCategory
 
@@ -128,6 +130,7 @@ def diagnose_executions(
     round_id: str,
     traces: tuple[DiagnosticTrace, ...] | list[DiagnosticTrace] | tuple[dict[str, object], ...] | list[dict[str, object]],
 ) -> DiagnosisResult:
+    typed_round_id = RoundId(round_id)
     normalized_traces = tuple(
         item if isinstance(item, DiagnosticTrace) else DiagnosticTrace.model_validate(item)
         for item in traces
@@ -147,9 +150,9 @@ def diagnose_executions(
         for index, trace in enumerate(matched, start=1):
             item = EvidenceTrace(
                 kind="trace",
-                id=f"{category.lower()}-{index}",
-                round_id=round_id,
-                case_id=trace.id,
+                id=EvidenceId(f"{category.lower()}-{index}"),
+                round_id=typed_round_id,
+                case_id=CaseId(trace.id),
                 trace_id=trace.id,
                 observation_id=None,
                 excerpt=_sanitize_excerpt(trace),
@@ -158,10 +161,10 @@ def diagnose_executions(
             evidence.append(item)
             category_evidence.append(item)
 
-        finding_id = f"finding-{category.lower()}"
+        finding_id = FindingId(f"finding-{category.lower()}")
         finding = Finding(
             id=finding_id,
-            round_id=round_id,
+            round_id=typed_round_id,
             category_code=category,
             observed_fact=f"{len(matched)} of {len(normalized_traces)} traces matched {category}.",
             frequency=len(matched),
@@ -196,7 +199,7 @@ def diagnose_executions(
         if proposed_change:
             hypotheses.append(
                 Hypothesis(
-                    id=f"hypothesis-{category.lower()}",
+                    id=HypothesisId(f"hypothesis-{category.lower()}"),
                     finding_id=finding_id,
                     explanation=f"Hypothesis: a bounded harness change may reduce {category.lower().replace('_', ' ')}.",
                     evidence_ids=tuple(item.id for item in category_evidence),

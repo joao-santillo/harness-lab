@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Annotated, Literal, Protocol
+from typing import Annotated, Literal, Protocol, TypeAlias
 
 from pydantic import Field, TypeAdapter
 
@@ -84,11 +84,13 @@ class CandidateVersionExecutionRequest(_ExecutionRequestContext):
     candidate_id: CandidateId
 
 
-CandidateExecutionRequest = Annotated[
+CandidateExecutionRequest: TypeAlias = Annotated[
     BaselineExecutionRequest | CandidateVersionExecutionRequest,
     Field(discriminator="kind"),
 ]
-_candidate_execution_adapter = TypeAdapter(CandidateExecutionRequest)
+_candidate_execution_adapter: TypeAdapter[BaselineExecutionRequest | CandidateVersionExecutionRequest] = (
+    TypeAdapter(CandidateExecutionRequest)  # type: ignore[arg-type]
+)
 
 
 def parse_candidate_execution_request(payload: object) -> BaselineExecutionRequest | CandidateVersionExecutionRequest:
@@ -136,7 +138,9 @@ class RunRepository(Protocol):
 
     async def save_round(self, round_obj: Round) -> None: ...
 
-    async def commit_progress(self, input: RoundProgressCommit) -> None: ...
+    async def commit_progress(
+        self, *, round_obj: Round, checkpoint: RoundCheckpoint, event: RoundProgressEvent
+    ) -> None: ...
 
     async def list_events(self, round_id: RoundId, after_sequence: int) -> tuple[RoundProgressEvent, ...]: ...
 
@@ -181,11 +185,13 @@ class ReportArtifactExportRequest(_ArtifactExportContext):
     decision: TerminalDecision
 
 
-ArtifactExportRequest = Annotated[
+ArtifactExportRequest: TypeAlias = Annotated[
     CandidateArtifactExportRequest | ReportArtifactExportRequest,
     Field(discriminator="kind"),
 ]
-_artifact_export_adapter = TypeAdapter(ArtifactExportRequest)
+_artifact_export_adapter: TypeAdapter[CandidateArtifactExportRequest | ReportArtifactExportRequest] = (
+    TypeAdapter(ArtifactExportRequest)  # type: ignore[arg-type]
+)
 
 
 def parse_artifact_export_request(

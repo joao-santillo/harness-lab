@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 from harness_lab.adapters.sqlite import (
     SqliteCaseRepository,
@@ -10,6 +10,8 @@ from harness_lab.adapters.sqlite import (
     SqliteRunRepository,
 )
 from harness_lab.application.rounds import ProcessRound, create_round_stages
+from harness_lab.application.rounds.create_round_stages import CreateRoundStagesInput
+from harness_lab.domain import Round
 
 from .worker import DurableRoundWorker
 
@@ -33,9 +35,9 @@ def create_round_worker_runtime(options: dict[str, Any]) -> RoundWorkerRuntime:
     artifacts = SqliteRoundArtifactStore(database)
     cases = SqliteCaseRepository(database)
 
-    stage_dependencies = dict(options["stage_dependencies"])
+    stage_dependencies: dict[str, Any] = dict(options["stage_dependencies"])
     if "cases" not in stage_dependencies:
-        async def _collect_cases(round_obj: object) -> tuple[dict[str, object], ...]:
+        async def _collect_cases(round_obj: Round) -> tuple[dict[str, object], ...]:
             records = await cases.list_by_scope(round_obj.agent_id, round_obj.domain_id)
             return tuple(record.model_dump(by_alias=True) for record in records)
 
@@ -43,13 +45,15 @@ def create_round_worker_runtime(options: dict[str, Any]) -> RoundWorkerRuntime:
             "collect": _collect_cases
         }
 
-    stages = create_round_stages(
+    stage_input: CreateRoundStagesInput = cast(
+        CreateRoundStagesInput,
         {
             **stage_dependencies,
             "artifacts": artifacts,
             "options": options["stage_options"],
-        }
+        },
     )
+    stages = create_round_stages(stage_input)
     processor = ProcessRound(
         repository=repository,
         jobs=jobs,

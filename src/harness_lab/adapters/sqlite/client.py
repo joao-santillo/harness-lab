@@ -5,6 +5,7 @@ import sqlite3
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
+from threading import RLock
 from typing import TypeVar
 
 BindValue = str | int | float | None | bytes
@@ -50,7 +51,8 @@ class SqliteStatement:
         self._connection.execute(self._sql, parameters)
 
     def get(self, *parameters: BindValue) -> sqlite3.Row | None:
-        return self._connection.execute(self._sql, parameters).fetchone()
+        row: sqlite3.Row | None = self._connection.execute(self._sql, parameters).fetchone()
+        return row
 
     def all(self, *parameters: BindValue) -> list[sqlite3.Row]:
         return self._connection.execute(self._sql, parameters).fetchall()
@@ -61,6 +63,7 @@ class SqliteDatabase:
         self._connection = connection
         self._state: str = "open"
         self._transaction_depth = 0
+        self._lock = RLock()
 
     def assert_open(self) -> None:
         if self._state == "closed":
@@ -89,26 +92,27 @@ class SqliteDatabase:
 
     def transaction(self, operation: Callable[[], T]) -> Callable[[], T]:
         def wrapped() -> T:
-            self.assert_open()
-            if self._transaction_depth > 0:
-                return operation()
+            with self._lock:
+                self.assert_open()
+                if self._transaction_depth > 0:
+                    return operation()
 
-            self._connection.execute("BEGIN IMMEDIATE")
-            self._transaction_depth += 1
-            try:
-                result = operation()
-                self._connection.execute("COMMIT")
-                return result
-            except Exception as error:
+                self._connection.execute("BEGIN IMMEDIATE")
+                self._transaction_depth += 1
                 try:
-                    self._connection.execute("ROLLBACK")
-                except Exception as rollback_error:
-                    raise RuntimeError("Transaction and rollback failed") from Exception(
-                        f"{error!r}; {rollback_error!r}"
-                    )
-                raise
-            finally:
-                self._transaction_depth = 0
+                    result = operation()
+                    self._connection.execute("COMMIT")
+                    return result
+                except Exception as error:
+                    try:
+                        self._connection.execute("ROLLBACK")
+                    except Exception as rollback_error:
+                        raise RuntimeError("Transaction and rollback failed") from Exception(
+                            f"{error!r}; {rollback_error!r}"
+                        )
+                    raise
+                finally:
+                    self._transaction_depth = 0
 
         return wrapped
 
@@ -236,7 +240,7 @@ def _migrate(database: SqliteDatabase) -> None:
 
 
 def open_sqlite_database(path: str) -> SqliteDatabase:
-    connection = sqlite3.connect(path, isolation_level=None)
+    connection = sqlite3.connect(path, isolation_level=None, check_same_thread=False)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
     connection.execute("PRAGMA busy_timeout = 5000")
