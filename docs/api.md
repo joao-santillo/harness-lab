@@ -140,6 +140,42 @@ Importa traces históricos de uma conexão Langfuse salva e os converte em até 
 
 `fromStartTime` e `toStartTime` devem ser ISO 8601 com offset, e o início deve ser anterior ao fim. `limit` aceita de 1 a 40. `filter` é opcional; quando informado, contém um dos campos `traceName`, `environment`, `tags`, `userId` ou `sessionId` e um `value` não vazio, de até 200 caracteres. `traceName`, `environment`, `userId` e `sessionId` usam correspondência exata; `tags` seleciona traces que contenham a tag informada. O limite é aplicado aos traces que correspondem ao filtro. Sem filtro, a busca continua abrangendo todos os traces na janela. A API valida o agente e o domínio antes de qualquer acesso externo e descriptografa a conexão somente no backend.
 
+Esse endpoint mantém a importação direta para clientes existentes. A interface web usa o fluxo de preview e confirmação abaixo.
+
+### `POST /cases/import-langfuse/preview`
+
+Aceita o mesmo corpo de busca de `/cases/import-langfuse`. Consulta e classifica os traces, mas **não grava cases**. O limite conta todos os traces examinados na janela, inclusive os que serão descartados.
+
+Resposta `200` contém apenas metadados de revisão, nunca o conteúdo de `input`:
+
+```json
+{
+  "previewId": "opaque-preview-id",
+  "expiresAt": "2026-11-04T15:05:00.000Z",
+  "summary": { "total": 3, "ready": 1, "existing": 1, "discarded": 1 },
+  "items": [
+    { "status": "ready", "traceId": "trace-1", "startTime": "2026-11-03T10:00:00.000Z", "existing": false },
+    { "status": "ready", "traceId": "trace-2", "startTime": "2026-11-03T10:01:00.000Z", "existing": true },
+    { "status": "discarded", "traceId": "trace-3", "startTime": "2026-11-03T10:02:00.000Z", "reason": "MISSING_ROOT" }
+  ],
+  "limitations": []
+}
+```
+
+Os motivos possíveis são `MISSING_ROOT`, `MISSING_USABLE_INPUT`, `INVALID_START_TIME`, `CONTENT_TOO_LARGE`, `INVALID_SESSION_ID`, `SOURCE_REFERENCE_TOO_LARGE` e `INVALID_CONTENT`. Candidatos prontos ainda não importados ficam em memória somente no servidor, associados ao preview opaco. O preview expira após cinco minutos e o store tem capacidade limitada.
+
+### `POST /cases/import-langfuse/confirm`
+
+Confirma uma seleção não vazia de traces prontos e ainda não importados do preview. O preview é consumido uma única vez quando a seleção é válida.
+
+```json
+{ "previewId": "opaque-preview-id", "traceIds": ["trace-1"] }
+```
+
+Resposta `201`: `{ "imported": 1, "skipped": 0 }`. Cases criados depois da busca são contados como `skipped`, evitando duplicação em caso de corrida.
+
+Erros específicos: `400 PREVIEW_SELECTION_INVALID` para seleção vazia, duplicada ou fora do preview (o preview permanece disponível para corrigir a seleção); `410 PREVIEW_EXPIRED` para preview ausente, expirado ou já consumido. A confirmação não consulta novamente o Langfuse: usa os candidatos mantidos no servidor e grava somente os IDs selecionados.
+
 Resposta `201`:
 
 ```json

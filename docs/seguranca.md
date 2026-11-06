@@ -2,7 +2,7 @@
 
 ## Modelo atual
 
-A API é um serviço local sem autenticação/autorização de usuário. Ela escuta em `127.0.0.1` por padrão. O isolamento por agente/domínio é aplicado nas rotas e no SQLite, mas não substitui autenticação. Para qualquer rede compartilhada, use um proxy autenticado e restrinja acesso; não exponha diretamente o Fastify.
+A API e um servico local sem autenticacao/autorizacao de usuario. Ela escuta em `127.0.0.1` por padrao. O isolamento por agente/dominio e aplicado nas rotas e no SQLite, mas nao substitui autenticacao. Para qualquer rede compartilhada, use um proxy autenticado e restrinja acesso; nao exponha diretamente o FastAPI.
 
 ## Credenciais de integração
 

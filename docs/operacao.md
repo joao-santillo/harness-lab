@@ -1,72 +1,68 @@
-# Operação
+# Operacao
 
-## Pré-requisitos
+## Instalacao
 
-- Node.js `>=24.12.0 <25`;
-- pnpm `10.20.0`;
-- Chromium compatível para E2E visual;
-- chave `APP_ENCRYPTION_KEY` em Base64, decodificando exatamente 32 bytes;
-- módulo de providers local para processar rodadas no worker.
-
-## Instalação
-
-Na raiz do worktree:
+Use Python 3.12 ou 3.13 e `uv`:
 
 ```bash
-pnpm install --frozen-lockfile
+uv sync --frozen
 cp .env.example .env
 ```
 
-Gere uma chave localmente e copie a saída para `.env` sem compartilhá-la:
-
-```bash
-node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
-```
-
-A chave placeholder do `.env.example` é intencionalmente inválida; a API e o worker recusam iniciar com ela.
+Configure `DATABASE_PATH`, uma `APP_ENCRYPTION_KEY` Base64 de 32 bytes e, para o worker, `WORKER_PROVIDER_MODULE`.
 
 ## Processos
 
-Abra terminais separados a partir da raiz:
-
 ```bash
-pnpm --filter @harness-lab/api start
-pnpm --filter @harness-lab/worker start
-pnpm --filter @harness-lab/web dev
+uv run harness-lab api
+uv run harness-lab worker
 ```
 
-A API usa `API_HOST`/`API_PORT` (padrão `127.0.0.1:3000`). A interface Vite usa `WEB_PORT` (padrão 5173) e encaminha `/api` para `API_PROXY_TARGET`. A raiz do repositório carrega o `.env`; a configuração Vite resolve esse arquivo explicitamente.
+API e interface compartilham `APP_HOST`/`APP_PORT`, com padrao `127.0.0.1:8000`. API e worker devem usar o mesmo `DATABASE_PATH`. Execute um worker por dominio de lease do banco.
 
-`pnpm dev` inicia os scripts `dev` existentes no workspace; no estado atual, somente a interface possui script `dev`. Inicie API e worker explicitamente.
+## Backup consistente
 
-## Dados
-
-`APP_DATA_DIR` deve apontar para uma pasta persistente. Caminhos relativos são resolvidos a partir da raiz do repositório, independentemente do diretório de onde o processo foi iniciado. Com `./data`, API e worker compartilham `<raiz-do-repositório>/data/harness.sqlite`; em deployment, prefira caminho absoluto.
-
-O banco é SQLite em `harness.sqlite`, com WAL, foreign keys e `synchronous=FULL`. Exports ficam em `APP_DATA_DIR/exports/<agente>/<rodada>/`. Exports são criados com permissão `0600`; proteja também o diretório e os backups.
-
-Faça backup coordenado do banco, exports e chave de criptografia. Sem a mesma chave não é possível recuperar as credenciais criptografadas. O SQLite contém também cases e artefatos de rodada não criptografados pelo aplicativo; controle acesso ao volume/backup.
-
-## Configuração do provider do worker
-
-O worker exige `WORKER_PROVIDER_MODULE`, caminho local para um módulo exportando `createRoundStageDependencies(context)`. A assinatura exata, as portas obrigatórias, os requisitos de segurança e as pendências estão em [Contrato do provider](./provider-do-worker.md). `cases` é opcional: se omitido, o runtime lê o corpus SQLite pelo agente/domínio da rodada.
-
-Sem provider válido, o processo encerra antes de reivindicar jobs. Não use fixtures de teste como provider de produção.
-
-## Testes e build
+Pare escritores durante o cutover e execute:
 
 ```bash
-pnpm -r typecheck
-pnpm -r test
-pnpm -r build
-pnpm --filter @harness-lab/web test:e2e
+uv run python scripts/backup_sqlite.py "$DATABASE_PATH" backups/harness-cutover.sqlite
 ```
 
-O Playwright pode usar Chromium gerenciado. Em ambientes Linux incompatíveis, defina `PLAYWRIGHT_CHROMIUM_EXECUTABLE` com o caminho absoluto para um Chromium disponível.
+Registre o SHA-256 exibido e proteja o backup e a chave de criptografia. Exports e SQLite podem conter dados de cases e resultados em claro; aplique controle de acesso ao volume inteiro.
 
-## Inicialização segura
+## Ensaio de cutover
 
-- A API não tem autenticação de usuário e faz bind em loopback por padrão. Não a exponha diretamente na internet.
-- Se usar proxy/reverse proxy, configure autenticação e limite acesso às rotas de conexão/cases/rodadas.
-- Não existe flag nem smoke test real implementado neste repositório; os testes padrão são herméticos e nenhum teste externo foi executado.
-- A Agent Platform não é verificada pela rota de conexão enquanto o contrato de health-check não for confirmado.
+1. Pare API e worker que escrevem no banco.
+2. Gere o backup consistente e confirme `PRAGMA integrity_check = ok`.
+3. Copie o backup para um diretorio temporario e defina `DATABASE_PATH` para essa copia.
+4. Inicie a API Python, consulte `/api/v1/health`, leia entidades e crie/remova um registro de smoke.
+5. Inicie o worker apenas com provider homologado e valide retomada de uma rodada controlada.
+6. No cutover real, garanta que nenhum processo anterior ou Python antigo continue escrevendo.
+
+## Rollback objetivo
+
+Acione rollback se a API nao iniciar, a integridade/checksum de migrations falhar, segredos nao puderem ser descriptografados, jobs/checkpoints nao forem retomados ou o smoke de leitura/escrita falhar. Pare imediatamente API e worker Python, preserve o banco falho para analise, restaure uma copia do backup ensaiado, restaure a mesma chave e reabra somente a versao anterior homologada. Nunca permita dois stacks escrevendo simultaneamente.
+
+Rollback so e permitido se o Python ainda nao gravou um formato novo incompativel com o stack anterior; caso ja tenha gravado, mantenha o banco migrado e corrija em avanco. Com ambos os runtimes parados, execute:
+
+```bash
+# 1. Garanta que nenhum stack esteja escrevendo (API/worker Python e TS parados).
+# 2. Preserve o banco falho para analise, sem sobrescrever.
+mv "$DATABASE_PATH" "$DATABASE_PATH.failed-$(date +%Y%m%d%H%M%S)"
+# 3. Restaure o backup ensaiado (ajuste o caminho do backup validado).
+cp backups/harness-cutover.sqlite "$DATABASE_PATH"
+# 4. Confirme integridade antes de reabrir.
+uv run python -c "import sqlite3,sys; c=sqlite3.connect(sys.argv[1]); print(c.execute('PRAGMA integrity_check').fetchone()[0])" "$DATABASE_PATH"
+```
+
+Restaure a mesma chave de criptografia usada pelo backup e reinicie apenas o runtime homologado.
+
+## Verificacao
+
+```bash
+uv run pytest -q
+uv run ruff check .
+uv run mypy src/harness_lab
+```
+
+Para E2E, instale o Chromium Playwright ou defina `PLAYWRIGHT_CHROMIUM_EXECUTABLE`. A API nao possui autenticacao de usuario; mantenha bind em loopback ou use proxy autenticado.

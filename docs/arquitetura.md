@@ -2,13 +2,13 @@
 
 ## Visão geral
 
-O Harness Lab é um monólito modular TypeScript. API, worker, interface e adapters compartilham o mesmo workspace. A aplicação usa portas para manter regras de domínio separadas de Fastify, React, SQLite e APIs externas.
+O Harness Lab e um monolito modular Python. API, worker, interface e adapters compartilham o pacote `harness_lab`. A aplicacao usa portas para manter regras de dominio separadas de FastAPI, Jinja2, SQLite, Harness2 e APIs externas.
 
 ```text
 Navegador
    │ HTTP / SSE
    ▼
-API Fastify ───── SQLite
+FastAPI/Jinja2 ── SQLite
    │                 ▲
    │ fila de rodadas │ checkpoints/artefatos
    ▼                 │
@@ -20,12 +20,12 @@ Worker durável ──────┘
 
 ## Pacotes e responsabilidades
 
-- `packages/domain`: modelos, estados e portas independentes de framework.
-- `packages/application`: particionamento, diagnóstico, refinamento, avaliação e orquestração.
-- `packages/adapters`: SQLite, criptografia, redaction, Langfuse, Agent Platform, Harness2 e exportadores.
-- `apps/api`: rotas HTTP, validação, configuração, conexão e processos de inicialização.
-- `apps/worker`: lease de jobs, runtime de rodadas e carregamento do provider de deployment.
-- `apps/web`: interface React, localização e clientes HTTP/SSE.
+- `src/harness_lab/domain`: modelos, estados e portas independentes de framework.
+- `src/harness_lab/application`: particionamento, diagnostico, avaliacao e orquestracao.
+- `src/harness_lab/adapters`: SQLite, criptografia, redaction, Langfuse, Agent Platform, Harness2 e exportadores.
+- `src/harness_lab/api`: rotas HTTP/SSE, validacao e composicao.
+- `src/harness_lab/worker`: lease de jobs, runtime de rodadas e provider de deployment.
+- `src/harness_lab/web`: interface Jinja2 server-rendered e CSS.
 
 ## Fluxo de uma rodada
 
@@ -42,7 +42,7 @@ Se o processo reiniciar após `exporting`, o controlador recupera a decisão do 
 
 ## Isolamento entre diagnóstico e validação
 
-`partitionCases` agrupa transitivamente cases que compartilham sessão ou grupo semântico e distribui grupos de forma determinística usando a seed. O manifesto separa `diagnosisIds` e `reservedIds`; é selado antes do refinamento. `runRefinementWithDiagnosisCases` projeta apenas IDs/conteúdo de diagnóstico, e `assertLearningSources` bloqueia IDs reservados.
+`partition_cases` agrupa transitivamente cases que compartilham sessao ou grupo semantico e distribui grupos de forma deterministica usando a seed. O manifesto separa diagnostico e reserva e e selado antes do refinamento. `run_refinement_with_diagnosis_cases` projeta apenas o corpus de diagnostico, e `assert_learning_sources` bloqueia IDs reservados.
 
 ## Persistência
 
@@ -50,7 +50,7 @@ SQLite usa WAL, foreign keys, `synchronous=FULL`, timeout de lock e migrations v
 
 ## Worker e providers
 
-`createRoundWorkerRuntime` conecta os stores SQLite ao pipeline. `apps/worker/src/main.ts` exige um módulo local em `WORKER_PROVIDER_MODULE`, que exporta `createRoundStageDependencies({ database, encryptionKey })`. O provider precisa implementar traces, harness, propostas, execução e exportação.
+O runtime do worker conecta os stores SQLite ao pipeline. `harness-lab worker` exige um modulo local em `WORKER_PROVIDER_MODULE`, que exporta `create_round_stage_dependencies(config)`. O provider precisa implementar traces, harness, propostas, execucao e exportacao.
 
 Não há provider de produção no repositório. Essa separação é intencional: sem confirmar os endpoints/semântica da Agent Platform, associação trace-case e política de proposta, um provider embutido poderia atribuir resultados errados ou executar ações externas inesperadas.
 
